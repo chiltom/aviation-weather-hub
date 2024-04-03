@@ -8,7 +8,7 @@ Forecasting and briefing is a hard job as it is. When flight-related data is sca
 
 ## Installating and Running the Application
 
-- To download and install this application for use, clone the repository into your local machine and follow these steps:
+- To download and install this application for use, clone the repository into your local machine, change directories into the scripts directory, and follow these steps:
 
   - Run the following command in your terminal to install all dependencies on your local machine: `./install.sh`
 
