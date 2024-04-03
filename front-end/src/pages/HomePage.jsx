@@ -1,6 +1,4 @@
-import { ReactNode } from "react";
-
-const HomePage = (): ReactNode => {
+const HomePage = () => {
   return (
     <>
       <h1>Home Page</h1>

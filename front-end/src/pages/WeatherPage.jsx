@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { ReactNode } from "react";
 import axios from "axios";
 
-const WeatherPage = (): ReactNode => {
+const WeatherPage = () => {
   const [latitude, setLatitude] = useState(32.0111);
   const [longitude, setLongitude] = useState(-81.147);
   const [model, setModel] = useState("namConus");
@@ -27,7 +26,7 @@ const WeatherPage = (): ReactNode => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    const postRequest = async (): Promise<void> => {
+    const postRequest = async () => {
       const body = {
         lat: latitude,
         lon: longitude,

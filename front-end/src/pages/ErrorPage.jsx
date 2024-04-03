@@ -1,6 +1,4 @@
-import { ReactNode } from "react";
-
-const ErrorPage = (): ReactNode => {
+const ErrorPage = () => {
   return (
     <>
       <h1>Error Page</h1>
