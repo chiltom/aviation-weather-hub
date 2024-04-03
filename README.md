@@ -17,4 +17,4 @@ Forecasting and briefing is a hard job as it is. When flight-related data is sca
     ./run-front-end.sh
     ```
 
-- Finally, in your browser of choice visit the url http://127.0.0.1:5173/ to use the application!
+- Finally, in your browser of choice visit the url http://localhost:5173/ to use the application!
