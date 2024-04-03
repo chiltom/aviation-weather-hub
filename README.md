@@ -8,12 +8,26 @@ Forecasting and briefing is a hard job as it is. When flight-related data is sca
 
 ## Installating and Running the Application
 
-- To download and install this application, clone the repository into your local machine and follow these steps:
+- To download and install this application for use, clone the repository into your local machine and follow these steps:
 
-  - Run the following commands to install all dependencies on your local machine and run the servers:
+  - Run the following commands in your terminal to install all dependencies on your local machine:
 
     ```
-    chmod +x ./run-front-end.sh
+    chmod +x ./install.sh
+    ./install.sh
+    ```
+
+  - Run the following commands in the same shell to run the back-end server:
+
+    ```
+    chmod +x ./run-back-end.sh
+    ./run-back-end.sh
+    ```
+
+  - Run the following commands in a new shell to run the front-end server:
+
+    ```
+    chmod +X ./run-front-end.sh
     ./run-front-end.sh
     ```
 

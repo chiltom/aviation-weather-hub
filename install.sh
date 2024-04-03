@@ -62,11 +62,10 @@ pip3 install -r requirements.txt
 
 echo "Installed project dependencies"
 
-echo "Spinning up servers"
+echo "Setting up database and migrations"
 
 dropdb weather_db && createdb weather_db
 python3 manage.py makemigrations
 python3 manage.py migrate
-zsh -c 'python manage.py runserver'
-cd ../front-end
-npm run dev
+
+echo "Set up database and migrated"
