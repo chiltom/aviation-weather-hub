@@ -1,4 +1,5 @@
 #!/bin/bash
+# This script will install all required dependencies for the application
 
 # Ensure that whole script runs or dump script if error
 set -eu -o pipefail
@@ -44,6 +45,13 @@ else
 fi
 
 echo "Installed dependencies"
+
+cd ./front-end
+npm install
+cd ../back-end
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 
 # Grant execution permissions to the script
 chmod +x install.sh
