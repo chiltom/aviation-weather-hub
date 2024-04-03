@@ -20,7 +20,7 @@ const MyNavbar = ({ user, setUser }) => {
         className="bg-body-tertiary flex flex-row items-center mx-3"
       >
         <Navbar.Brand as={Link} to={"/"}>
-          Weather-App
+          Weather Hub
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

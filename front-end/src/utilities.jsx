@@ -28,7 +28,7 @@ export const userLogin = async (email, password) => {
     api.defaults.headers.common["Authorization"] = `Token ${token}`;
     return { user, email };
   } else {
-    console.log("login error");
+    console.log("login error", response);
   }
 };
 

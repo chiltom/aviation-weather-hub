@@ -6,7 +6,7 @@
 
 ## Build
 
-- This front-end application is built with Vite + TypeScript + React.
+- This front-end application is built with Vite + React.js.
 - All dependencies are listed in the package.json, with more details (version numbers, further dependencies, etc.) in the package-lock.json.
   - Notable libraries and frameworks will be mentioned and elaborated on below.
 - This application is built as a single-page application (SPA), with navigation being handled by react-router-dom.
