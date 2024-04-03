@@ -10,25 +10,11 @@ Forecasting and briefing is a hard job as it is. When flight-related data is sca
 
 - To download and install this application, clone the repository into your local machine and follow these steps:
 
-  - Run the following commands to install all dependencies on your local machine:
+  - Run the following commands to install all dependencies on your local machine and run the servers:
 
     ```
     chmod +x ./run-front-end.sh
     ./run-front-end.sh
-    ```
-
-  - In the same shell, run the following commands to run the Vite + React server:
-
-    ```
-    chmod +x ./run-front-end.sh
-    ./run-front-end.sh
-    ```
-
-  - In a new shell, run the following commands to run the Django server:
-
-    ```
-    chmod +x ./run-back-end.sh
-    ./run-back-end.sh
     ```
 
 - Finally, in your browser of choice visit the url http://127.0.0.1:5173/ to use the application!
