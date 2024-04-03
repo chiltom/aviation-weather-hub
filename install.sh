@@ -7,7 +7,7 @@ set -eu -o pipefail
 # Determine OS name
 os=$(uname)
 
-echo "Installing the must-have prerequisites"
+echo "Installing machine dependencies"
 
 # MacOS Install
 if [ "$os" = "Darwin" ]; then
@@ -44,14 +44,20 @@ else
 
 fi
 
-echo "Installed dependencies"
+echo "Installed machine dependencies"
+
+# Install all Project Dependencies
+
+echo "Installing project dependencies"
 
 cd ./front-end
 npm install
 cd ../back-end
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip3 install -r requirements.txt
+
+echo "Installed project dependencies"
 
 # Grant execution permissions to the script
 chmod +x install.sh
