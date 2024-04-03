@@ -1,5 +1,7 @@
 #!/bin/bash
 # This script will install all required dependencies for the application
+# After cloning the repo, make this script executable by running 'chmod +x ./install.sh' from the repo directory
+# Run the script with './install.sh' 
 
 # Ensure that whole script runs or dump script if error
 set -eu -o pipefail
@@ -18,6 +20,7 @@ if [ "$os" = "Darwin" ]; then
   sudo n stable
   brew services restart postgresql@14
 
+# Linux Install
 elif [ "$os" = "Linux" ]; then
   echo "This is a Linux Machine"
   if [[ -f /etc/redhat-release ]]; then
@@ -58,6 +61,3 @@ source .venv/bin/activate
 pip3 install -r requirements.txt
 
 echo "Installed project dependencies"
-
-# Grant execution permissions to the script
-chmod +x install.sh
