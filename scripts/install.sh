@@ -53,7 +53,7 @@ echo "Installed machine dependencies"
 
 echo "Installing project dependencies"
 
-cd ./front-end
+cd ../front-end
 npm install
 cd ../back-end
 python3 -m venv .venv
