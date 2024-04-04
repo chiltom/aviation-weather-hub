@@ -12,11 +12,21 @@ def validate_display_name(display_name: str) -> str:
     raise ValidationError(error_message, params={'display_name': display_name})
 
 
-def validate_full_name(full_name: str) -> str:
+def validate_first_name(first_name: str) -> str:
     error_message = f'''
-        {full_name} is not a valid name. Names should be in title case and only contain letters'''
-    regex = r'^[A-Za-z]+$'
-    good_name = re.match(regex, full_name)
+        {first_name} is not a valid name. Names should be in title case and only contain letters'''
+    regex = r'^[A-Z][a-z]+$'
+    good_name = re.match(regex, first_name)
     if good_name:
         return good_name
-    raise ValidationError(error_message, params={"full_name": full_name})
+    raise ValidationError(error_message, params={"first_name": first_name})
+
+
+def validate_last_name(last_name: str) -> str:
+    error_message = f'''
+        {last_name} is not a valid name. Names should be in title case and only contain letters'''
+    regex = r'^[A-Z][a-z]+$'
+    good_name = re.match(regex, last_name)
+    if good_name:
+        return good_name
+    raise ValidationError(error_message, params={"first_name": last_name})

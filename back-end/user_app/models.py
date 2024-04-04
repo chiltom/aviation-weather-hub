@@ -1,20 +1,23 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core import validators as v
-from .validators import validate_display_name, validate_full_name
+from .validators import validate_display_name, validate_first_name, validate_last_name
 
 # Create your models here.
 
 
 class User(AbstractUser):
-    email = models.EmailField(unique=True)
+    # username = None
+    email = models.EmailField(
+        unique=True, verbose_name='email address', max_length=255)
     display_name = models.CharField(
-        max_length=50, validators=[validate_display_name])
-    full_name = models.CharField(
-        max_length=100, validators=[validate_full_name])
-    age = models.PositiveIntegerField(
-        default=18, validators=[v.MinValueValidator(16), v.MaxValueValidator(100)])
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = [display_name, full_name, age]
+        max_length=50, validators=[validate_display_name, v.MinLengthValidator(6), v.MaxLengthValidator(25)])
+    first_name = models.CharField(
+        max_length=50, validators=[validate_first_name])
+    last_name = models.CharField(
+        max_length=50, validators=[validate_last_name])
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = [display_name, first_name, last_name]
     # locations from many-to-many relationship
     # lists from many-to-many relationship
