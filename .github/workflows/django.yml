@@ -43,10 +43,8 @@ jobs:
         run: |
           python ./back-end/manage.py makemigrations
           python ./back-end/manage.py migrate
-      - name: Configure Django Secret Key
-        run: |
-          echo "django_secret_key=topsecretvalue" >> $GITHUB_ENV
       - name: Run Tests
         run: |
+          echo "django_secret_key=topsecretvalue" >> $GITHUB_ENV
           python ./back-end/manage.py test tests.test_models
           python ./back-end/manage.py test tests.test_views
