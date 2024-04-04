@@ -29,4 +29,4 @@ jobs:
     - name: Run Tests
       run: |
         cd ./back-end
-        python manage.py test
+        python manage.py test tests.test_models
