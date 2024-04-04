@@ -6,27 +6,43 @@ on:
   pull_request:
     branches: [ "main" ]
 
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
 jobs:
   build:
-
+    name: Autotesting
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.12]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Set up PostgreSQL
+      run : |
+        sudo apt-get update
+        sudo apt-get install postgresql -y
+        sudo apt-get install postgresql-contrib -y
+        sudo apt-get install postgresql-client -y
+        echo waiting...
+        sleep 6
+        sudo service postgresql start
+        sudo su - postgres -c "psql --echo-all -U postgres -d postgres --command \"CREATE USER runner WITH SUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD '';\""
+        sudo su - postgres -c "psql --echo-all -U postgres -d postgres --command \"create database ecom_db;\""
+        echo finished pg commands...
+        sudo service postgresql restart
+    - name: Set up Python
+      run: |
+        sudo apt install python3
+        sudo apt-get install python3-pip
     - name: Install Dependencies
       run: |
-        python -m pip install --upgrade pip
-        cd ./back-end
-        pip install -r requirements.txt
+        pip install -r ./back-end/requirements.txt
+    - name: Migrations
+      run: |
+        python ./back-end/manage.py makemigrations
+        python ./back-end/manage.py migrate
     - name: Run Tests
       run: |
-        cd ./back-end
-        python manage.py test tests.test_models
+        python ./back-end/manage.py test tests.test_models
