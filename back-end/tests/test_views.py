@@ -71,8 +71,7 @@ class Test_user_crud(APITestCase):
             content_type="application/json"
         )
         response_body = json.loads(sign_up_response.content)
-        self.client.credentials(HTTP_AUTHORIZATION=f"Token {
-                                response_body['token']}")
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {response_body['token']}")
         response = self.client.post(reverse("logout"))
         with self.subTest():
             tokens = Token.objects.all()
