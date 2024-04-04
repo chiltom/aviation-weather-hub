@@ -45,9 +45,8 @@ jobs:
           python ./back-end/manage.py migrate
       - name: Configure Django Secret Key
         run: |
-          echo "django_secret_key=topsecretvalue" >> $GITHUB_ENV
+          echo "SECRET_KEY=topsecretvalue" >> $GITHUB_ENV
       - name: Run Tests
         run: |
-          export DJANGO_SETTINGS_MODULE="./back-end/weather_proj.settings"
           python ./back-end/manage.py test tests.test_models
           python ./back-end/manage.py test tests.test_views
