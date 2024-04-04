@@ -29,7 +29,7 @@ jobs:
         sleep 6
         sudo service postgresql start
         sudo su - postgres -c "psql --echo-all -U postgres -d postgres --command \"CREATE USER runner WITH SUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD '';\""
-        sudo su - postgres -c "psql --echo-all -U postgres -d postgres --command \"create database ecom_db;\""
+        sudo su - postgres -c "psql --echo-all -U postgres -d postgres --command \"create database weather_db;\""
         echo finished pg commands...
         sudo service postgresql restart
     - name: Set up Python
