@@ -33,14 +33,11 @@ class Test_user_crud(APITestCase):
                   "display_name": "chiltom", "first_name": "Tom", "last_name": "Childress"},
             content_type="application/json"
         )
-        # self.client.cookies = response.client.cookies.items()
-        # print(self.client.cookies)
         response = client.post(
             reverse("login"),
             data={"email": "tom@tom.com", "password": "thomas"},
             content_type="application/json"
         )
-        # print(response.content)
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertTrue(
