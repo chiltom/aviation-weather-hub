@@ -1,9 +1,10 @@
 from django.test import TestCase
 from django.shortcuts import get_list_or_404, get_object_or_404
-from user_app.models import User
-from list_app.models import List, Task
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError, DataError
+from user_app.models import User
+from list_app.models import List, Task
+from list_app.serializers import ListSerializer, TaskSerializer
 
 # Test user creation
 class Test_user(TestCase):
@@ -214,3 +215,55 @@ class Test_task(TestCase):
                 "This field cannot be blank."
                 in e.message_dict["name"]
             )
+
+class Test_list_serializer(TestCase):
+    def test_011_list_serializer_with_proper_data(self):
+        user = User.objects.create_user(
+            username="tom@tom.com",
+            password="thomas",
+            email="tom@tom.com",
+            display_name="chiltom",
+            first_name="Tom",
+            last_name="Childress"
+        )
+        try:
+            data = {
+                "user": 4,
+                "name": "My List",
+                "completed": True,
+                "tasks": []
+            }
+            ser_list = ListSerializer(data=data)
+            self.assertTrue(ser_list.is_valid())
+        except Exception as e:
+            print(ser_list.errors)
+            self.fail()
+    
+    def test_012_list_serializer_with_proper_response(self):
+        user = User.objects.create_user(
+            username="tom@tom.com",
+            password="thomas",
+            email="tom@tom.com",
+            display_name="chiltom",
+            first_name="Tom",
+            last_name="Childress"
+        )
+        try:
+            data = {
+                "user": 5,
+                "name": "My List",
+                "completed": True
+            }
+            ser_list = ListSerializer(data=data)
+            ser_list.is_valid()
+            self.assertEqual(
+                ser_list.data,
+                {
+                    "user": 5,
+                    "name": "My List",
+                    "completed": True
+                }
+            )
+        except Exception as e:
+            print(ser_list.errors)
+            self.fail()
