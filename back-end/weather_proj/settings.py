@@ -26,7 +26,20 @@ SECRET_KEY = os.environ.get("DJANGO_KEY", "top-secret-key")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "http://localhost:5173"
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173"
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+# TODO: Uncomment when site is hosted on HTTPS
+# SESSION_COOKIE_SECURE = True
+
+SESSION_COOKIE_HTTPONLY = True
 
 
 # Application definition
