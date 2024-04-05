@@ -5,7 +5,6 @@ from django.db import IntegrityError, DataError
 
 # Test user creation
 
-
 class Test_user(TestCase):
     def test_001_user_with_proper_data(self):
         new_user = User.objects.create_user(

@@ -11,14 +11,28 @@ from rest_framework.status import (
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from django.core.exceptions import ValidationError
-from .models import User
 from django.contrib.auth import authenticate, login, logout
+from datetime import datetime, timedelta
+from .models import User
+from .utilities import HttpOnlyTokenAuthentication
 
-# Create your views here.
+
+def create_http_only_cookie_from_response(_response, token):
+    life_time = datetime.now() + timedelta(days=7)
+    format_life_time = life_time.strftime("%a, %d %b %Y %H:%M:%S UTC")
+    _response.set_cookie(
+        key="token",
+        value=token.key,
+        httponly=True,
+        secure=False, # TODO: Change in production
+        samesite="Lax",
+        expires=format_life_time
+    )
+    return _response
 
 
 class TokenReq(APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [HttpOnlyTokenAuthentication]
     permission_classes = [IsAuthenticated]
 
 
@@ -53,7 +67,8 @@ class Sign_up(APIView):
             new_user = User.objects.create_user(**data)
             token = Token.objects.create(user=new_user)
             login(request, new_user)
-            return Response({"user": new_user.email, "token": token.key}, status=HTTP_201_CREATED)
+            _response = Response({"user": new_user.display_name, "email": new_user.email}, status=HTTP_201_CREATED)
+            return create_http_only_cookie_from_response(_response, token)
         except ValidationError as e:
             return Response(e.message_dict, status=HTTP_400_BAD_REQUEST)
 
@@ -66,7 +81,8 @@ class Log_in(APIView):
         if user:
             token, created = Token.objects.get_or_create(user=user)
             login(request, user)
-            return Response({"user": user.email, "token": token.key}, status=HTTP_200_OK)
+            _response = Response({"user": user.display_name, "email": user.email}, status=HTTP_200_OK)
+            return create_http_only_cookie_from_response(_response, token)
         return Response("No user matching these credentials", status=HTTP_404_NOT_FOUND)
 
 
@@ -74,7 +90,9 @@ class Log_out(TokenReq):
     def post(self, request):
         request.user.auth_token.delete()
         logout(request)
-        return Response(status=HTTP_204_NO_CONTENT)
+        _response = Response(status=HTTP_204_NO_CONTENT)
+        _response.delete_cookie("token")
+        return _response
 
 
 class Master_Sign_Up(APIView):
@@ -90,6 +108,7 @@ class Master_Sign_Up(APIView):
             master_user.save()
             token = Token.objects.create(user=master_user)
             login(request, master_user)
-            return Response({"master_user": master_user.email, "token": token.key}, status=HTTP_201_CREATED)
+            _response = Response({"master_user": master_user.display_name, "email": master_user.email}, status=HTTP_201_CREATED)
+            return create_http_only_cookie_from_response(_response, token)
         except ValidationError as e:
             return Response(e.message_dict, status=HTTP_400_BAD_REQUEST)
