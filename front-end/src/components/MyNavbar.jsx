@@ -28,8 +28,8 @@ const MyNavbar = ({ user, setUser }) => {
             <Nav.Link as={Link} to={"/about/"} className="hover:drop-shadow">
               About
             </Nav.Link>
-            <Nav.Link as={Link} to={"/weather/"} className="hover:drop-shadow">
-              Weather
+            <Nav.Link as={Link} to={"/workflow/"} className="hover:drop-shadow">
+              Workflow
             </Nav.Link>
             <Nav.Link as={Link} to={"/signup/"} className="hover:drop-shadow">
               Sign Up

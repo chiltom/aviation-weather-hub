@@ -14,6 +14,9 @@ function App() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // TODO: Update URLs that should only be allowed to visit if logged in
+  // - Workflow
+  // - Training
   useEffect(() => {
     // Should redirect to hompage if logged in
     const nullUserUrls = ["/login/", "/signup/"];

@@ -3,7 +3,7 @@ import App from "./App";
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ErrorPage from "./pages/ErrorPage";
-import WeatherPage from "./pages/WeatherPage";
+import Workflow from "./pages/Workflow";
 import Signup from "./pages/SignUp";
 import Login from "./pages/Login";
 import { userConfirmation } from "./utilities";
@@ -24,8 +24,8 @@ const router = createBrowserRouter([
         element: <AboutPage />,
       },
       {
-        path: "weather/",
-        element: <WeatherPage />,
+        path: "workflow/",
+        element: <Workflow />,
       },
       {
         path: "signup/",
