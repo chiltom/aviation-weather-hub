@@ -16,6 +16,7 @@ class User(AbstractUser):
         max_length=50, validators=[validate_first_name])
     last_name = models.CharField(
         max_length=50, validators=[validate_last_name])
+    # list = foreign key, one-to-many relationship
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [display_name, first_name, last_name]

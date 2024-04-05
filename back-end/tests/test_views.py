@@ -1,7 +1,6 @@
-from django.http.cookie import SimpleCookie
-from django.test import TestCase, Client
+from django.test import Client
 from django.urls import reverse
-from rest_framework.test import APITestCase, APIClient, force_authenticate
+from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 import json
 
