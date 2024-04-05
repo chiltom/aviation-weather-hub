@@ -1,6 +1,7 @@
+from django.http.cookie import SimpleCookie
 from django.test import TestCase, Client
 from django.urls import reverse
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIClient, force_authenticate
 from rest_framework.authtoken.models import Token
 import json
 
@@ -20,27 +21,30 @@ class Test_user_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 201)
         self.assertTrue(
-            b'{"user":"tom@tom.com"' in response.content and b"token" in response.content
+            b'{"user":"chiltom"' in response.content and b'"email":"tom@tom.com"' in response.content
         )
 
     # Test user login capabilities by signing one up and logging in afterwards
     def test_002_user_log_in(self):
         client = Client()
-        client.post(
+        response = client.post(
             reverse("signup"),
             data={"email": "tom@tom.com", "password": "thomas",
                   "display_name": "chiltom", "first_name": "Tom", "last_name": "Childress"},
             content_type="application/json"
         )
+        # self.client.cookies = response.client.cookies.items()
+        # print(self.client.cookies)
         response = client.post(
             reverse("login"),
             data={"email": "tom@tom.com", "password": "thomas"},
             content_type="application/json"
         )
+        # print(response.content)
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertTrue(
-            b'"user":"tom@tom.com"' in response.content and b"token" in response.content
+            b'"user":"chiltom"' in response.content and b'"email":"tom@tom.com"' in response.content
         )
 
     # Test getting user info after signup
@@ -52,8 +56,7 @@ class Test_user_crud(APITestCase):
                   "display_name": "chiltom", "first_name": "Tom", "last_name": "Childress"},
             content_type="application/json"
         )
-        response_body = json.loads(sign_up_response.content)
-        self.client.credentials(HTTP_AUTHORIZATION=f"Token {response_body['token']}")
+        self.client.cookies = sign_up_response.client.cookies
         response = self.client.get(reverse("info"))
         with self.subTest():
             self.assertEqual(response.status_code, 200)
@@ -69,8 +72,7 @@ class Test_user_crud(APITestCase):
                   "display_name": "chiltom", "first_name": "Tom", "last_name": "Childress"},
             content_type="application/json"
         )
-        response_body = json.loads(sign_up_response.content)
-        self.client.credentials(HTTP_AUTHORIZATION=f"Token {response_body['token']}")
+        self.client.cookies = sign_up_response.client.cookies
         response = self.client.post(reverse("logout"))
         with self.subTest():
             tokens = Token.objects.all()
