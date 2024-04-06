@@ -76,5 +76,23 @@ class Test_user_crud(APITestCase):
         self.assertEqual(response.status_code, 204)
 
     # Test get method on All_lists view
-    def test_005_all_lists_get(self):
-        pass
+    # def test_005_all_lists_get(self):
+    #     answer = [
+    #         {
+    #             id: 1,
+    #             "name": "My List",
+    #             "tasks": [],
+    #             "completed": False
+    #         }
+    #     ]
+    #     client = Client()
+    #     sign_up_response = client.post(
+    #         reverse("signup"),
+    #         data={"email": "odie@odie.com", "password": "odie", "display_name": "odiesturn",
+    #               "first_name": "Odie", "last_name": "Childress"},
+    #         content_type="application/json"
+    #     )
+    #     self.client.cookies = sign_up_response.client.cookies
+    #     list_post_response = self.client.post(
+    #         reverse("")
+    #     )
