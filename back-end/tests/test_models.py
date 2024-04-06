@@ -230,8 +230,7 @@ class Test_list_serializer(TestCase):
             data = {
                 "user": 4,
                 "name": "My List",
-                "completed": True,
-                "tasks": []
+                "completed": True
             }
             ser_list = ListSerializer(data=data)
             self.assertTrue(ser_list.is_valid())
@@ -266,4 +265,71 @@ class Test_list_serializer(TestCase):
             )
         except Exception as e:
             print(ser_list.errors)
+            self.fail()
+    
+    def test_013_task_serializer_with_proper_data(self):
+        user = User.objects.create_user(
+            username="tom@tom.com",
+            password="thomas",
+            email="tom@tom.com",
+            display_name="chiltom",
+            first_name="Tom",
+            last_name="Childress"
+        )
+        data = {
+                "user": 6,
+                "name": "My List",
+                "completed": True
+            }
+        ser_list = ListSerializer(data=data)
+        ser_list.is_valid()
+        ser_list.save()
+        try:
+            data = {
+                "list": ser_list.data['id'],
+                "name": "My Task",
+                "completed": True
+            }
+            ser_task = TaskSerializer(data=data)
+            self.assertTrue(ser_task.is_valid())
+        except Exception as e:
+            print(ser_task.errors)
+            self.fail()
+        
+    
+    def test_014_task_serializer_with_proper_response(self):
+        user = User.objects.create_user(
+            username="tom@tom.com",
+            password="thomas",
+            email="tom@tom.com",
+            display_name="chiltom",
+            first_name="Tom",
+            last_name="Childress"
+        )
+        data = {
+                "user": 7,
+                "name": "My List",
+                "completed": True
+            }
+        ser_list = ListSerializer(data=data)
+        ser_list.is_valid()
+        ser_list.save()
+        try:
+            data = {
+                "list": ser_list.data['id'],
+                "name": "My Task",
+                "completed": True
+            }
+            ser_task = TaskSerializer(data=data)
+            ser_task.is_valid()
+            self.assertEqual(
+                ser_task.data,
+                {
+                    "list": ser_list.data['id'],
+                    "name": "My Task",
+                    "completed": True
+                }
+            )
+        except Exception as e:
+            print(ser_task.errors)
             self.fail()
