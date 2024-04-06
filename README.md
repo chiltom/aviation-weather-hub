@@ -16,7 +16,7 @@ This project is constructed with the following stack:
 
   - Database: PostgreSQL
 
-If you would like to read more and see a storyboard of the architecture, read here: ![Storyboard](./docs/architecture.md)
+If you would like to read more and see a storyboard of the architecture, read here: [Storyboard](./docs/architecture.md)
 
 ## Installating and Running the Application
 
