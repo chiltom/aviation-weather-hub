@@ -1,5 +1,4 @@
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.exceptions import AuthenticationFailed
 
 class HttpOnlyTokenAuthentication(TokenAuthentication):
     def get_auth_token_from_cookie(self, request):

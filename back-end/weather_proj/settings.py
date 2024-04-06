@@ -27,12 +27,15 @@ SECRET_KEY = os.environ.get("DJANGO_KEY", "top-secret-key")
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "http://localhost:5173"
+    # "http://localhost:5173"
+    "*"
 ]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173"
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_CREDENTIALS = True
 

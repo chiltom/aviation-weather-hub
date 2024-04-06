@@ -1,0 +1,59 @@
+[
+{
+  "model": "user_app.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$les532EhsCr5mmMJDIrUHd$NvRsgqWec+8x7RIauSCBsskUGFruZFZRE/cTWDa/c5g=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "tom@tom.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-04-05T14:59:15.600Z",
+    "email": "tom@tom.com",
+    "display_name": "chiltom",
+    "first_name": "Tom",
+    "last_name": "Childress",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "user_app.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$Ama9fkChI9Ftg3FBCCSZZh$TsouNsi79ueNN5c5P5/p0NYGll2MgV/BGFh6L9tWGNE=",
+    "last_login": "2024-04-06T02:14:32.610Z",
+    "is_superuser": true,
+    "username": "olbr@olbr.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2024-04-06T02:07:31.759Z",
+    "email": "olbr@olbr.com",
+    "display_name": "olbraccount",
+    "first_name": "Olbr",
+    "last_name": "Childress",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "user_app.user",
+  "pk": 3,
+  "fields": {
+    "password": "bailey",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "bailey@bailey.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2024-04-06T02:16:33Z",
+    "email": "bailey@bailey.com",
+    "display_name": "bailey",
+    "first_name": "Bailey",
+    "last_name": "Childress",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

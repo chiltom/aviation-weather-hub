@@ -9,7 +9,6 @@ from rest_framework.status import (
     HTTP_404_NOT_FOUND
 )
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from datetime import datetime, timedelta

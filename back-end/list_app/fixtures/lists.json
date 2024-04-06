@@ -1,0 +1,38 @@
+[
+{
+  "model": "list_app.list",
+  "pk": 2,
+  "fields": {
+    "user": 1,
+    "name": "My List",
+    "completed": false
+  }
+},
+{
+  "model": "list_app.list",
+  "pk": 3,
+  "fields": {
+    "user": 2,
+    "name": "Develop Site",
+    "completed": false
+  }
+},
+{
+  "model": "list_app.list",
+  "pk": 4,
+  "fields": {
+    "user": 3,
+    "name": "Do Weather Stuff",
+    "completed": false
+  }
+},
+{
+  "model": "list_app.list",
+  "pk": 5,
+  "fields": {
+    "user": 1,
+    "name": "Make Entries",
+    "completed": false
+  }
+}
+]

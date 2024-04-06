@@ -1,0 +1,47 @@
+[
+{
+  "model": "list_app.task",
+  "pk": 1,
+  "fields": {
+    "list": 5,
+    "name": "Make this task",
+    "completed": false
+  }
+},
+{
+  "model": "list_app.task",
+  "pk": 2,
+  "fields": {
+    "list": 2,
+    "name": "My first list",
+    "completed": false
+  }
+},
+{
+  "model": "list_app.task",
+  "pk": 3,
+  "fields": {
+    "list": 3,
+    "name": "Make more endpoints!",
+    "completed": false
+  }
+},
+{
+  "model": "list_app.task",
+  "pk": 4,
+  "fields": {
+    "list": 4,
+    "name": "Read a bunch of data",
+    "completed": false
+  }
+},
+{
+  "model": "list_app.task",
+  "pk": 5,
+  "fields": {
+    "list": 4,
+    "name": "Brief pilots",
+    "completed": false
+  }
+}
+]
