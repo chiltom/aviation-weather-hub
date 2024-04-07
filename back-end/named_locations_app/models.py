@@ -18,5 +18,11 @@ class Named_location(models.Model):
     latitude = models.DecimalField(max_digits=8, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['latitude', 'longitude'], name='unique coordinates')
+        ]
+
     def __str__(self) -> str:
         return f"{self.city}, {self.state}: Lat: {self.latitude} | Lon: {self.longitude}"

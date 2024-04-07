@@ -12,6 +12,8 @@ from .models import Named_location
 from .serializers import Named_locationSerializer
 from user_app.views import TokenReq
 
+# TODO: Make sure that location with same name and state doesn't get input twice
+
 
 class All_named_locations(TokenReq):
     def get(self, request):
@@ -25,6 +27,8 @@ class All_named_locations(TokenReq):
         data['user'] = request.user.id
         data['latitude'] = Decimal(data['latitude'])
         data['longitude'] = Decimal(data['longitude'])
+        # if get_object_or_404(Named_location, latitude=data['latitude'], longitude=data['longitude']):
+        #     return Response("This location is already stored", status=HTTP_400_BAD_REQUEST)
         new_named_location = Named_locationSerializer(data=data)
         if new_named_location.is_valid():
             new_named_location.save()
@@ -49,3 +53,9 @@ class A_named_location(TokenReq):
             ser_named_location.save()
             return Response(ser_named_location.data, status=HTTP_200_OK)
         return Response(ser_named_location.errors, status=HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, city):
+        curr_named_location = get_object_or_404(
+            request.user.named_locations, city=city.title())
+        curr_named_location.delete()
+        return Response(status=HTTP_204_NO_CONTENT)

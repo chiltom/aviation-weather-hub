@@ -131,3 +131,20 @@ class Test_named_location_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
+
+    def test_005_a_named_location_delete(self):
+        post_response = self.client.post(
+            reverse("all_named_locations"),
+            data=json.dumps(
+                {
+                    "city": "Savannah",
+                    "state": "GA",
+                    "latitude": '32.076176',
+                    "longitude": '-81.088371'
+                }
+            ),
+            content_type="application/json"
+        )
+        response = self.client.delete(
+            reverse("a_named_location", args=['savannah']))
+        self.assertEqual(response.status_code, 204)

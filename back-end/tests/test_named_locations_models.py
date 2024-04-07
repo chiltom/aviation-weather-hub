@@ -44,6 +44,32 @@ class Test_named_location(TestCase):
                 "city" in e.message_dict and "state" in e.message_dict and "longitude" in e.message_dict
             )
 
+    def test_005_named_location_violating_unique_field_constraints(self):
+        try:
+            first_named_location = Named_location.objects.create(
+                user=self.user,
+                city="Savannah",
+                longitude=Decimal('-81.088371'),
+                state="GA",
+                latitude=Decimal('32.076176')
+            )
+            first_named_location.full_clean()
+            first_named_location.save()
+            second_named_location = Named_location.objects.create(
+                user=self.user,
+                city="Pooler",
+                state="GA",
+                longitude=Decimal('-81.088371'),
+                latitude=Decimal('32.076176')
+            )
+            second_named_location.full_clean()
+            self.fail()
+        except ValidationError as e:
+            self.assertTrue(
+                '__all__' in e.message_dict and
+                'Named_location with this Latitude and Longitude already exists.' in e.message_dict['__all__']
+            )
+
 
 class Test_named_location_serializer(TestCase):
     def setUp(self):
