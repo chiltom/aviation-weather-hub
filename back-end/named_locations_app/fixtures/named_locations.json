@@ -1,6 +1,6 @@
 [
 {
-  "model": "location_app.named_location",
+  "model": "named_locations_app.named_location",
   "pk": 1,
   "fields": {
     "user": 1,
@@ -11,7 +11,7 @@
   }
 },
 {
-  "model": "location_app.named_location",
+  "model": "named_locations_app.named_location",
   "pk": 2,
   "fields": {
     "user": 3,

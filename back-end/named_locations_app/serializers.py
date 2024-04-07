@@ -1,11 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Airport, Named_location
-
-
-class AirportSerializer(ModelSerializer):
-    class Meta:
-        model = Airport
-        fields = "__all__"
+from .models import Named_location
 
 
 class Named_locationSerializer(ModelSerializer):

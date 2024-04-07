@@ -1,6 +1,6 @@
 [
 {
-  "model": "location_app.airport",
+  "model": "airport_app.airport",
   "pk": 1,
   "fields": {
     "user": 1,
@@ -9,7 +9,7 @@
   }
 },
 {
-  "model": "location_app.airport",
+  "model": "airport_app.airport",
   "pk": 2,
   "fields": {
     "user": 1,
@@ -18,7 +18,7 @@
   }
 },
 {
-  "model": "location_app.airport",
+  "model": "airport_app.airport",
   "pk": 3,
   "fields": {
     "user": 3,
@@ -27,7 +27,7 @@
   }
 },
 {
-  "model": "location_app.airport",
+  "model": "airport_app.airport",
   "pk": 4,
   "fields": {
     "user": 3,

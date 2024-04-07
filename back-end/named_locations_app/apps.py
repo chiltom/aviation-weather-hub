@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
-class LocationAppConfig(AppConfig):
+
+class NamedLocationsAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'location_app'
+    name = 'named_locations_app'
