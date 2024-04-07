@@ -43,5 +43,23 @@
     "name": "Brief pilots",
     "completed": false
   }
+},
+{
+  "model": "list_app.task",
+  "pk": 6,
+  "fields": {
+    "list": 3,
+    "name": "Write test suite",
+    "completed": false
+  }
+},
+{
+  "model": "list_app.task",
+  "pk": 7,
+  "fields": {
+    "list": 3,
+    "name": "Write all the views",
+    "completed": false
+  }
 }
 ]
