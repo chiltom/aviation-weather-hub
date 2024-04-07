@@ -78,3 +78,9 @@ class All_tasks(TokenReq):
             new_task.save()
             return Response(new_task.data, status=HTTP_201_CREATED)
         return Response(new_task.errors, status=HTTP_400_BAD_REQUEST)
+
+class A_task(TokenReq):
+    def get(self, request, list_id, task_id):
+        task = TaskSerializer(get_object_or_404(Task, id=task_id))
+        return Response(task.data, status=HTTP_200_OK)
+    
