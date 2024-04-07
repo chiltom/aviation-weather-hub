@@ -38,3 +38,14 @@ class A_named_location(TokenReq):
             get_object_or_404(request.user.named_locations, city=city.title())).data,
             status=HTTP_200_OK
         )
+
+    def put(self, request, city):
+        data = request.data.copy()
+        curr_named_location = get_object_or_404(
+            request.user.named_locations, city=city.title())
+        ser_named_location = Named_locationSerializer(
+            curr_named_location, data=data, partial=True)
+        if ser_named_location.is_valid():
+            ser_named_location.save()
+            return Response(ser_named_location.data, status=HTTP_200_OK)
+        return Response(ser_named_location.errors, status=HTTP_400_BAD_REQUEST)

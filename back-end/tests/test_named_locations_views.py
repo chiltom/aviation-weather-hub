@@ -67,7 +67,7 @@ class Test_named_location_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
-    
+
     def test_003_a_named_location_get(self):
         answer = {
             "id": 3,
@@ -89,7 +89,45 @@ class Test_named_location_crud(APITestCase):
             ),
             content_type="application/json"
         )
-        response = self.client.get(reverse("a_named_location", args=["savannah"]))
+        response = self.client.get(
+            reverse("a_named_location", args=["savannah"]))
+        with self.subTest():
+            self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content), answer)
+
+    def test_004_a_named_location_put(self):
+        answer = {
+            'id': 4,
+            'user': 4,
+            'city': 'Lielvarde',
+            'state': 'LV',
+            'latitude': '56.779167',
+            'longitude': '24.853889'
+        }
+        post_response = self.client.post(
+            reverse("all_named_locations"),
+            data=json.dumps(
+                {
+                    "city": "Savannah",
+                    "state": "GA",
+                    "latitude": '32.076176',
+                    "longitude": '-81.088371'
+                }
+            ),
+            content_type="application/json"
+        )
+        response = self.client.put(
+            reverse("a_named_location", args=['savannah']),
+            data=json.dumps(
+                {
+                    'city': 'Lielvarde',
+                    'state': 'LV',
+                    'latitude': '56.779167',
+                    'longitude': '24.853889'
+                }
+            ),
+            content_type='application/json'
+        )
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
