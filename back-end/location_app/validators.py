@@ -13,8 +13,9 @@ def validate_icao_code(icao_code: str) -> str:
 
 
 def validate_airport_name(airport_name: str) -> str:
-    error_message = f'{airport_name} must be Title case.'
-    regex = r'^[A-Z][a-z]+$'
+    error_message = f'''{
+        airport_name} must be Title case and only contain spaces, commas, and periods.'''
+    regex = r'^[A-Z][a-zA-Z\,\. ]+$'
     good_name = re.match(regex, airport_name)
     if good_name:
         return good_name

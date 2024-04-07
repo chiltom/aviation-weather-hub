@@ -17,6 +17,9 @@ class Airport(models.Model):
     name = models.CharField(max_length=100, validators=[
                             v.MinLengthValidator(1), validate_airport_name])
 
+    def __str__(self) -> str:
+        return f"{self.icao_code}: {self.name}"
+
 
 # Ensure that the Decimal class is used with lat and lon to keep precision
 class Named_location(models.Model):
@@ -28,3 +31,6 @@ class Named_location(models.Model):
                              validate_state_abbreviation])
     latitude = models.DecimalField(max_digits=8, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
+
+    def __str__(self) -> str:
+        return f"{self.city}, {self.state}: Lat: {self.latitude} | Lon: {self.longitude}"

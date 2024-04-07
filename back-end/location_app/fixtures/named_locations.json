@@ -1,0 +1,24 @@
+[
+{
+  "model": "location_app.named_location",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "city": "Savannah",
+    "state": "GA",
+    "latitude": "-81.0883710",
+    "longitude": "32.0761760"
+  }
+},
+{
+  "model": "location_app.named_location",
+  "pk": 2,
+  "fields": {
+    "user": 3,
+    "city": "Lielvarde",
+    "state": "LV",
+    "latitude": "56.7179000",
+    "longitude": "24.8140000"
+  }
+}
+]

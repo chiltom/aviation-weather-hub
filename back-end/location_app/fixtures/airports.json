@@ -1,0 +1,38 @@
+[
+{
+  "model": "location_app.airport",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "icao_code": "KSVN",
+    "name": "Hunter AAF"
+  }
+},
+{
+  "model": "location_app.airport",
+  "pk": 2,
+  "fields": {
+    "user": 1,
+    "icao_code": "EVGA",
+    "name": "Lielvarde, LV"
+  }
+},
+{
+  "model": "location_app.airport",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "icao_code": "ETIK",
+    "name": "Illesheim AAF"
+  }
+},
+{
+  "model": "location_app.airport",
+  "pk": 4,
+  "fields": {
+    "user": 3,
+    "icao_code": "KCHS",
+    "name": "Charleston, SC"
+  }
+}
+]
