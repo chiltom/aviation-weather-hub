@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from decimal import Decimal
 from user_app.models import User
 from location_app.models import Airport, Named_location
+from location_app.serializers import AirportSerializer, Named_locationSerializer
 
 # Test airport creation
 
@@ -79,3 +80,89 @@ class Test_named_location(TestCase):
             self.assertTrue(
                 "city" in e.message_dict and "state" in e.message_dict and "longitude" in e.message_dict
             )
+
+
+class Test_airport_serializer(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(
+            username="tom@tom.com",
+            password="thomas",
+            email="tom@tom.com",
+            display_name="chiltom",
+            first_name="Tom",
+            last_name="Childress"
+        )
+    
+    def test_005_airport_serializer_with_proper_data(self):
+        try:
+            data = {
+                "user": self.user.id,
+                "name": "Savannah, GA",
+                "icao_code": "KSVN"
+            }
+            ser_airport = AirportSerializer(data=data)
+            self.assertTrue(ser_airport.is_valid())
+        except Exception as e:
+            print(ser_airport.errors)
+            self.fail()
+    
+    def test_006_airport_serializer_with_proper_response(self):
+        try:
+            data = {
+                "user": self.user.id,
+                "name": "Savannah, GA",
+                "icao_code": "KSVN"
+            }
+            ser_airport = AirportSerializer(data=data)
+            ser_airport.is_valid()
+            self.assertEqual(
+                ser_airport.data,
+                {
+                    "user": self.user.id,
+                    "name": "Savannah, GA",
+                    "icao_code": "KSVN"
+                }
+            )
+        except Exception as e:
+            print(ser_airport.errors)
+            self.fail()
+    
+    def test_007_named_location_serializer_with_proper_data(self):
+        data = {
+            "user": self.user.id,
+            "city": "Savannah",
+            "state": "GA",
+            "latitude": Decimal('32.076176'),
+            "longitude": Decimal('-81.088371')
+        }
+        try:
+            ser_named_location = Named_locationSerializer(data=data)
+            self.assertTrue(ser_named_location.is_valid())
+        except Exception as e:
+            print(ser_named_location.errors)
+            self.fail()
+    
+    def test_008_named_location_serializer_with_proper_response(self):
+        data = {
+            "user": self.user.id,
+            "city": "Savannah",
+            "state": "GA",
+            "latitude": Decimal('32.076176'),
+            "longitude": Decimal('-81.088371')
+        }
+        try:
+            ser_named_location = Named_locationSerializer(data=data)
+            ser_named_location.is_valid()
+            self.assertEqual(
+                ser_named_location.data,
+                {
+                    "user": self.user.id,
+                    "city": "Savannah",
+                    "state": "GA",
+                    "latitude": '32.076176',
+                    "longitude": '-81.088371'
+                }
+            )
+        except Exception as e:
+            print(ser_named_location.errors)
+            self.fail()
