@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
+from django.db.utils import IntegrityError
 from decimal import Decimal
 from user_app.models import User
 from named_locations_app.models import Named_location
@@ -64,10 +65,10 @@ class Test_named_location(TestCase):
             )
             second_named_location.full_clean()
             self.fail()
-        except ValidationError as e:
-            self.assertTrue(
-                '__all__' in e.message_dict and
-                'Named_location with this Latitude and Longitude already exists.' in e.message_dict['__all__']
+        except IntegrityError as e:
+            self.assertIn(
+                'duplicate key value violates unique constraint "unique coordinates"',
+                str(e)
             )
 
 
