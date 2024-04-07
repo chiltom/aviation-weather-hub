@@ -291,7 +291,7 @@ class Test_task_crud(APITestCase):
         with self.subTest():
             self.assertEqual(task_update_response.status_code, 200)
         self.assertEqual(json.loads(task_update_response.content), task_answer)
-    
+
     # Test delete method on a_task view
     def test_010_a_task_delete(self):
         client = Client()

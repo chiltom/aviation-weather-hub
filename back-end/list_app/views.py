@@ -5,8 +5,7 @@ from rest_framework.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_204_NO_CONTENT,
-    HTTP_400_BAD_REQUEST,
-    HTTP_404_NOT_FOUND
+    HTTP_400_BAD_REQUEST
 )
 from .models import List, Task
 from .serializers import ListSerializer, TaskSerializer
