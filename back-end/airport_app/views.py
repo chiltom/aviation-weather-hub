@@ -26,3 +26,21 @@ class All_airports(TokenReq):
             new_airport.save()
             return Response(new_airport.data, HTTP_201_CREATED)
         return Response(new_airport.errors, status=HTTP_400_BAD_REQUEST)
+
+
+class A_airport(TokenReq):
+    def get(self, request, icao):
+        return Response(AirportSerializer(
+            get_object_or_404(request.user.airports, icao_code=icao.upper())).data,
+            status=HTTP_200_OK
+        )
+
+    def put(self, request, icao):
+        data = request.data.copy()
+        curr_airport = get_object_or_404(
+            request.user.airports, icao_code=icao.upper())
+        ser_airport = AirportSerializer(curr_airport, data=data, partial=True)
+        if ser_airport.is_valid():
+            ser_airport.save()
+            return Response(ser_airport.data, status=HTTP_200_OK)
+        return Response(ser_airport.errors, status=HTTP_400_BAD_REQUEST)
