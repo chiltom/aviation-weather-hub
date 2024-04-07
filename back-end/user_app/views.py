@@ -23,7 +23,7 @@ def create_http_only_cookie_from_response(_response, token):
         key="token",
         value=token.key,
         httponly=True,
-        secure=False, # TODO: Change in production
+        secure=False,  # TODO: Change in production
         samesite="Lax",
         expires=format_life_time
     )
@@ -66,7 +66,8 @@ class Sign_up(APIView):
             new_user = User.objects.create_user(**data)
             token = Token.objects.create(user=new_user)
             login(request, new_user)
-            _response = Response({"user": new_user.display_name, "email": new_user.email}, status=HTTP_201_CREATED)
+            _response = Response(
+                {"user": new_user.display_name, "email": new_user.email}, status=HTTP_201_CREATED)
             return create_http_only_cookie_from_response(_response, token)
         except ValidationError as e:
             return Response(e.message_dict, status=HTTP_400_BAD_REQUEST)
@@ -80,7 +81,8 @@ class Log_in(APIView):
         if user:
             token, created = Token.objects.get_or_create(user=user)
             login(request, user)
-            _response = Response({"user": user.display_name, "email": user.email}, status=HTTP_200_OK)
+            _response = Response(
+                {"user": user.display_name, "email": user.email}, status=HTTP_200_OK)
             return create_http_only_cookie_from_response(_response, token)
         return Response("No user matching these credentials", status=HTTP_404_NOT_FOUND)
 
@@ -107,7 +109,8 @@ class Master_Sign_Up(APIView):
             master_user.save()
             token = Token.objects.create(user=master_user)
             login(request, master_user)
-            _response = Response({"master_user": master_user.display_name, "email": master_user.email}, status=HTTP_201_CREATED)
+            _response = Response({"master_user": master_user.display_name,
+                                 "email": master_user.email}, status=HTTP_201_CREATED)
             return create_http_only_cookie_from_response(_response, token)
         except ValidationError as e:
             return Response(e.message_dict, status=HTTP_400_BAD_REQUEST)

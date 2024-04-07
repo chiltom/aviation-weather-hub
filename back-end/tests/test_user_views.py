@@ -74,4 +74,3 @@ class Test_user_crud(APITestCase):
             tokens = Token.objects.all()
             self.assertEqual(len(tokens), 0)
         self.assertEqual(response.status_code, 204)
-

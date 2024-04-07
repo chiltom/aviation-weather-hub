@@ -12,6 +12,7 @@ from .models import List, Task
 from .serializers import ListSerializer, TaskSerializer
 from user_app.views import TokenReq
 
+
 class All_lists(TokenReq):
     def get(self, request):
         lists = get_list_or_404(request.user.lists.all())
@@ -27,19 +28,20 @@ class All_lists(TokenReq):
             return Response(new_list.data, status=HTTP_201_CREATED)
         return Response(new_list.errors, status=HTTP_400_BAD_REQUEST)
 
+
 class A_list(TokenReq):
     def add_tasks(self, list, lst_of_task_ids):
         for task_id in lst_of_task_ids:
             if get_object_or_404(Task, id=task_id):
                 list.tasks.add(task_id)
                 list.save()
-    
+
     def get_list(self, request, list_id):
         return get_object_or_404(request.user.lists, id=list_id)
-    
+
     def get(self, request, list_id):
         return Response(ListSerializer(self.get_list(request, list_id)).data, status=HTTP_200_OK)
-    
+
     def put(self, request, list_id):
         data = request.data.copy()
         curr_list = self.get_list(request, list_id)
@@ -47,11 +49,32 @@ class A_list(TokenReq):
         if ser_list.is_valid():
             ser_list.save()
             if data.get("lst_of_tasks"):
-                self.add_tasks(list=list, lst_of_task_ids=data.get("lst_of_tasks"))
+                self.add_tasks(
+                    list=list, lst_of_task_ids=data.get("lst_of_tasks"))
             return Response(ser_list.data, status=HTTP_200_OK)
         return Response(ser_list.errors, status=HTTP_400_BAD_REQUEST)
-    
+
     def delete(self, request, list_id):
         curr_list = self.get_list(request, list_id)
         curr_list.delete()
         return Response(status=HTTP_204_NO_CONTENT)
+
+
+class All_tasks(TokenReq):
+    def get(self, request, list_id):
+        try:
+            tasks = TaskSerializer(
+                request.user.lists.get(id=list_id).tasks, many=True)
+            return Response(tasks.data, status=HTTP_200_OK)
+        except Exception as e:
+            return Response(e, status=HTTP_400_BAD_REQUEST)
+
+    def post(self, request, list_id):
+        data = request.data.copy()
+        get_object_or_404(request.user.lists, id=list_id)
+        data["list"] = list_id
+        new_task = TaskSerializer(data=data)
+        if new_task.is_valid():
+            new_task.save()
+            return Response(new_task.data, status=HTTP_201_CREATED)
+        return Response(new_task.errors, status=HTTP_400_BAD_REQUEST)

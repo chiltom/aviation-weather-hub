@@ -48,7 +48,7 @@ class Test_user(TestCase):
         except ValidationError as e:
             self.assertTrue(
                 "display_name" in e.message_dict and "first_name" in e.message_dict and "last_name" in e.message_dict)
-    
+
     def test_004_user_with_repeated_email(self):
         try:
             new_user = User.objects.create_user(
@@ -73,5 +73,6 @@ class Test_user(TestCase):
             self.fail()
         except IntegrityError as e:
             self.assertTrue(
-                'duplicate key value violates unique constraint "user_app_user_username_key"' in str(e)
+                'duplicate key value violates unique constraint "user_app_user_username_key"' in str(
+                    e)
             )
