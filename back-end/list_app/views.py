@@ -51,6 +51,8 @@ class A_list(TokenReq):
             if data.get("lst_of_tasks"):
                 self.add_tasks(
                     list=list, lst_of_task_ids=data.get("lst_of_tasks"))
+            # TODO: Implement that if list is changed to completed, all tasks are changed
+            # to completed as well
             return Response(ser_list.data, status=HTTP_200_OK)
         return Response(ser_list.errors, status=HTTP_400_BAD_REQUEST)
 
@@ -79,8 +81,30 @@ class All_tasks(TokenReq):
             return Response(new_task.data, status=HTTP_201_CREATED)
         return Response(new_task.errors, status=HTTP_400_BAD_REQUEST)
 
+
 class A_task(TokenReq):
     def get(self, request, list_id, task_id):
         task = TaskSerializer(get_object_or_404(Task, id=task_id))
         return Response(task.data, status=HTTP_200_OK)
-    
+
+    def put(self, request, list_id, task_id):
+        data = request.data.copy()
+        task = get_object_or_404(Task, id=task_id)
+        ser_task = TaskSerializer(task, data=data, partial=True)
+        if ser_task.is_valid():
+            ser_task.save()
+            # TODO: Check this and implement list completion on all tasks being completed,
+            # but if task gets changed back to incomplete then list is not complete
+            list = get_object_or_404(List, id=list_id)
+            task_list = get_list_or_404(Task, list=list)
+            completion_list = [x.completed for x in task_list]
+            if False not in completion_list:
+                list.completed = True
+                list.save()
+            return Response(ser_task.data, status=HTTP_200_OK)
+        return Response(ser_task.errors, HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, list_id, task_id):
+        task = get_object_or_404(Task, id=task_id)
+        task.delete()
+        return Response(status=HTTP_204_NO_CONTENT)

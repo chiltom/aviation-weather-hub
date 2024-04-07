@@ -205,7 +205,7 @@ class Test_task_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
-    
+
     # Test get method on a_task view
     def test_008_a_task_get(self):
         answer = {
@@ -236,3 +236,81 @@ class Test_task_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
+
+    # Test put method on a_task view
+    def test_009_a_task_put(self):
+        task_answer = {
+            "id": 4,
+            "list": 9,
+            "name": "My Updated Task",
+            "completed": True
+        }
+        list_answer = {
+            "id": 9,
+            "user": 9,
+            "name": "My List",
+            "completed": True,
+            "tasks": [
+                {
+                    'completed': True,
+                    'id': 4,
+                    'list': 9,
+                    'name': 'My Updated Task'
+                }
+            ]
+        }
+        client = Client()
+        sign_up_response = client.post(
+            reverse("signup"),
+            data={"email": "odie@odie.com", "password": "odie", "display_name": "odiesturn",
+                  "first_name": "Odie", "last_name": "Childress"},
+            content_type="application/json"
+        )
+        self.client.cookies = sign_up_response.client.cookies
+        list_post_response = self.client.post(
+            reverse("all_lists"),
+            data=json.dumps({"name": "My List", "completed": False}),
+            content_type="application/json"
+        )
+        task_post_response = self.client.post(
+            reverse("all_tasks", args=[9]),
+            data=json.dumps({"name": "My Task", "completed": False}),
+            content_type="application/json"
+        )
+        task_update_response = self.client.put(
+            reverse("a_task", args=[9, 4]),
+            data=json.dumps({"name": "My Updated Task", "completed": True}),
+            content_type="application/json"
+        )
+        list_updated_response = self.client.get(reverse("a_list", args=[9]))
+        with self.subTest():
+            self.assertEqual(list_updated_response.status_code, 200)
+        with self.subTest():
+            self.assertEqual(json.loads(
+                list_updated_response.content), list_answer)
+        with self.subTest():
+            self.assertEqual(task_update_response.status_code, 200)
+        self.assertEqual(json.loads(task_update_response.content), task_answer)
+    
+    # Test delete method on a_task view
+    def test_010_a_task_delete(self):
+        client = Client()
+        sign_up_response = client.post(
+            reverse("signup"),
+            data={"email": "odie@odie.com", "password": "odie", "display_name": "odiesturn",
+                  "first_name": "Odie", "last_name": "Childress"},
+            content_type="application/json"
+        )
+        self.client.cookies = sign_up_response.client.cookies
+        list_post_response = self.client.post(
+            reverse("all_lists"),
+            data=json.dumps({"name": "My List", "completed": False}),
+            content_type="application/json"
+        )
+        task_post_response = self.client.post(
+            reverse("all_tasks", args=[10]),
+            data=json.dumps({"name": "My Task", "completed": False}),
+            content_type="application/json"
+        )
+        response = self.client.delete(reverse("a_task", args=[10, 5]))
+        self.assertEqual(response.status_code, 204)
