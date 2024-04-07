@@ -45,5 +45,7 @@ jobs:
           python ./back-end/manage.py migrate
       - name: Run Tests
         run: |
-          python ./back-end/manage.py test tests.test_models
-          python ./back-end/manage.py test tests.test_views
+          python ./back-end/manage.py test tests.test_user_models
+          python ./back-end/manage.py test tests.test_list_models
+          python ./back-end/manage.py test tests.test_user_views
+          python ./back-end/manage.py test tests.test_list_views
