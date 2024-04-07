@@ -39,3 +39,14 @@ class A_list(TokenReq):
     
     def get(self, request, list_id):
         return Response(ListSerializer(self.get_list(request, list_id)).data, status=HTTP_200_OK)
+    
+    def put(self, request, list_id):
+        data = request.data.copy()
+        curr_list = self.get_list(request, list_id)
+        ser_list = ListSerializer(curr_list, data=data, partial=True)
+        if ser_list.is_valid():
+            ser_list.save()
+            if data.get("lst_of_tasks"):
+                self.add_tasks(list=list, lst_of_task_ids=data.get("lst_of_tasks"))
+            return Response(ser_list.data, status=HTTP_200_OK)
+        return Response(ser_list.errors, status=HTTP_400_BAD_REQUEST)
