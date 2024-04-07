@@ -44,3 +44,8 @@ class A_airport(TokenReq):
             ser_airport.save()
             return Response(ser_airport.data, status=HTTP_200_OK)
         return Response(ser_airport.errors, status=HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, icao):
+        curr_airport = get_object_or_404(request.user.airports, icao_code=icao.upper())
+        curr_airport.delete()
+        return Response(status=HTTP_204_NO_CONTENT)

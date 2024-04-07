@@ -91,3 +91,12 @@ class Test_airport_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
+
+    def test_005_a_airport_delete(self):
+        airport_post_response = self.client.post(
+            reverse("all_airports"),
+            data=json.dumps({"icao_code": "KSVN", "name": "Hunter AAF"}),
+            content_type="application/json"
+        )
+        response = self.client.delete(reverse("a_airport", args=['ksvn']))
+        self.assertEqual(response.status_code, 204)
