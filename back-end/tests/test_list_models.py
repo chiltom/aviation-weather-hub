@@ -7,9 +7,8 @@ from list_app.serializers import ListSerializer, TaskSerializer
 
 # Test list creation
 class Test_list(TestCase):
-
-    def test_001_list_with_proper_data(self):
-        user = User.objects.create_user(
+    def setUp(self):
+        self.user = User.objects.create_user(
             username="tom@tom.com",
             password="thomas",
             email="tom@tom.com",
@@ -17,8 +16,10 @@ class Test_list(TestCase):
             first_name="Tom",
             last_name="Childress"
         )
+
+    def test_001_list_with_proper_data(self):
         new_list = List.objects.create(
-            user=user,
+            user=self.user,
             name="My List",
             completed=False
         )
@@ -26,33 +27,17 @@ class Test_list(TestCase):
         self.assertIsNotNone(new_list)
 
     def test_002_list_with_default_data(self):
-        user = User.objects.create_user(
-            username="tom@tom.com",
-            password="thomas",
-            email="tom@tom.com",
-            display_name="chiltom",
-            first_name="Tom",
-            last_name="Childress"
-        )
         new_list = List.objects.create(
-            user=user,
+            user=self.user,
             name="My List"
         )
         new_list.full_clean()
         self.assertIsNotNone(new_list)
 
     def test_003_list_with_invalid_name(self):
-        user = User.objects.create_user(
-            username="tom@tom.com",
-            password="thomas",
-            email="tom@tom.com",
-            display_name="chiltom",
-            first_name="Tom",
-            last_name="Childress"
-        )
         try:
             new_list = List.objects.create(
-                user=user,
+                user=self.user,
                 name="",
                 completed=True
             )
@@ -66,9 +51,8 @@ class Test_list(TestCase):
 
 
 class Test_task(TestCase):
-
-    def test_004_task_with_proper_data(self):
-        user = User.objects.create_user(
+    def setUp(self):
+        self.user = User.objects.create_user(
             username="tom@tom.com",
             password="thomas",
             email="tom@tom.com",
@@ -76,15 +60,15 @@ class Test_task(TestCase):
             first_name="Tom",
             last_name="Childress"
         )
-        new_list = List.objects.create(
-            user=user,
+        self.list = List.objects.create(
+            user=self.user,
             name="My List",
             completed=False
         )
-        new_list.full_clean()
-        new_list.save()
+
+    def test_004_task_with_proper_data(self):
         new_task = Task.objects.create(
-            list=new_list,
+            list=self.list,
             name="My Task",
             completed=False
         )
@@ -92,47 +76,17 @@ class Test_task(TestCase):
         self.assertIsNotNone(new_task)
 
     def test_005_task_with_default_values(self):
-        user = User.objects.create_user(
-            username="tom@tom.com",
-            password="thomas",
-            email="tom@tom.com",
-            display_name="chiltom",
-            first_name="Tom",
-            last_name="Childress"
-        )
-        new_list = List.objects.create(
-            user=user,
-            name="My List",
-            completed=False
-        )
-        new_list.full_clean()
-        new_list.save()
         new_task = Task.objects.create(
-            list=new_list,
+            list=self.list,
             name="My Task"
         )
         new_task.full_clean()
         self.assertIsNotNone(new_task)
 
     def test_006_task_with_invalid_name(self):
-        user = User.objects.create_user(
-            username="tom@tom.com",
-            password="thomas",
-            email="tom@tom.com",
-            display_name="chiltom",
-            first_name="Tom",
-            last_name="Childress"
-        )
-        new_list = List.objects.create(
-            user=user,
-            name="My List",
-            completed=False
-        )
-        new_list.full_clean()
-        new_list.save()
         try:
             new_task = Task.objects.create(
-                list=new_list,
+                list=self.list,
                 name="",
                 completed=True
             )
@@ -146,8 +100,8 @@ class Test_task(TestCase):
 
 
 class Test_list_serializer(TestCase):
-    def test_007_list_serializer_with_proper_data(self):
-        user = User.objects.create_user(
+    def setUp(self):
+        self.user = User.objects.create_user(
             username="tom@tom.com",
             password="thomas",
             email="tom@tom.com",
@@ -155,9 +109,11 @@ class Test_list_serializer(TestCase):
             first_name="Tom",
             last_name="Childress"
         )
+
+    def test_007_list_serializer_with_proper_data(self):
         try:
             data = {
-                "user": 4,
+                "user": self.user.id,
                 "name": "My List",
                 "completed": True
             }
@@ -168,17 +124,9 @@ class Test_list_serializer(TestCase):
             self.fail()
 
     def test_008_list_serializer_with_proper_response(self):
-        user = User.objects.create_user(
-            username="tom@tom.com",
-            password="thomas",
-            email="tom@tom.com",
-            display_name="chiltom",
-            first_name="Tom",
-            last_name="Childress"
-        )
         try:
             data = {
-                "user": 5,
+                "user": self.user.id,
                 "name": "My List",
                 "completed": True
             }
@@ -197,16 +145,8 @@ class Test_list_serializer(TestCase):
             self.fail()
 
     def test_009_task_serializer_with_proper_data(self):
-        user = User.objects.create_user(
-            username="tom@tom.com",
-            password="thomas",
-            email="tom@tom.com",
-            display_name="chiltom",
-            first_name="Tom",
-            last_name="Childress"
-        )
         data = {
-            "user": 6,
+            "user": self.user.id,
             "name": "My List",
             "completed": True
         }
@@ -226,16 +166,8 @@ class Test_list_serializer(TestCase):
             self.fail()
 
     def test_010_task_serializer_with_proper_response(self):
-        user = User.objects.create_user(
-            username="tom@tom.com",
-            password="thomas",
-            email="tom@tom.com",
-            display_name="chiltom",
-            first_name="Tom",
-            last_name="Childress"
-        )
         data = {
-            "user": 7,
+            "user": self.user.id,
             "name": "My List",
             "completed": True
         }

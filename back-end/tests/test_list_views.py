@@ -8,16 +8,7 @@ import json
 
 
 class Test_list_crud(APITestCase):
-
-    # Test post method on All_lists view
-    def test_001_all_lists_post(self):
-        answer = {
-            "id": 1,
-            "user": 1,
-            "name": "My List",
-            "tasks": [],
-            "completed": False
-        }
+    def setUp(self):
         client = Client()
         sign_up_response = client.post(
             reverse("signup"),
@@ -26,6 +17,17 @@ class Test_list_crud(APITestCase):
             content_type="application/json"
         )
         self.client.cookies = sign_up_response.client.cookies
+
+    # Test post method on All_lists view
+
+    def test_001_all_lists_post(self):
+        answer = {
+            "id": 1,
+            "user": 1,
+            "name": "My List",
+            "tasks": [],
+            "completed": False
+        }
         response = self.client.post(
             reverse("all_lists"),
             data=json.dumps({"name": "My List", "completed": False}),
@@ -44,14 +46,6 @@ class Test_list_crud(APITestCase):
             "tasks": [],
             "completed": False
         }]
-        client = Client()
-        sign_up_response = client.post(
-            reverse("signup"),
-            data={"email": "odie@odie.com", "password": "odie", "display_name": "odiesturn",
-                  "first_name": "Odie", "last_name": "Childress"},
-            content_type="application/json"
-        )
-        self.client.cookies = sign_up_response.client.cookies
         list_post_response = self.client.post(
             reverse("all_lists"),
             data=json.dumps({"name": "My List", "completed": False}),
@@ -73,14 +67,6 @@ class Test_list_crud(APITestCase):
             "tasks": [],
             "completed": False
         }
-        client = Client()
-        sign_up_response = client.post(
-            reverse("signup"),
-            data={"email": "odie@odie.com", "password": "odie", "display_name": "odiesturn",
-                  "first_name": "Odie", "last_name": "Childress"},
-            content_type="application/json"
-        )
-        self.client.cookies = sign_up_response.client.cookies
         list_post_response = self.client.post(
             reverse("all_lists"),
             data=json.dumps({"name": "My List", "completed": False}),
@@ -100,14 +86,6 @@ class Test_list_crud(APITestCase):
             "tasks": [],
             "completed": False
         }
-        client = Client()
-        sign_up_response = client.post(
-            reverse("signup"),
-            data={"email": "odie@odie.com", "password": "odie", "display_name": "odiesturn",
-                  "first_name": "Odie", "last_name": "Childress"},
-            content_type="application/json"
-        )
-        self.client.cookies = sign_up_response.client.cookies
         list_post_response = self.client.post(
             reverse("all_lists"),
             data=json.dumps({"name": "My List", "completed": False}),
@@ -124,14 +102,6 @@ class Test_list_crud(APITestCase):
 
     # Test delete method on a_list view
     def test_005_a_list_delete(self):
-        client = Client()
-        sign_up_response = client.post(
-            reverse("signup"),
-            data={"email": "odie@odie.com", "password": "odie", "display_name": "odiesturn",
-                  "first_name": "Odie", "last_name": "Childress"},
-            content_type="application/json"
-        )
-        self.client.cookies = sign_up_response.client.cookies
         list_post_response = self.client.post(
             reverse("all_lists"),
             data=json.dumps({"name": "My List", "completed": False}),
@@ -144,15 +114,7 @@ class Test_list_crud(APITestCase):
 
 
 class Test_task_crud(APITestCase):
-
-    # Test post method on all_tasks view
-    def test_006_all_tasks_post(self):
-        answer = {
-            "id": 1,
-            "list": 6,
-            "name": "My Task",
-            "completed": False
-        }
+    def setUp(self):
         client = Client()
         sign_up_response = client.post(
             reverse("signup"),
@@ -166,6 +128,15 @@ class Test_task_crud(APITestCase):
             data=json.dumps({"name": "My List", "completed": False}),
             content_type="application/json"
         )
+
+    # Test post method on all_tasks view
+    def test_006_all_tasks_post(self):
+        answer = {
+            "id": 1,
+            "list": 6,
+            "name": "My Task",
+            "completed": False
+        }
         response = self.client.post(
             reverse("all_tasks", args=[6]),
             data=json.dumps({"name": "My Task", "completed": False}),
@@ -183,19 +154,6 @@ class Test_task_crud(APITestCase):
             "name": "My Task",
             "completed": False
         }]
-        client = Client()
-        sign_up_response = client.post(
-            reverse("signup"),
-            data={"email": "odie@odie.com", "password": "odie", "display_name": "odiesturn",
-                  "first_name": "Odie", "last_name": "Childress"},
-            content_type="application/json"
-        )
-        self.client.cookies = sign_up_response.client.cookies
-        list_post_response = self.client.post(
-            reverse("all_lists"),
-            data=json.dumps({"name": "My List", "completed": False}),
-            content_type="application/json"
-        )
         task_post_response = self.client.post(
             reverse("all_tasks", args=[7]),
             data=json.dumps({"name": "My Task", "completed": False}),
@@ -214,19 +172,6 @@ class Test_task_crud(APITestCase):
             "name": "My Task",
             "completed": False
         }
-        client = Client()
-        sign_up_response = client.post(
-            reverse("signup"),
-            data={"email": "odie@odie.com", "password": "odie", "display_name": "odiesturn",
-                  "first_name": "Odie", "last_name": "Childress"},
-            content_type="application/json"
-        )
-        self.client.cookies = sign_up_response.client.cookies
-        list_post_response = self.client.post(
-            reverse("all_lists"),
-            data=json.dumps({"name": "My List", "completed": False}),
-            content_type="application/json"
-        )
         task_post_response = self.client.post(
             reverse("all_tasks", args=[8]),
             data=json.dumps({"name": "My Task", "completed": False}),
@@ -259,19 +204,6 @@ class Test_task_crud(APITestCase):
                 }
             ]
         }
-        client = Client()
-        sign_up_response = client.post(
-            reverse("signup"),
-            data={"email": "odie@odie.com", "password": "odie", "display_name": "odiesturn",
-                  "first_name": "Odie", "last_name": "Childress"},
-            content_type="application/json"
-        )
-        self.client.cookies = sign_up_response.client.cookies
-        list_post_response = self.client.post(
-            reverse("all_lists"),
-            data=json.dumps({"name": "My List", "completed": False}),
-            content_type="application/json"
-        )
         task_post_response = self.client.post(
             reverse("all_tasks", args=[9]),
             data=json.dumps({"name": "My Task", "completed": False}),
@@ -294,19 +226,6 @@ class Test_task_crud(APITestCase):
 
     # Test delete method on a_task view
     def test_010_a_task_delete(self):
-        client = Client()
-        sign_up_response = client.post(
-            reverse("signup"),
-            data={"email": "odie@odie.com", "password": "odie", "display_name": "odiesturn",
-                  "first_name": "Odie", "last_name": "Childress"},
-            content_type="application/json"
-        )
-        self.client.cookies = sign_up_response.client.cookies
-        list_post_response = self.client.post(
-            reverse("all_lists"),
-            data=json.dumps({"name": "My List", "completed": False}),
-            content_type="application/json"
-        )
         task_post_response = self.client.post(
             reverse("all_tasks", args=[10]),
             data=json.dumps({"name": "My Task", "completed": False}),

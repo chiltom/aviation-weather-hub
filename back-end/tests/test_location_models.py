@@ -8,9 +8,8 @@ from location_app.models import Airport, Named_location
 
 
 class Test_airport(TestCase):
-
-    def test_001_airport_with_proper_data(self):
-        user = User.objects.create_user(
+    def setUp(self):
+        self.user = User.objects.create_user(
             username="tom@tom.com",
             password="thomas",
             email="tom@tom.com",
@@ -18,8 +17,10 @@ class Test_airport(TestCase):
             first_name="Tom",
             last_name="Childress"
         )
+
+    def test_001_airport_with_proper_data(self):
         new_airport = Airport.objects.create(
-            user=user,
+            user=self.user,
             name="Savannah",
             icao_code="KSVN"
         )
@@ -28,16 +29,8 @@ class Test_airport(TestCase):
 
     def test_002_airport_with_invalid_data(self):
         try:
-            user = User.objects.create_user(
-                username="tom@tom.com",
-                password="thomas",
-                email="tom@tom.com",
-                display_name="chiltom",
-                first_name="Tom",
-                last_name="Childress"
-            )
             new_airport = Airport.objects.create(
-                user=user,
+                user=self.user,
                 name="savannah",
                 icao_code="ksvn"
             )
@@ -50,8 +43,8 @@ class Test_airport(TestCase):
 
 
 class Test_named_location(TestCase):
-    def test_003_named_location_with_proper_date(self):
-        user = User.objects.create_user(
+    def setUp(self):
+        self.user = User.objects.create_user(
             username="tom@tom.com",
             password="thomas",
             email="tom@tom.com",
@@ -59,8 +52,10 @@ class Test_named_location(TestCase):
             first_name="Tom",
             last_name="Childress"
         )
+
+    def test_003_named_location_with_proper_date(self):
         new_named_location = Named_location.objects.create(
-            user=user,
+            user=self.user,
             city="Savannah",
             longitude=Decimal('-81.088371'),
             state="GA",
@@ -70,17 +65,9 @@ class Test_named_location(TestCase):
         self.assertIsNotNone(new_named_location)
 
     def test_004_named_location_with_invalid_data(self):
-        user = User.objects.create_user(
-            username="tom@tom.com",
-            password="thomas",
-            email="tom@tom.com",
-            display_name="chiltom",
-            first_name="Tom",
-            last_name="Childress"
-        )
         try:
             new_named_location = Named_location.objects.create(
-                user=user,
+                user=self.user,
                 city="savannah",
                 longitude=-81.088371,
                 state="ga",
