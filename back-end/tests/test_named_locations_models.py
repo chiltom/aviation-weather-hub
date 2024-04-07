@@ -18,7 +18,7 @@ class Test_named_location(TestCase):
             last_name="Childress"
         )
 
-    def test_003_named_location_with_proper_date(self):
+    def test_001_named_location_with_proper_date(self):
         new_named_location = Named_location.objects.create(
             user=self.user,
             city="Savannah",
@@ -29,7 +29,7 @@ class Test_named_location(TestCase):
         new_named_location.full_clean()
         self.assertIsNotNone(new_named_location)
 
-    def test_004_named_location_with_invalid_data(self):
+    def test_002_named_location_with_invalid_data(self):
         try:
             new_named_location = Named_location.objects.create(
                 user=self.user,
@@ -45,7 +45,7 @@ class Test_named_location(TestCase):
                 "city" in e.message_dict and "state" in e.message_dict and "longitude" in e.message_dict
             )
 
-    def test_005_named_location_violating_unique_field_constraints(self):
+    def test_003_named_location_violating_unique_field_constraints(self):
         try:
             first_named_location = Named_location.objects.create(
                 user=self.user,
@@ -83,7 +83,7 @@ class Test_named_location_serializer(TestCase):
             last_name="Childress"
         )
 
-    def test_007_named_location_serializer_with_proper_data(self):
+    def test_004_named_location_serializer_with_proper_data(self):
         data = {
             "user": self.user.id,
             "city": "Savannah",
@@ -98,7 +98,7 @@ class Test_named_location_serializer(TestCase):
             print(ser_named_location.errors)
             self.fail()
 
-    def test_008_named_location_serializer_with_proper_response(self):
+    def test_005_named_location_serializer_with_proper_response(self):
         data = {
             "user": self.user.id,
             "city": "Savannah",

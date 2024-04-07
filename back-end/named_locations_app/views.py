@@ -12,8 +12,6 @@ from .models import Named_location
 from .serializers import Named_locationSerializer
 from user_app.views import TokenReq
 
-# TODO: Make sure that location with same name and state doesn't get input twice
-
 
 class All_named_locations(TokenReq):
     def get(self, request):
