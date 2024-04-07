@@ -47,5 +47,6 @@ jobs:
         run: |
           python ./back-end/manage.py test tests.test_user_models
           python ./back-end/manage.py test tests.test_list_models
+          python ./back-end/manage.py test tests.test_location_models
           python ./back-end/manage.py test tests.test_user_views
           python ./back-end/manage.py test tests.test_list_views
