@@ -187,3 +187,20 @@ class Test_list_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
+    
+    def test_009_a_list_delete(self):
+        client = Client()
+        sign_up_response = client.post(
+            reverse("signup"),
+            data={"email": "odie@odie.com", "password": "odie", "display_name": "odiesturn",
+                  "first_name": "Odie", "last_name": "Childress"},
+            content_type="application/json"
+        )
+        self.client.cookies = sign_up_response.client.cookies
+        list_post_response = self.client.post(
+            reverse("all_lists"),
+            data=json.dumps({"name": "My List", "completed": False}),
+            content_type="application/json"
+        )
+        response = self.client.delete(reverse("a_list", args=[5]))
+        self.assertEqual(response.status_code, 204)

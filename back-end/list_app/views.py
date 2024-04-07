@@ -50,3 +50,8 @@ class A_list(TokenReq):
                 self.add_tasks(list=list, lst_of_task_ids=data.get("lst_of_tasks"))
             return Response(ser_list.data, status=HTTP_200_OK)
         return Response(ser_list.errors, status=HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, list_id):
+        curr_list = self.get_list(request, list_id)
+        curr_list.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
