@@ -26,3 +26,16 @@ class All_lists(TokenReq):
             new_list.save()
             return Response(new_list.data, status=HTTP_201_CREATED)
         return Response(new_list.errors, status=HTTP_400_BAD_REQUEST)
+
+class A_list(TokenReq):
+    def add_tasks(self, list, lst_of_task_ids):
+        for task_id in lst_of_task_ids:
+            if get_object_or_404(Task, id=task_id):
+                list.tasks.add(task_id)
+                list.save()
+    
+    def get_list(self, request, list_id):
+        return get_object_or_404(request.user.lists, id=list_id)
+    
+    def get(self, request, list_id):
+        return Response(ListSerializer(self.get_list(request, list_id)).data, status=HTTP_200_OK)
