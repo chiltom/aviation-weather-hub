@@ -110,3 +110,13 @@ def validate_temperature(temperature: str) -> str:
     if good_name:
         return temperature
     raise ValidationError(error_message, params={"temperature": temperature})
+
+
+def validate_hazard_type(hazard_type: str) -> str:
+    error_message = f'''
+        {hazard_type} must be in Title case.'''
+    regex = r'^([A-Z][\w ]+)+$'
+    good_name = re.match(regex, hazard_type)
+    if good_name:
+        return good_name
+    raise ValidationError(error_message, params={"hazard_type": hazard_type})

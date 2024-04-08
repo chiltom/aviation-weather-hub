@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from user_app.models import User
-from flight_app.models import Flight, Brief
+from flight_app.models import Flight, Brief, Hazard
 
 
 # Test flight creation
@@ -63,6 +63,8 @@ class Test_flight(TestCase):
                 and 'pilot_responsible' in e.message_dict and 'origin' in e.message_dict
             )
 
+# Test brief creation
+
 
 class Test_brief(TestCase):
     def setUp(self):
@@ -119,4 +121,72 @@ class Test_brief(TestCase):
             self.assertTrue(
                 'surface_winds' in e.message_dict and 'flight_level_winds' in e.message_dict
                 and 'visibility' in e.message_dict and 'altimeter_setting' in e.message_dict
+            )
+
+# Test hazard creation
+
+
+class Test_hazard(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="tom@tom.com",
+            password="thomas",
+            email="tom@tom.com",
+            display_name="chiltom",
+            first_name="Tom",
+            last_name="Childress"
+        )
+        self.user.flights.set([Flight.objects.create(
+            user=self.user,
+            tail_number=459,
+            aircraft_type_model="CH-47F",
+            pilot_responsible="CW2 Pilot Sucks",
+            origin="KSVN",
+            destination="KCHS",
+            arrival_time='2024-04-08 01:00:00+00:00'
+        )])
+
+    def test_006_hazard_with_proper_data(self):
+        self.user.flights.get(id=6).briefs.set([Brief.objects.create(
+            flight=self.user.flights.get(id=6),
+            surface_winds="VRB09KT",
+            flight_level_winds="27009G15KT",
+            visibility="1 1/4SM",
+            sky_condition="BKN016 OVC038",
+            temperature="M22",
+            altimeter_setting="A3018",
+            brief_time="2024-04-07 23:00:00+00:00",
+            void_time="2024-04-08 01:00:00+00:00"
+        )])
+        new_hazard = Hazard.objects.create(
+            brief=self.user.flights.get(id=6).briefs.get(id=3),
+            type="Thunderstorms",
+            information="Big thunder"
+        )
+        new_hazard.full_clean()
+        self.assertIsNotNone(new_hazard)
+
+    def test_007_hazard_with_invalid_data(self):
+        self.user.flights.get(id=7).briefs.set([Brief.objects.create(
+            flight=self.user.flights.get(id=7),
+            surface_winds="VRB09KT",
+            flight_level_winds="27009G15KT",
+            visibility="1 1/4SM",
+            sky_condition="BKN016 OVC038",
+            temperature="M22",
+            altimeter_setting="A3018",
+            brief_time="2024-04-07 23:00:00+00:00",
+            void_time="2024-04-08 01:00:00+00:00"
+        )])
+        try:
+            new_hazard = Hazard.objects.create(
+                brief=self.user.flights.get(id=7).briefs.get(id=4),
+                type="thunderstorms",
+                information="Big Thunder"
+            )
+            new_hazard.full_clean()
+            self.fail()
+        except ValidationError as e:
+            self.assertTrue(
+                'type' in e.message_dict
             )

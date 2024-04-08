@@ -12,7 +12,8 @@ from .validators import (
     validate_visibility,
     validate_sky_condition,
     validate_altimeter_setting,
-    validate_temperature
+    validate_temperature,
+    validate_hazard_type
 )
 
 
@@ -64,7 +65,19 @@ class Brief(models.Model):
     # YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format
     brief_time = models.DateTimeField(unique=True)
     void_time = models.DateTimeField()
+    # hazards = foreign key relationship from hazard model
 
     def __str__(self) -> str:
         return f'''Flight: {self.flight} {self.surface_winds} {self.flight_level_winds}
             {self.visibility} {self.sky_condition} {self.temperature} {self.altimeter_setting}'''
+
+
+class Hazard(models.Model):
+    brief = models.ForeignKey(
+        Brief, on_delete=models.CASCADE, related_name="hazards")
+    type = models.CharField(max_length=30, unique=True,
+                            validators=[validate_hazard_type])
+    information = models.TextField(default="unknown")
+
+    def __str__(self) -> str:
+        return f'{self.type} - {self.information}'
