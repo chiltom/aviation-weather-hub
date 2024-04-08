@@ -110,7 +110,7 @@ class Test_brief(TestCase):
                 surface_winds="0009K",
                 flight_level_winds="VRB0G15KT",
                 visibility="1 1/4S",
-                sky_condition="BKN016 OVT038",
+                sky_condition="OVT038 BKN016",
                 temperature="222",
                 altimeter_setting="3018",
                 brief_time="2024-04-07T23:00:00Z",
@@ -122,6 +122,7 @@ class Test_brief(TestCase):
             self.assertTrue(
                 'surface_winds' in e.message_dict and 'flight_level_winds' in e.message_dict
                 and 'visibility' in e.message_dict and 'altimeter_setting' in e.message_dict
+                and 'sky_condition' in e.message_dict
             )
 
 # Test hazard creation

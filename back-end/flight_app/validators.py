@@ -25,6 +25,10 @@ def validate_pilot_responsible(pilot_responsible: str) -> str:
 
 
 def validate_origin(origin: str) -> str:
+    # take in origin code
+    # grab all instances of airports from Airport model and store all codes as list
+    # iterate over list and if origin input matches airport code, return
+    # else raise ValidationError that code is not in existing airport storage
     error_message = f'{origin} must be a valid airport code.'
     regex = r'^[A-Z]+$'
     good_name = re.match(regex, origin)
@@ -77,13 +81,11 @@ def validate_visibility(visibility: str) -> str:
         return visibility
     raise ValidationError(error_message, params={'visibility': visibility})
 
-# TODO: Fix sky_condition validator
-
 
 def validate_sky_condition(sky_condition: str) -> str:
     error_message = f'''
         {sky_condition} must be a valid sky condition.'''
-    regex = r'^(OVC[0-9]{3} *)|(BKN[0-9]{3} *)|(VV[0-9]{3} *)|(SCT[0-9]{3} *)|(SKT[0-9]{3} *)|(CLR *)|(SKC *)|(FEW[0-9]{3} *)+$'
+    regex = r'^((OVC|BKN|VV|SCT|SKT|CLR|SKC|FEW)\d{1,3} *)+$'
     good_name = re.match(regex, sky_condition)
     if good_name:
         return sky_condition
