@@ -85,7 +85,7 @@ def validate_visibility(visibility: str) -> str:
 def validate_sky_condition(sky_condition: str) -> str:
     error_message = f'''
         {sky_condition} must be a valid sky condition.'''
-    regex = r'^((OVC|BKN|VV|SCT|SKT|CLR|SKC|FEW)\d{1,3} *)+$'
+    regex = r'^((OVC|BKN|VV|SCT|SKT|CLR|SKC|FEW)\d{0,3} *)+$'
     good_name = re.match(regex, sky_condition)
     if good_name:
         return sky_condition
