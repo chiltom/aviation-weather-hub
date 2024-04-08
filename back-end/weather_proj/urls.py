@@ -25,4 +25,5 @@ urlpatterns = [
     path('api/v1/named_locations/', include('named_locations_app.urls')),
     path('api/v1/flights/', include('flight_app.urls')),
     path('api/v1/coordinates/', include('coordinate_app.urls')),
+    path('api/v1/metars/', include('metar_app.urls'))
 ]
