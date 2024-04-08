@@ -23,4 +23,5 @@ urlpatterns = [
     path('api/v1/lists/', include('list_app.urls')),
     path('api/v1/airports/', include('airport_app.urls')),
     path('api/v1/named_locations/', include('named_locations_app.urls')),
+    path('api/v1/flights/', include('flight_app.urls'))
 ]
