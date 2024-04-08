@@ -40,3 +40,15 @@ class A_flight(TokenReq):
 
     def get(self, request, flight_id):
         return Response(FlightSerializer(self.get_flight(request, flight_id)).data, status=HTTP_200_OK)
+
+    def put(self, request, flight_id):
+        data = request.data.copy()
+        curr_flight = self.get_flight(request, flight_id)
+        ser_flight = FlightSerializer(curr_flight, data=data, partial=True)
+        if ser_flight.is_valid():
+            ser_flight.save()
+            if data.get("lst_of_briefs"):
+                self.add_briefs(flight=get_object_or_404(
+                    Flight, id=flight_id), lst_of_brief_ids=data.get("lst_of_briefs"))
+            return Response(ser_flight.data, status=HTTP_200_OK)
+        return Response(ser_flight.errors, status=HTTP_400_BAD_REQUEST)

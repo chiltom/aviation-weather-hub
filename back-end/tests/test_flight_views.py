@@ -118,3 +118,44 @@ class Test_flight_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
+
+    
+    def test_004_a_flight_put(self):
+        answer = {
+            "id": 4,
+            "user": 4,
+            "tail_number": 459,
+            "aircraft_type_model": "CH-47F",
+            "pilot_responsible": "CW2 Chump Nerd",
+            "origin": "KSVN",
+            "destination": "EVGA",
+            "flight_level": 4000,
+            "takeoff_time": "2024-04-08T10:00:00Z",
+            "arrival_time": "2024-04-08T13:00:00Z",
+            "briefs": []
+        }
+        flight_post_response = self.client.post(
+            reverse("all_flights"),
+            data=json.dumps({
+                "tail_number": 459,
+                "aircraft_type_model": "CH-47F",
+                "pilot_responsible": "CW2 Chump Nerd",
+                "origin": "KSVN",
+                "destination": "KCHS",
+                "flight_level": 3000,
+                "takeoff_time": "2024-04-08T10:00:00Z",
+                "arrival_time": "2024-04-08T13:00:00Z"
+            }),
+            content_type="application/json"
+        )
+        response = self.client.put(
+            reverse("a_flight", args=[4]),
+            data=json.dumps({
+                "destination": "EVGA",
+                "flight_level": 4000
+            }),
+            content_type="application/json"
+        )
+        with self.subTest():
+            self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content), answer)

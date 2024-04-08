@@ -49,9 +49,7 @@ class A_list(TokenReq):
             ser_list.save()
             if data.get("lst_of_tasks"):
                 self.add_tasks(
-                    list=list, lst_of_task_ids=data.get("lst_of_tasks"))
-            # TODO: Implement that if list is changed to completed, all tasks are changed
-            # to completed as well
+                    list=get_object_or_404(List, id=list_id), lst_of_task_ids=data.get("lst_of_tasks"))
             return Response(ser_list.data, status=HTTP_200_OK)
         return Response(ser_list.errors, status=HTTP_400_BAD_REQUEST)
 
@@ -92,7 +90,7 @@ class A_task(TokenReq):
         ser_task = TaskSerializer(task, data=data, partial=True)
         if ser_task.is_valid():
             ser_task.save()
-            # TODO: Check this with thunderclient to see if list auto completion and 
+            # TODO: Check this with thunderclient to see if list auto completion and
             # auto incompletion works
             list = get_object_or_404(List, id=list_id)
             task_list = get_list_or_404(Task, list=list)
