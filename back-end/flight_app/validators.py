@@ -25,12 +25,8 @@ def validate_pilot_responsible(pilot_responsible: str) -> str:
 
 
 def validate_origin(origin: str) -> str:
-    # take in origin code
-    # grab all instances of airports from Airport model and store all codes as list
-    # iterate over list and if origin input matches airport code, return
-    # else raise ValidationError that code is not in existing airport storage
     error_message = f'{origin} must be a valid airport code.'
-    regex = r'^[A-Z]+$'
+    regex = r'^[A-Z]{4}$'
     good_name = re.match(regex, origin)
     if good_name:
         return good_name
@@ -39,7 +35,7 @@ def validate_origin(origin: str) -> str:
 
 def validate_destination(destination: str) -> str:
     error_message = f'{destination} must be a valid airport code.'
-    regex = r'^[A-Z]+$'
+    regex = r'^[A-Z]{4}$'
     good_name = re.match(regex, destination)
     if good_name:
         return good_name

@@ -16,13 +16,53 @@ class Test_flight_crud(APITestCase):
             content_type="application/json"
         )
         self.client.cookies = sign_up_response.client.cookies
+        airport_one_post_response = self.client.post(
+            reverse("all_airports"),
+            data=json.dumps({
+                "name": "Savannah",
+                "icao_code": "KSVN"
+            }),
+            content_type="application/json"
+        )
+        airport_two_post_response = self.client.post(
+            reverse("all_airports"),
+            data=json.dumps({
+                "name": "Charleston",
+                "icao_code": "KCHS"
+            }),
+            content_type="application/json"
+        )
+    
+    # Test post method with invalid destination
+    def test_000_all_flights_post_with_invalid_airport_code(self):
+        answer = json.dumps({
+            "Error": "Destination code not found in your stored airport codes."
+        })
+        response = self.client.post(
+            reverse("all_flights"),
+            data=json.dumps({
+                "tail_number": 459,
+                "aircraft_type_model": "CH-47F",
+                "pilot_responsible": "CW2 Chump Nerd",
+                "origin": "KSVN",
+                "destination": "EVGA",
+                "flight_level": 3000,
+                "takeoff_time": "2024-04-08T10:00:00Z",
+                "arrival_time": "2024-04-08T13:00:00Z"
+            }),
+            content_type="application/json"
+        )
+        with self.subTest():
+            self.assertEqual(response.status_code, 400)
+        self.assertEqual(json.loads(response.content), answer)
 
+        
     # Test post method on all_flights view
 
     def test_001_all_flights_post(self):
         answer = {
             "id": 1,
-            "user": 1,
+            "user": 2,
             "tail_number": 459,
             "aircraft_type_model": "CH-47F",
             "pilot_responsible": "CW2 Chump Nerd",
@@ -50,13 +90,14 @@ class Test_flight_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 201)
         self.assertEqual(json.loads(response.content), answer)
+    
 
     # Test get method on all_flights view
 
     def test_002_all_flights_get(self):
         answer = [{
             "id": 2,
-            "user": 2,
+            "user": 3,
             "tail_number": 459,
             "aircraft_type_model": "CH-47F",
             "pilot_responsible": "CW2 Chump Nerd",
@@ -89,7 +130,7 @@ class Test_flight_crud(APITestCase):
     def test_003_a_flight_get(self):
         answer = {
             "id": 3,
-            "user": 3,
+            "user": 4,
             "tail_number": 459,
             "aircraft_type_model": "CH-47F",
             "pilot_responsible": "CW2 Chump Nerd",
@@ -122,7 +163,7 @@ class Test_flight_crud(APITestCase):
     def test_004_a_flight_put(self):
         answer = {
             "id": 4,
-            "user": 4,
+            "user": 5,
             "tail_number": 459,
             "aircraft_type_model": "CH-47F",
             "pilot_responsible": "CW2 Chump Nerd",
@@ -192,6 +233,22 @@ class Test_g_brief_crud(APITestCase):
             content_type="application/json"
         )
         self.client.cookies = sign_up_response.client.cookies
+        airport_one_post_response = self.client.post(
+            reverse("all_airports"),
+            data=json.dumps({
+                "name": "Savannah",
+                "icao_code": "KSVN"
+            }),
+            content_type="application/json"
+        )
+        airport_two_post_response = self.client.post(
+            reverse("all_airports"),
+            data=json.dumps({
+                "name": "Charleston",
+                "icao_code": "KCHS"
+            }),
+            content_type="application/json"
+        )
         flight_post_response = self.client.post(
             reverse("all_flights"),
             data=json.dumps({
@@ -390,6 +447,22 @@ class Test_h_hazard_crud(APITestCase):
             content_type="application/json"
         )
         self.client.cookies = sign_up_response.client.cookies
+        airport_one_post_response = self.client.post(
+            reverse("all_airports"),
+            data=json.dumps({
+                "name": "Savannah",
+                "icao_code": "KSVN"
+            }),
+            content_type="application/json"
+        )
+        airport_two_post_response = self.client.post(
+            reverse("all_airports"),
+            data=json.dumps({
+                "name": "Charleston",
+                "icao_code": "KCHS"
+            }),
+            content_type="application/json"
+        )
         flight_post_response = self.client.post(
             reverse("all_flights"),
             data=json.dumps({

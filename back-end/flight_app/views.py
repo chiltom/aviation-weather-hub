@@ -5,8 +5,9 @@ from rest_framework.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_204_NO_CONTENT,
-    HTTP_400_BAD_REQUEST
+    HTTP_400_BAD_REQUEST,
 )
+import json
 from .models import Flight, Brief, Hazard
 from .serializers import FlightSerializer, BriefSerializer, HazardSerializer
 from user_app.views import TokenReq
@@ -21,6 +22,12 @@ class All_flights(TokenReq):
     def post(self, request):
         data = request.data.copy()
         data['user'] = request.user.id
+        lst_of_codes = [
+            airport.icao_code for airport in request.user.airports.all()]
+        if data.get("origin") not in lst_of_codes:
+            return Response(json.dumps({'Error': 'Origin code not found in your stored airport codes.'}), status=HTTP_400_BAD_REQUEST)
+        if data.get("destination") not in lst_of_codes:
+            return Response(json.dumps({'Error': 'Destination code not found in your stored airport codes.'}), status=HTTP_400_BAD_REQUEST)
         new_flight = FlightSerializer(data=data)
         if new_flight.is_valid():
             new_flight.save()
