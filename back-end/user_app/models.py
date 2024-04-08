@@ -16,9 +16,10 @@ class User(AbstractUser):
         max_length=50, validators=[validate_first_name])
     last_name = models.CharField(
         max_length=50, validators=[validate_last_name])
-    # list = foreign key, one-to-many relationship
+    # lists = created by foreign key relationships from list model
+    # airports = created by foreign key relationships from airport model
+    # named_locations = created by foreign key relationships from named_location model
+    # flights = created by foreign key relationships from flight model
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [display_name, first_name, last_name]
-    # locations from many-to-many relationship
-    # lists from many-to-many relationship

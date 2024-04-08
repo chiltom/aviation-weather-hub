@@ -40,3 +40,73 @@ def validate_destination(destination: str) -> str:
     if good_name:
         return good_name
     raise ValidationError(error_message, params={'destination': destination})
+
+
+def validate_surface_winds(surface_winds: str) -> str:
+    error_message = f'''
+        {surface_winds} must be in the correct METAR and TAF format.'''
+    gust_regex = r'^[\w]{5}G[\d]{2}KT$'
+    no_gust_regex = r'^[\w]{5}KT$'
+    good_gust_name = re.match(gust_regex, surface_winds)
+    good_no_gust_name = re.match(no_gust_regex, surface_winds)
+    if good_gust_name or good_no_gust_name:
+        return surface_winds
+    raise ValidationError(error_message, params={
+                          'surface_winds': surface_winds})
+
+
+def validate_flight_level_winds(flight_level_winds: str) -> str:
+    error_message = f'''
+        {flight_level_winds} must be in the correct METAR and TAF format.'''
+    gust_regex = r'^[VRB0-9]{5}G[\d]{2}KT$'
+    no_gust_regex = r'^[VRB0-9]{5}KT$'
+    good_gust_name = re.match(gust_regex, flight_level_winds)
+    good_no_gust_name = re.match(no_gust_regex, flight_level_winds)
+    if good_gust_name or good_no_gust_name:
+        return flight_level_winds
+    raise ValidationError(error_message, params={
+                          'surface_winds': flight_level_winds})
+
+
+def validate_visibility(visibility: str) -> str:
+    error_message = f'''
+        {visibility} must be a valid visibility format.'''
+    regex = r'^[P|M]*[0-9 \/]+SM$'
+    good_name = re.match(regex, visibility)
+    if good_name:
+        return visibility
+    raise ValidationError(error_message, params={'visibility': visibility})
+
+# TODO: Fix sky_condition validator
+
+
+def validate_sky_condition(sky_condition: str) -> str:
+    error_message = f'''
+        {sky_condition} must be a valid sky condition.'''
+    regex = r'^(OVC[0-9]{3} *)|(BKN[0-9]{3} *)|(VV[0-9]{3} *)|(SCT[0-9]{3} *)|(SKT[0-9]{3} *)|(CLR *)|(SKC *)|(FEW[0-9]{3} *)+$'
+    good_name = re.match(regex, sky_condition)
+    if good_name:
+        return sky_condition
+    raise ValidationError(error_message, params={
+                          "sky_condition": sky_condition})
+
+
+def validate_altimeter_setting(altimeter_setting: str) -> str:
+    error_message = f'''
+        {altimeter_setting} must be a valid altimeter setting.'''
+    regex = r'^A[0-9]{4}$'
+    good_name = re.match(regex, altimeter_setting)
+    if good_name:
+        return altimeter_setting
+    raise ValidationError(error_message, params={
+                          "altimeter_setting": altimeter_setting})
+
+
+def validate_temperature(temperature: str) -> str:
+    error_message = f'''
+        {temperature} is not a valid temperature string.'''
+    regex = r'^(M*)[0-9]+$'
+    good_name = re.match(regex, temperature)
+    if good_name:
+        return temperature
+    raise ValidationError(error_message, params={"temperature": temperature})

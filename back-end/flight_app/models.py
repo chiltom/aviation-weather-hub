@@ -6,7 +6,13 @@ from .validators import (
     validate_aircraft_type_model,
     validate_pilot_responsible,
     validate_origin,
-    validate_destination
+    validate_destination,
+    validate_surface_winds,
+    validate_flight_level_winds,
+    validate_visibility,
+    validate_sky_condition,
+    validate_altimeter_setting,
+    validate_temperature
 )
 
 
@@ -27,8 +33,7 @@ class Flight(models.Model):
     # YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format
     takeoff_time = models.DateTimeField(default=timezone.now)
     arrival_time = models.DateTimeField()
-    brief_time = models.DateTimeField()
-    void_time = models.DateTimeField()
+    # briefs = created by foreign key relationship from brief model
 
     class Meta:
         constraints = [
@@ -39,3 +44,27 @@ class Flight(models.Model):
     def __str__(self) -> str:
         return f'''{self.aircraft_type_model} {self.tail_number}:
             Takeoff: {self.takeoff_time}, Arrival: {self.arrival_time}'''
+
+
+class Brief(models.Model):
+    flight = models.ForeignKey(
+        Flight, on_delete=models.CASCADE, related_name="briefs")
+    surface_winds = models.CharField(
+        max_length=10, validators=[validate_surface_winds])
+    flight_level_winds = models.CharField(
+        max_length=10, validators=[validate_flight_level_winds])
+    visibility = models.CharField(max_length=7, validators=[
+                                  v.MinLengthValidator(3), validate_visibility])
+    sky_condition = models.CharField(
+        max_length=50, validators=[validate_sky_condition])
+    temperature = models.CharField(
+        max_length=4, validators=[validate_temperature])
+    altimeter_setting = models.CharField(
+        max_length=5, validators=[validate_altimeter_setting])
+    # YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format
+    brief_time = models.DateTimeField(unique=True)
+    void_time = models.DateTimeField()
+
+    def __str__(self) -> str:
+        return f'''Flight: {self.flight} {self.surface_winds} {self.flight_level_winds}
+            {self.visibility} {self.sky_condition} {self.temperature} {self.altimeter_setting}'''

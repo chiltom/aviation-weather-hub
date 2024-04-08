@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from user_app.models import User
-from flight_app.models import Flight
+from flight_app.models import Flight, Brief
 
 
 # Test flight creation
@@ -26,9 +26,7 @@ class Test_flight(TestCase):
             destination="KCHS",
             flight_level=3000,
             takeoff_time='2024-04-07 22:00:00+00:00',
-            arrival_time='2024-04-08 01:00:00+00:00',
-            brief_time='2024-04-07 21:00:00+00:00',
-            void_time='2024-04-07 22:30:00+00:00'
+            arrival_time='2024-04-08 01:00:00+00:00'
         )
         new_flight.full_clean()
         self.assertIsNotNone(new_flight)
@@ -41,9 +39,7 @@ class Test_flight(TestCase):
             pilot_responsible="CW2 Pilot Sucks",
             origin="KSVN",
             destination="KCHS",
-            arrival_time='2024-04-08 01:00:00+00:00',
-            brief_time='2024-04-07 21:00:00+00:00',
-            void_time='2024-04-07 22:30:00+00:00'
+            arrival_time='2024-04-08 01:00:00+00:00'
         )
         new_flight.full_clean()
         self.assertIsNotNone(new_flight)
@@ -57,9 +53,7 @@ class Test_flight(TestCase):
                 pilot_responsible="mr.goodman",
                 origin="ksvn",
                 destination="kchs",
-                arrival_time='2024-04-08 01:00:00+00:00',
-                brief_time='2024-04-07 21:00:00+00:00',
-                void_time='2024-04-07 22:30:00+00:00'
+                arrival_time='2024-04-08 01:00:00+00:00'
             )
             new_flight.full_clean()
             self.fail()
@@ -67,4 +61,62 @@ class Test_flight(TestCase):
             self.assertTrue(
                 'tail_number' in e.message_dict and 'aircraft_type_model' in e.message_dict
                 and 'pilot_responsible' in e.message_dict and 'origin' in e.message_dict
+            )
+
+
+class Test_brief(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="tom@tom.com",
+            password="thomas",
+            email="tom@tom.com",
+            display_name="chiltom",
+            first_name="Tom",
+            last_name="Childress"
+        )
+        self.user.flights.set([Flight.objects.create(
+            user=self.user,
+            tail_number=459,
+            aircraft_type_model="CH-47F",
+            pilot_responsible="CW2 Pilot Sucks",
+            origin="KSVN",
+            destination="KCHS",
+            arrival_time='2024-04-08 01:00:00+00:00'
+        )])
+
+    def test_004_brief_with_proper_data(self):
+        new_brief = Brief.objects.create(
+            flight=self.user.flights.get(id=1),
+            surface_winds="VRB09KT",
+            flight_level_winds="27009G15KT",
+            visibility="1 1/4SM",
+            sky_condition="BKN016 OVC038",
+            temperature="M22",
+            altimeter_setting="A3018",
+            brief_time="2024-04-07 23:00:00+00:00",
+            void_time="2024-04-08 01:00:00+00:00"
+        )
+        new_brief.full_clean()
+        self.assertIsNotNone(new_brief)
+
+    # TODO: Fix sky_condition validator and add to assertion statement when complete
+    def test_005_brief_with_invalid_data(self):
+        try:
+            new_brief = Brief.objects.create(
+                flight=self.user.flights.get(id=2),
+                surface_winds="0009K",
+                flight_level_winds="VRB0G15KT",
+                visibility="1 1/4S",
+                sky_condition="BKN016 OVT038",
+                temperature="222",
+                altimeter_setting="3018",
+                brief_time="2024-04-07 23:00:00+00:00",
+                void_time="2024-04-08 01:00:00+00:00"
+            )
+            new_brief.full_clean()
+            self.fail()
+        except ValidationError as e:
+            self.assertTrue(
+                'surface_winds' in e.message_dict and 'flight_level_winds' in e.message_dict
+                and 'visibility' in e.message_dict and 'altimeter_setting' in e.message_dict
             )

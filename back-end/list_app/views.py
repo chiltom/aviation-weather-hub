@@ -92,13 +92,16 @@ class A_task(TokenReq):
         ser_task = TaskSerializer(task, data=data, partial=True)
         if ser_task.is_valid():
             ser_task.save()
-            # TODO: Check this and implement list completion on all tasks being completed,
-            # but if task gets changed back to incomplete then list is not complete
+            # TODO: Check this with thunderclient to see if list auto completion and 
+            # auto incompletion works
             list = get_object_or_404(List, id=list_id)
             task_list = get_list_or_404(Task, list=list)
             completion_list = [x.completed for x in task_list]
             if False not in completion_list:
                 list.completed = True
+                list.save()
+            else:
+                list.completed = False
                 list.save()
             return Response(ser_task.data, status=HTTP_200_OK)
         return Response(ser_task.errors, HTTP_400_BAD_REQUEST)
