@@ -43,15 +43,23 @@ jobs:
         run: |
           python ./back-end/manage.py makemigrations
           python ./back-end/manage.py migrate
-      - name: Run Tests
-        run: |
-          python ./back-end/manage.py test tests.test_user_models
-          python ./back-end/manage.py test tests.test_list_models
-          python ./back-end/manage.py test tests.test_airport_models
-          python ./back-end/manage.py test tests.test_named_locations_models
-          python ./back-end/manage.py test tests.test_flight_models
-          python ./back-end/manage.py test tests.test_user_views
-          python ./back-end/manage.py test tests.test_list_views
-          python ./back-end/manage.py test tests.test_airport_views
-          python ./back-end/manage.py test tests.test_named_locations_views
-          python ./back-end/manage.py test tests.test_flight_views
+      - name: Run User Model Tests
+        run: python ./back-end/manage.py test tests.test_user_models
+      - name: Run List App Model Tests
+        run: python ./back-end/manage.py test tests.test_list_models
+      - name: Run Airport Model Tests
+        run: python ./back-end/manage.py test tests.test_airport_models
+      - name: Run Named_location Model Tests    
+        run: python ./back-end/manage.py test tests.test_named_locations_models
+      - name: Run Flight App Model Tests  
+        run: python ./back-end/manage.py test tests.test_flight_models
+      - name: Run User View Tests  
+        run: python ./back-end/manage.py test tests.test_user_views
+      - name: Run List App View Tests  
+        run: python ./back-end/manage.py test tests.test_list_views
+      - name: Run Airport View Tests  
+        run: python ./back-end/manage.py test tests.test_airport_views
+      - name: Run Named_location View Tests  
+        run: python ./back-end/manage.py test tests.test_named_locations_views
+      - name: Run Flight View Tests  
+        run: python ./back-end/manage.py test tests.test_flight_views
