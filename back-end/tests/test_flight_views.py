@@ -275,3 +275,38 @@ class Test_g_brief_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
+
+    def test_008_a_brief_get(self):
+        answer = {
+            "id": 3,
+            "flight": 8,
+            "surface_winds": "VRB09KT",
+            "flight_level_winds": "27009G15KT",
+            "visibility": "1 1/4SM",
+            "sky_condition": "BKN016 OVC038",
+            "temperature": "22",
+            "altimeter_setting": "A3018",
+            "brief_time": "2024-04-07T23:00:00Z",
+            "void_time": "2024-04-08T01:00:00Z",
+            "hazards": []
+        }
+        brief_post_response = self.client.post(
+            reverse("all_briefs", args=[8]),
+            data=json.dumps(
+                {
+                    "surface_winds": "VRB09KT",
+                    "flight_level_winds": "27009G15KT",
+                    "visibility": "1 1/4SM",
+                    "sky_condition": "BKN016 OVC038",
+                    "temperature": "22",
+                    "altimeter_setting": "A3018",
+                    "brief_time": "2024-04-07T23:00:00Z",
+                    "void_time": "2024-04-08T01:00:00Z",
+                }
+            ),
+            content_type="application/json"
+        )
+        response = self.client.get(reverse("a_brief", args=[8, 3]))
+        with self.subTest():
+            self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content), answer)

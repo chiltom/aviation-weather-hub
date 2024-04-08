@@ -77,3 +77,9 @@ class All_briefs(TokenReq):
             new_brief.save()
             return Response(new_brief.data, status=HTTP_201_CREATED)
         return Response(new_brief.errors, status=HTTP_400_BAD_REQUEST)
+
+
+class A_brief(TokenReq):
+    def get(self, request, flight_id, brief_id):
+        brief = BriefSerializer(get_object_or_404(Brief, id=brief_id))
+        return Response(brief.data, status=HTTP_200_OK)
