@@ -101,3 +101,8 @@ class A_brief(TokenReq):
                     brief=brief, lst_of_hazard_ids=data.get("lst_of_hazards"))
             return Response(ser_brief.data, status=HTTP_200_OK)
         return Response(ser_brief.errors, status=HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, flight_id, brief_id):
+        brief = get_object_or_404(Brief, id=brief_id)
+        brief.delete()
+        return Response(status=HTTP_204_NO_CONTENT)

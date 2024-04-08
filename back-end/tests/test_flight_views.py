@@ -356,3 +356,24 @@ class Test_g_brief_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
+
+    # Test delete method on a_brief view
+    def test_010_a_brief_delete(self):
+        brief_post_response = self.client.post(
+            reverse("all_briefs", args=[10]),
+            data=json.dumps(
+                {
+                    "surface_winds": "VRB09KT",
+                    "flight_level_winds": "27009G15KT",
+                    "visibility": "1 1/4SM",
+                    "sky_condition": "BKN016 OVC038",
+                    "temperature": "22",
+                    "altimeter_setting": "A3018",
+                    "brief_time": "2024-04-07T23:00:00Z",
+                    "void_time": "2024-04-08T01:00:00Z",
+                }
+            ),
+            content_type="application/json"
+        )
+        response = self.client.delete(reverse("a_brief", args=[10, 5]))
+        self.assertEqual(response.status_code, 204)
