@@ -422,6 +422,7 @@ class Test_h_hazard_crud(APITestCase):
             content_type="application/json"
         )
 
+    # Test post method on all hazards view
     def test_011_all_hazards_post(self):
         answer = {
             "id": 1,
@@ -440,8 +441,8 @@ class Test_h_hazard_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 201)
         self.assertEqual(json.loads(response.content), answer)
-    
-    
+
+    # Test get method on all_hazards view
     def test_012_all_hazards_get(self):
         answer = [{
             "id": 2,
@@ -461,3 +462,65 @@ class Test_h_hazard_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
+
+    # Test get method on a_hazard view
+    def test_013_a_hazard_get(self):
+        answer = {
+            "id": 3,
+            "brief": 8,
+            "type": "Thunderstorms",
+            "information": "Big Thunder stuff"
+        }
+        hazard_post_response = self.client.post(
+            reverse("all_hazards", args=[13, 8]),
+            data=json.dumps({
+                "type": "Thunderstorms",
+                "information": "Big Thunder stuff"
+            }),
+            content_type="application/json"
+        )
+        response = self.client.get(reverse("a_hazard", args=[13, 8, 3]))
+        with self.subTest():
+            self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content), answer)
+
+    # Test put method on a_hazard view
+    def test_014_a_hazard_put(self):
+        answer = {
+            "id": 4,
+            "brief": 9,
+            "type": "Freezing Rain",
+            "information": "The rain is freezing?!?!"
+        }
+        hazard_post_response = self.client.post(
+            reverse("all_hazards", args=[14, 9]),
+            data=json.dumps({
+                "type": "Thunderstorms",
+                "information": "Big Thunder stuff"
+            }),
+            content_type="application/json"
+        )
+        response = self.client.put(
+            reverse("a_hazard", args=[14, 9, 4]),
+            data=json.dumps({
+                "type": "Freezing Rain",
+                "information": "The rain is freezing?!?!"
+            }),
+            content_type="application/json"
+        )
+        with self.subTest():
+            self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content), answer)
+
+    # Test delete method on a_hazard view
+    def test_015_a_hazard_delete(self):
+        hazard_post_response = self.client.post(
+            reverse("all_hazards", args=[15, 10]),
+            data=json.dumps({
+                "type": "Thunderstorms",
+                "information": "Big Thunder stuff"
+            }),
+            content_type="application/json"
+        )
+        response = self.client.delete(reverse("a_hazard", args=[15, 10, 5]))
+        self.assertEqual(response.status_code, 204)

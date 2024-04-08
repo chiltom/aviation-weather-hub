@@ -4,7 +4,8 @@ from .views import (
     A_flight,
     All_briefs,
     A_brief,
-    All_hazards
+    All_hazards,
+    A_hazard
 )
 
 urlpatterns = [
@@ -14,5 +15,7 @@ urlpatterns = [
     path('<int:flight_id>/briefs/<int:brief_id>/',
          A_brief.as_view(), name="a_brief"),
     path('<int:flight_id>/briefs/<int:brief_id>/hazards/',
-         All_hazards.as_view(), name="all_hazards")
+         All_hazards.as_view(), name="all_hazards"),
+    path('<int:flight_id>/briefs/<int:brief_id>/hazards/<int:hazard_id>/',
+         A_hazard.as_view(), name="a_hazard")
 ]
