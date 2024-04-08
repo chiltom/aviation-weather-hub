@@ -53,8 +53,27 @@ class A_flight(TokenReq):
             return Response(ser_flight.data, status=HTTP_200_OK)
         return Response(ser_flight.errors, status=HTTP_400_BAD_REQUEST)
 
-    
     def delete(self, request, flight_id):
         curr_flight = self.get_flight(request, flight_id)
         curr_flight.delete()
         return Response(status=HTTP_204_NO_CONTENT)
+
+
+class All_briefs(TokenReq):
+    def get(self, request, flight_id):
+        try:
+            briefs = BriefSerializer(
+                request.user.flights.get(id=flight_id).briefs, many=True)
+            return Response(briefs.data, status=HTTP_200_OK)
+        except Exception as e:
+            return Response(e, status=HTTP_400_BAD_REQUEST)
+
+    def post(self, request, flight_id):
+        data = request.data.copy()
+        get_object_or_404(request.user.flights, id=flight_id)
+        data["flight"] = flight_id
+        new_brief = BriefSerializer(data=data)
+        if new_brief.is_valid():
+            new_brief.save()
+            return Response(new_brief.data, status=HTTP_201_CREATED)
+        return Response(new_brief.errors, status=HTTP_400_BAD_REQUEST)
