@@ -207,6 +207,7 @@ class Test_g_brief_crud(APITestCase):
             content_type="application/json"
         )
 
+    # Test post method on all briefs view
     def test_006_all_briefs_post(self):
         answer = {
             "id": 1,
@@ -241,6 +242,7 @@ class Test_g_brief_crud(APITestCase):
             self.assertEqual(response.status_code, 201)
         self.assertEqual(json.loads(response.content), answer)
 
+    # Test get method on all briefs view
     def test_007_all_briefs_get(self):
         answer = [{
             "id": 2,
@@ -276,6 +278,7 @@ class Test_g_brief_crud(APITestCase):
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
 
+    # Test get method on a brief view
     def test_008_a_brief_get(self):
         answer = {
             "id": 3,
@@ -307,6 +310,49 @@ class Test_g_brief_crud(APITestCase):
             content_type="application/json"
         )
         response = self.client.get(reverse("a_brief", args=[8, 3]))
+        with self.subTest():
+            self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content), answer)
+
+    # Test put method on a brief view
+    def test_009_a_brief_put(self):
+        answer = {
+            "id": 4,
+            "flight": 9,
+            "surface_winds": "VRB09KT",
+            "flight_level_winds": "27009G15KT",
+            "visibility": "1 1/4SM",
+            "sky_condition": "CLR",
+            "temperature": "20",
+            "altimeter_setting": "A3018",
+            "brief_time": "2024-04-07T23:00:00Z",
+            "void_time": "2024-04-08T01:00:00Z",
+            "hazards": []
+        }
+        brief_post_response = self.client.post(
+            reverse("all_briefs", args=[9]),
+            data=json.dumps(
+                {
+                    "surface_winds": "VRB09KT",
+                    "flight_level_winds": "27009G15KT",
+                    "visibility": "1 1/4SM",
+                    "sky_condition": "BKN016 OVC038",
+                    "temperature": "22",
+                    "altimeter_setting": "A3018",
+                    "brief_time": "2024-04-07T23:00:00Z",
+                    "void_time": "2024-04-08T01:00:00Z",
+                }
+            ),
+            content_type="application/json"
+        )
+        response = self.client.put(
+            reverse("a_brief", args=[9, 4]),
+            data=json.dumps({
+                "sky_condition": "CLR",
+                "temperature": "20"
+            }),
+            content_type="application/json"
+        )
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)

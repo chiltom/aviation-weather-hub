@@ -80,6 +80,24 @@ class All_briefs(TokenReq):
 
 
 class A_brief(TokenReq):
+    def add_hazards(self, brief, lst_of_hazard_ids):
+        for hazard_id in lst_of_hazard_ids:
+            if get_object_or_404(Hazard, id=hazard_id):
+                brief.hazards.add(hazard_id)
+                brief.save()
+
     def get(self, request, flight_id, brief_id):
         brief = BriefSerializer(get_object_or_404(Brief, id=brief_id))
         return Response(brief.data, status=HTTP_200_OK)
+
+    def put(self, request, flight_id, brief_id):
+        data = request.data.copy()
+        brief = get_object_or_404(Brief, id=brief_id)
+        ser_brief = BriefSerializer(brief, data=data, partial=True)
+        if ser_brief.is_valid():
+            ser_brief.save()
+            if data.get("lst_of_hazards"):
+                self.add_hazards(
+                    brief=brief, lst_of_hazard_ids=data.get("lst_of_hazards"))
+            return Response(ser_brief.data, status=HTTP_200_OK)
+        return Response(ser_brief.errors, status=HTTP_400_BAD_REQUEST)
