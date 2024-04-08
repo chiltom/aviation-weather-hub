@@ -52,3 +52,9 @@ class A_flight(TokenReq):
                     Flight, id=flight_id), lst_of_brief_ids=data.get("lst_of_briefs"))
             return Response(ser_flight.data, status=HTTP_200_OK)
         return Response(ser_flight.errors, status=HTTP_400_BAD_REQUEST)
+
+    
+    def delete(self, request, flight_id):
+        curr_flight = self.get_flight(request, flight_id)
+        curr_flight.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
