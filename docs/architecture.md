@@ -1,3 +1,3 @@
 # Architecture
 
-![Storyboard](./sources/aviation-weather-hub-storyboard.png)
+![Storyboard](./sources/aviation_weather_hub_storyboard.png)
