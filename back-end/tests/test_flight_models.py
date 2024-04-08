@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.core.exceptions import ValidationError
 from user_app.models import User
 from flight_app.models import Flight, Brief, Hazard
+from flight_app.serializers import FlightSerializer, BriefSerializer, HazardSerializer
 
 
 # Test flight creation
@@ -25,8 +26,8 @@ class Test_flight(TestCase):
             origin="KSVN",
             destination="KCHS",
             flight_level=3000,
-            takeoff_time='2024-04-07 22:00:00+00:00',
-            arrival_time='2024-04-08 01:00:00+00:00'
+            takeoff_time='2024-04-07T22:00:00Z',
+            arrival_time='2024-04-08T01:00:00Z'
         )
         new_flight.full_clean()
         self.assertIsNotNone(new_flight)
@@ -39,7 +40,7 @@ class Test_flight(TestCase):
             pilot_responsible="CW2 Pilot Sucks",
             origin="KSVN",
             destination="KCHS",
-            arrival_time='2024-04-08 01:00:00+00:00'
+            arrival_time='2024-04-08T01:00:00Z'
         )
         new_flight.full_clean()
         self.assertIsNotNone(new_flight)
@@ -53,7 +54,7 @@ class Test_flight(TestCase):
                 pilot_responsible="mr.goodman",
                 origin="ksvn",
                 destination="kchs",
-                arrival_time='2024-04-08 01:00:00+00:00'
+                arrival_time='2024-04-08T01:00:00Z'
             )
             new_flight.full_clean()
             self.fail()
@@ -83,7 +84,7 @@ class Test_brief(TestCase):
             pilot_responsible="CW2 Pilot Sucks",
             origin="KSVN",
             destination="KCHS",
-            arrival_time='2024-04-08 01:00:00+00:00'
+            arrival_time='2024-04-08T01:00:00Z'
         )])
 
     def test_004_brief_with_proper_data(self):
@@ -95,8 +96,8 @@ class Test_brief(TestCase):
             sky_condition="BKN016 OVC038",
             temperature="M22",
             altimeter_setting="A3018",
-            brief_time="2024-04-07 23:00:00+00:00",
-            void_time="2024-04-08 01:00:00+00:00"
+            brief_time="2024-04-07T23:00:00Z",
+            void_time="2024-04-08T01:00:00Z"
         )
         new_brief.full_clean()
         self.assertIsNotNone(new_brief)
@@ -112,8 +113,8 @@ class Test_brief(TestCase):
                 sky_condition="BKN016 OVT038",
                 temperature="222",
                 altimeter_setting="3018",
-                brief_time="2024-04-07 23:00:00+00:00",
-                void_time="2024-04-08 01:00:00+00:00"
+                brief_time="2024-04-07T23:00:00Z",
+                void_time="2024-04-08T01:00:00Z"
             )
             new_brief.full_clean()
             self.fail()
@@ -143,7 +144,7 @@ class Test_hazard(TestCase):
             pilot_responsible="CW2 Pilot Sucks",
             origin="KSVN",
             destination="KCHS",
-            arrival_time='2024-04-08 01:00:00+00:00'
+            arrival_time='2024-04-08T01:00:00Z'
         )])
 
     def test_006_hazard_with_proper_data(self):
@@ -155,8 +156,8 @@ class Test_hazard(TestCase):
             sky_condition="BKN016 OVC038",
             temperature="M22",
             altimeter_setting="A3018",
-            brief_time="2024-04-07 23:00:00+00:00",
-            void_time="2024-04-08 01:00:00+00:00"
+            brief_time="2024-04-07T23:00:00Z",
+            void_time="2024-04-08T01:00:00Z"
         )])
         new_hazard = Hazard.objects.create(
             brief=self.user.flights.get(id=6).briefs.get(id=3),
@@ -175,8 +176,8 @@ class Test_hazard(TestCase):
             sky_condition="BKN016 OVC038",
             temperature="M22",
             altimeter_setting="A3018",
-            brief_time="2024-04-07 23:00:00+00:00",
-            void_time="2024-04-08 01:00:00+00:00"
+            brief_time="2024-04-07T23:00:00Z",
+            void_time="2024-04-08T01:00:00Z"
         )])
         try:
             new_hazard = Hazard.objects.create(
@@ -190,3 +191,219 @@ class Test_hazard(TestCase):
             self.assertTrue(
                 'type' in e.message_dict
             )
+
+
+# Test flight serializer
+class Test_serializers(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username="tom@tom.com",
+            password="thomas",
+            email="tom@tom.com",
+            display_name="chiltom",
+            first_name="Tom",
+            last_name="Childress"
+        )
+
+    def test_008_flight_serializer_with_proper_data(self):
+        try:
+            data = {
+                "user": self.user.id,
+                "tail_number": 459,
+                "aircraft_type_model": "CH-47F",
+                "pilot_responsible": "CW2 Pilot Sucks",
+                "origin": "KSVN",
+                "destination": "KCHS",
+                "flight_level": 3000,
+                "takeoff_time": "2024-04-07T22:00:00Z",
+                "arrival_time": '2024-04-08T01:00:00Z'
+            }
+            ser_flight = FlightSerializer(data=data)
+            self.assertTrue(ser_flight.is_valid())
+        except Exception as e:
+            print(ser_flight.errors)
+            self.fail()
+
+    def test_009_flight_serializer_with_proper_response(self):
+        try:
+            data = {
+                "user": self.user.id,
+                "tail_number": 459,
+                "aircraft_type_model": "CH-47F",
+                "pilot_responsible": "CW2 Pilot Sucks",
+                "origin": "KSVN",
+                "destination": "KCHS",
+                "flight_level": 3000,
+                "takeoff_time": "2024-04-07T22:00:00Z",
+                "arrival_time": '2024-04-08T01:00:00Z'
+            }
+            ser_flight = FlightSerializer(data=data)
+            ser_flight.is_valid()
+            self.assertEqual(
+                ser_flight.data,
+                {
+                    "user": self.user.id,
+                    "tail_number": 459,
+                    "aircraft_type_model": "CH-47F",
+                    "pilot_responsible": "CW2 Pilot Sucks",
+                    "origin": "KSVN",
+                    "destination": "KCHS",
+                    "flight_level": 3000,
+                    "takeoff_time": "2024-04-07T22:00:00Z",
+                    "arrival_time": "2024-04-08T01:00:00Z"
+                }
+            )
+        except Exception as e:
+            print(ser_flight.errors)
+            self.fail()
+
+    def test_010_brief_serializer_with_proper_data(self):
+        flight = Flight.objects.create(
+            user=self.user,
+            tail_number=459,
+            aircraft_type_model="CH-47F",
+            pilot_responsible="CW2 Pilot Sucks",
+            origin="KSVN",
+            destination="KCHS",
+            flight_level=3000,
+            takeoff_time="2024-04-07T22:00:00Z",
+            arrival_time="2024-04-08T01:00:00Z"
+        )
+        try:
+            data = {
+                "flight": flight.id,
+                "surface_winds": "VRB09KT",
+                "flight_level_winds": "27009G15KT",
+                "visibility": "1 1/4SM",
+                "sky_condition": "BKN016 OVC038",
+                "temperature": "M22",
+                "altimeter_setting": "A3018",
+                "brief_time": "2024-04-07T23:00:00Z",
+                "void_time": "2024-04-08T01:00:00Z"
+            }
+            ser_brief = BriefSerializer(data=data)
+            self.assertTrue(ser_brief.is_valid())
+        except Exception as e:
+            print(ser_brief.errors)
+
+    def test_011_brief_serializer_with_proper_response(self):
+        flight = Flight.objects.create(
+            user=self.user,
+            tail_number=459,
+            aircraft_type_model="CH-47F",
+            pilot_responsible="CW2 Pilot Sucks",
+            origin="KSVN",
+            destination="KCHS",
+            flight_level=3000,
+            takeoff_time="2024-04-07T22:00:00Z",
+            arrival_time="2024-04-08T01:00:00Z"
+        )
+        try:
+            data = {
+                "flight": flight.id,
+                "surface_winds": "VRB09KT",
+                "flight_level_winds": "27009G15KT",
+                "visibility": "1 1/4SM",
+                "sky_condition": "BKN016 OVC038",
+                "temperature": "M22",
+                "altimeter_setting": "A3018",
+                "brief_time": "2024-04-07T23:00:00Z",
+                "void_time": "2024-04-08T01:00:00Z"
+            }
+            ser_brief = BriefSerializer(data=data)
+            ser_brief.is_valid()
+            self.assertEqual(
+                ser_brief.data,
+                {
+                    "flight": flight.id,
+                    "surface_winds": "VRB09KT",
+                    "flight_level_winds": "27009G15KT",
+                    "visibility": "1 1/4SM",
+                    "sky_condition": "BKN016 OVC038",
+                    "temperature": "M22",
+                    "altimeter_setting": "A3018",
+                    "brief_time": "2024-04-07T23:00:00Z",
+                    "void_time": "2024-04-08T01:00:00Z"
+                }
+            )
+        except Exception as e:
+            print(ser_brief.errors)
+            self.fail()
+
+    def test_012_hazard_serializer_with_proper_data(self):
+        flight = Flight.objects.create(
+            user=self.user,
+            tail_number=459,
+            aircraft_type_model="CH-47F",
+            pilot_responsible="CW2 Pilot Sucks",
+            origin="KSVN",
+            destination="KCHS",
+            flight_level=3000,
+            takeoff_time="2024-04-07T22:00:00Z",
+            arrival_time="2024-04-08T01:00:00Z"
+        )
+        brief = Brief.objects.create(
+            flight=flight,
+            surface_winds="VRB09KT",
+            flight_level_winds="27009G15KT",
+            visibility="1 1/4SM",
+            sky_condition="BKN016 OVC038",
+            temperature="M22",
+            altimeter_setting="A3018",
+            brief_time="2024-04-07T23:00:00Z",
+            void_time="2024-04-08T01:00:00Z"
+        )
+        try:
+            data = {
+                "brief": brief.id,
+                "type": "Thunderstorm",
+                "information": "Big Thunder"
+            }
+            ser_hazard = HazardSerializer(data=data)
+            self.assertTrue(ser_hazard.is_valid())
+        except Exception as e:
+            print(ser_hazard.errors)
+            self.fail()
+
+    def test_013_hazard_serializer_with_proper_response(self):
+        flight = Flight.objects.create(
+            user=self.user,
+            tail_number=459,
+            aircraft_type_model="CH-47F",
+            pilot_responsible="CW2 Pilot Sucks",
+            origin="KSVN",
+            destination="KCHS",
+            flight_level=3000,
+            takeoff_time="2024-04-07T22:00:00Z",
+            arrival_time="2024-04-08T01:00:00Z"
+        )
+        brief = Brief.objects.create(
+            flight=flight,
+            surface_winds="VRB09KT",
+            flight_level_winds="27009G15KT",
+            visibility="1 1/4SM",
+            sky_condition="BKN016 OVC038",
+            temperature="M22",
+            altimeter_setting="A3018",
+            brief_time="2024-04-07T23:00:00Z",
+            void_time="2024-04-08T01:00:00Z"
+        )
+        try:
+            data = {
+                "brief": brief.id,
+                "type": "Thunderstorm",
+                "information": "Big Thunder"
+            }
+            ser_hazard = HazardSerializer(data=data)
+            ser_hazard.is_valid()
+            self.assertEqual(
+                ser_hazard.data,
+                {
+                    "brief": brief.id,
+                    "type": "Thunderstorm",
+                    "information": "Big Thunder"
+                }
+            )
+        except Exception as e:
+            print(ser_hazard.errors)
+            self.fail()

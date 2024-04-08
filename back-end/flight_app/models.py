@@ -62,7 +62,7 @@ class Brief(models.Model):
         max_length=4, validators=[validate_temperature])
     altimeter_setting = models.CharField(
         max_length=5, validators=[validate_altimeter_setting])
-    # YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format
+    # YYYY-MM-DD[T]HH:MM:SS[Z] format
     brief_time = models.DateTimeField(unique=True)
     void_time = models.DateTimeField()
     # hazards = foreign key relationship from hazard model

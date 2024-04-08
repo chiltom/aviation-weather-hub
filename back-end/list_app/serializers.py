@@ -1,6 +1,5 @@
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer
 from .models import List, Task
-from user_app.models import User
 
 
 class TaskSerializer(ModelSerializer):
