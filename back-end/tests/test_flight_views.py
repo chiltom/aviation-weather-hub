@@ -377,3 +377,87 @@ class Test_g_brief_crud(APITestCase):
         )
         response = self.client.delete(reverse("a_brief", args=[10, 5]))
         self.assertEqual(response.status_code, 204)
+
+
+# Test hazard CRUD functionality, h included to ensure order of tests
+class Test_h_hazard_crud(APITestCase):
+    def setUp(self):
+        client = Client()
+        sign_up_response = client.post(
+            reverse("signup"),
+            data={"email": "odie@odie.com", "password": "odie", "display_name": "odiesturn",
+                  "first_name": "Odie", "last_name": "Childress"},
+            content_type="application/json"
+        )
+        self.client.cookies = sign_up_response.client.cookies
+        flight_post_response = self.client.post(
+            reverse("all_flights"),
+            data=json.dumps({
+                "tail_number": 459,
+                "aircraft_type_model": "CH-47F",
+                "pilot_responsible": "CW2 Chump Nerd",
+                "origin": "KSVN",
+                "destination": "KCHS",
+                "flight_level": 3000,
+                "takeoff_time": "2024-04-08T10:00:00Z",
+                "arrival_time": "2024-04-08T13:00:00Z"
+            }),
+            content_type="application/json"
+        )
+        brief_post_response = self.client.post(
+            reverse("all_briefs", args=[json.loads(
+                flight_post_response.content)['id']]),
+            data=json.dumps(
+                {
+                    "surface_winds": "VRB09KT",
+                    "flight_level_winds": "27009G15KT",
+                    "visibility": "1 1/4SM",
+                    "sky_condition": "BKN016 OVC038",
+                    "temperature": "22",
+                    "altimeter_setting": "A3018",
+                    "brief_time": "2024-04-07T23:00:00Z",
+                    "void_time": "2024-04-08T01:00:00Z",
+                }
+            ),
+            content_type="application/json"
+        )
+
+    def test_011_all_hazards_post(self):
+        answer = {
+            "id": 1,
+            "brief": 6,
+            "type": "Thunderstorms",
+            "information": "Big Thunder stuff"
+        }
+        response = self.client.post(
+            reverse("all_hazards", args=[11, 6]),
+            data=json.dumps({
+                "type": "Thunderstorms",
+                "information": "Big Thunder stuff"
+            }),
+            content_type="application/json"
+        )
+        with self.subTest():
+            self.assertEqual(response.status_code, 201)
+        self.assertEqual(json.loads(response.content), answer)
+    
+    
+    def test_012_all_hazards_get(self):
+        answer = [{
+            "id": 2,
+            "brief": 7,
+            "type": "Thunderstorms",
+            "information": "Big Thunder stuff"
+        }]
+        hazard_post_response = self.client.post(
+            reverse("all_hazards", args=[12, 7]),
+            data=json.dumps({
+                "type": "Thunderstorms",
+                "information": "Big Thunder stuff"
+            }),
+            content_type="application/json"
+        )
+        response = self.client.get(reverse("all_hazards", args=[12, 7]))
+        with self.subTest():
+            self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content), answer)

@@ -26,6 +26,8 @@ class Flight(models.Model):
         max_length=20, validators=[validate_aircraft_type_model])
     pilot_responsible = models.CharField(max_length=100, validators=[
                                          validate_pilot_responsible])
+    # Enforce origin and destination with foreign key relationships to airport model,
+    # figure out way to access them by icao code
     origin = models.CharField(max_length=4, validators=[
                               v.MinLengthValidator(4), validate_origin])
     destination = models.CharField(max_length=4, validators=[

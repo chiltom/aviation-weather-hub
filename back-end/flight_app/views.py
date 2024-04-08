@@ -106,3 +106,19 @@ class A_brief(TokenReq):
         brief = get_object_or_404(Brief, id=brief_id)
         brief.delete()
         return Response(status=HTTP_204_NO_CONTENT)
+
+
+class All_hazards(TokenReq):
+    def get(self, request, flight_id, brief_id):
+        brief = get_object_or_404(Brief, id=brief_id)
+        hazards = HazardSerializer(brief.hazards, many=True)
+        return Response(hazards.data, status=HTTP_200_OK)
+
+    def post(self, request, flight_id, brief_id):
+        data = request.data.copy()
+        data["brief"] = brief_id
+        new_hazard = HazardSerializer(data=data)
+        if new_hazard.is_valid():
+            new_hazard.save()
+            return Response(new_hazard.data, status=HTTP_201_CREATED)
+        return Response(new_hazard.errors, status=HTTP_400_BAD_REQUEST)
