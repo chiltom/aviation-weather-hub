@@ -1,0 +1,23 @@
+.app {
+  color: var(--text-primary);
+  background-color: var(--background);
+  font-size: large;
+  padding: 10px;
+  height: 100vh;
+  transition: all 0.5s;
+}
+
+.navbar {
+  color: var(--text-primary);
+  background-color: var(--background);
+  font-size: large;
+  transition: all 0.5s;
+}
+
+button {
+  color: var(--text-primary);
+  background-color: var(--background);
+  border: 2px var(--text-primary) solid;
+  float: right;
+  transition: all 0.5s;
+}

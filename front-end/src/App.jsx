@@ -5,10 +5,16 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
+import useLocalStorage from "use-local-storage";
 import "./App.css";
 import MyNavbar from "./components/MyNavbar";
 
 function App() {
+  const defaultDark = window.matchMedia("(prefers-color-scheme:dark)").matches;
+  const [theme, setTheme] = useLocalStorage(
+    "theme",
+    defaultDark ? "dark" : "light"
+  );
   // TODO: Uncomment loader when API is up
   const [user, setUser] = useState(useLoaderData());
   const navigate = useNavigate();
@@ -38,8 +44,10 @@ function App() {
 
   return (
     <>
-      <MyNavbar user={user} setUser={setUser} />
-      <Outlet context={{ user, setUser }} />
+      <div className="app" data-theme={theme}>
+        <MyNavbar user={user} setUser={setUser} theme={theme}/>
+        <Outlet context={{ user, setUser }} />
+      </div>
     </>
   );
 }
