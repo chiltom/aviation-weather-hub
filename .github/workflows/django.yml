@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up PostgreSQL
         run: |
           sudo apt-get update
@@ -33,12 +33,12 @@ jobs:
           echo finished pg commands...
           sudo service postgresql restart
       - name: Set up Python
-        run: |
-          sudo apt install python3
-          sudo apt-get install python3-pip
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
       - name: Install Dependencies
-        run: |
-          pip install -r ./back-end/requirements.txt
+        run: pip install -r ./back-end/requirements.txt
       - name: Migrations
         run: |
           python ./back-end/manage.py makemigrations
