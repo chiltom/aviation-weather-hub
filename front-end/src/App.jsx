@@ -45,7 +45,7 @@ function App() {
   return (
     <>
       <div className="app" data-theme={theme}>
-        <MyNavbar user={user} setUser={setUser} theme={theme}/>
+        <MyNavbar user={user} setUser={setUser} theme={theme} />
         <Outlet context={{ user, setUser }} />
       </div>
     </>
