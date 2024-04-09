@@ -17,7 +17,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          cd ./front-end
+          npm ci
+      - name: Start server
+        run: |
+          cd ./front-end
+          npm run dev
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          working-directory: front-end
+          working-directory: ./front-end
