@@ -27,7 +27,7 @@ class A_airport_metar(TokenReq):
         lst_of_codes = icao.split(",")
         client_response = {}
         for idx, code in enumerate(lst_of_codes):
-            client_response[code] = responseJSON['data'][idx]
+            client_response[code.upper()] = responseJSON['data'][idx]
         return Response(client_response, status=HTTP_200_OK)
 
 
