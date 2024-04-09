@@ -24,7 +24,9 @@ jobs:
           cache-dependency-path: "front-end/package-lock.json"
           cache: "npm"
       - name: Install build dependencies
-        run: npm install
+        run: |
+          cd ./front-end
+          npm install
       - name: Cypress e2e tests
         uses: cypress-io/github-action@v6
         with:

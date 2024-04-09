@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-// Initial tests for home page
+// Initial tests for home page and using link in navbar brand
 describe("Initial render test suite for homepage", () => {
   it("Check for homepage load on baseUrl render", () => {
     cy.visit("/"); // Can use / because we set baseUrl as dev server port
