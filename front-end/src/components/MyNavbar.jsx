@@ -39,6 +39,8 @@ const MyNavbar = ({ user, setUser, theme }) => {
               </Nav.Link>
             </Nav>
           )}
+          {/* Make into link to go to user info page with put request method to change
+            user info */}
           {!user ? null : <Navbar.Text>Signed in as: {user}</Navbar.Text>}
           {!user ? null : (
             <Button onClick={() => handleUserLogout()} variant="outline-danger">

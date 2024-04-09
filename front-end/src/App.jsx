@@ -25,7 +25,7 @@ function App() {
   // - Training
   useEffect(() => {
     // Should redirect to hompage if logged in
-    const nullUserUrls = ["/login/", "/signup/"];
+    const nullUserUrls = ["/login/", "/signup/", "/about/"];
     // Check if current url is one that might need to redirect
     let isAllowed = nullUserUrls.includes(location.pathname);
     console.log("is allowed: ", isAllowed);
