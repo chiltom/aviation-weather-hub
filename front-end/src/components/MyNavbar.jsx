@@ -15,7 +15,7 @@ const MyNavbar = ({ user, setUser, theme }) => {
 
   return (
     <>
-      <Navbar expand="xl" sticky="top" data-bs-theme={theme}>
+      <Navbar expand="lg" sticky="top" data-bs-theme={theme}>
         <Navbar.Brand as={Link} to={"/"}>
           Weather Hub
         </Navbar.Brand>
@@ -25,8 +25,14 @@ const MyNavbar = ({ user, setUser, theme }) => {
             <Nav.Link as={Link} to={"/about/"} className="hover:drop-shadow">
               About
             </Nav.Link>
+            <Nav.Link as={Link} to={"/training/"} className="hover:drop-shadow">
+              Training
+            </Nav.Link>
             <Nav.Link as={Link} to={"/workflow/"} className="hover:drop-shadow">
               Workflow
+            </Nav.Link>
+            <Nav.Link as={Link} to={"/flights/"} className="hover:drop-shadow">
+              Flights
             </Nav.Link>
           </Nav>
           {user ? null : (

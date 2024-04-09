@@ -4,6 +4,8 @@ import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ErrorPage from "./pages/ErrorPage";
 import Workflow from "./pages/Workflow";
+import Training from "./pages/Training";
+import Flights from "./pages/Flights";
 import Signup from "./pages/SignUp";
 import Login from "./pages/Login";
 import { userConfirmation } from "./utilities";
@@ -24,8 +26,16 @@ const router = createBrowserRouter([
         element: <AboutPage />,
       },
       {
+        path: "training/",
+        element: <Training />,
+      },
+      {
         path: "workflow/",
         element: <Workflow />,
+      },
+      {
+        path: "flights/",
+        element: <Flights />
       },
       {
         path: "signup/",

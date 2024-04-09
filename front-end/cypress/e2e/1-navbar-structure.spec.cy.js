@@ -5,7 +5,6 @@ describe("Tests the structure of the navbar w/o user signed in", () => {
         cy.visit("/");
         cy.get(".navbar").should("exist");
         cy.get(".navbar-toggler").should("exist"); // Check this in cypress local
-        cy.get(".navbar-toggler").click();
         cy.get(".navbar-brand")
             .should("have.text", "Weather Hub");
         cy.get(".navbar-nav")
