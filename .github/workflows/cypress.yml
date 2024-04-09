@@ -21,11 +21,7 @@ jobs:
         run: |
           cd ./front-end
           npm ci
-      - name: Start server
+      - name: Run cypress tests
         run: |
           cd ./front-end
-          npm run dev
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: ./front-end
+          npx cypress run --spec cypress/e2e
