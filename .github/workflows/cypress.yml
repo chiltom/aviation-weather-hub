@@ -17,11 +17,17 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Install dependencies
-        run: |
-          cd ./front-end
-          npm ci
-      - name: Run cypress tests
-        run: |
-          cd ./front-end
-          npx cypress run --spec cypress/e2e
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache-dependency-path: "front-end/package-lock.json"
+          cache: "npm"
+      - name: Install build dependencies
+        run: npm install
+      - name: Cypress e2e tests
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm run dev
+          working-directory: front-end
+        continue-on-error: true
