@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { FormEventHandler, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { signupUser } from "../utilities";
+import { ContextType } from "../utilities";
 
-const SignUpForm = ({ setUser, theme }) => {
+const SignUpForm = ({ user, setUser, theme }: ContextType) => {
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [displayNameInput, setDisplayNameInput] = useState("");
   const [firstNameInput, setFirstNameInput] = useState("");
   const [lastNameInput, setLastNameInput] = useState("");
 
-  const handleSignup = async (e) => {
+  const handleSignup: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const user = await signupUser(emailInput, passwordInput);
     setUser(user);

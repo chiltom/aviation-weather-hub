@@ -10,7 +10,7 @@ Forecasting and briefing is a hard job as it is. When flight-related data is sca
 
 This project is constructed with the following stack:
   
-  - Front-End: Vite + React.js
+  - Front-End: Vite + React.js + Typescript
 
   - Back-End: Python + Django
 

@@ -1,4 +1,6 @@
-const Training = () => {
+import { ReactElement } from "react";
+
+const Training = (): ReactElement => {
   return (
     <>
       <h1>Training</h1>

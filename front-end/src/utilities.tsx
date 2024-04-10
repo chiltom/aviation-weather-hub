@@ -1,4 +1,11 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
+
+// Define context types to be passed down
+export type ContextType = {
+  user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  theme: string;
+};
 
 export interface User {
   email: string;
@@ -7,7 +14,7 @@ export interface User {
   last_name: string;
 }
 
-export const api = axios.create({
+export const api: AxiosInstance = axios.create({
   baseURL: "http://127.0.0.1:8000/api/v1/",
   withCredentials: true,
 });
@@ -16,23 +23,21 @@ export const api = axios.create({
 export const signupUser = async (
   email: string,
   password: string
-): Promise<User | void> => {
+): Promise<User | null> => {
   try {
     const response = await api.post("users/signup/", {
       email: email,
       password: password,
     });
-
     if (response.status === 201) {
-      const data: User = response.data;
-      return data;
+      return response.data as User;
     } else {
       console.log("signup error");
-      return; // Return undefined if signup fails
+      return null; // Return undefined if signup fails
     }
   } catch (error) {
     console.error("Error signing up:", error);
-    return; // Return undefined if an error occurs
+    return null; // Return undefined if an error occurs
   }
 };
 
@@ -40,7 +45,7 @@ export const signupUser = async (
 export const userLogin = async (
   email: string,
   password: string
-): Promise<User | void> => {
+): Promise<User | null> => {
   try {
     const response = await api.post("users/login/", {
       email: email,
@@ -48,15 +53,14 @@ export const userLogin = async (
     });
 
     if (response.status === 201) {
-      const data: User = response.data;
-      return data;
+      return response.data as User;
     } else {
       console.log("login error");
-      return; // Return undefined if login fails
+      return null; // Return undefined if login fails
     }
   } catch (error) {
     console.error("Error logging in:", error);
-    return; // Return undefined if an error occurs
+    return null; // Return undefined if an error occurs
   }
 };
 
@@ -85,8 +89,7 @@ export const userConfirmation = async (): Promise<User | null> => {
     try {
       const response = await api.get("users/");
       if (response.status === 200) {
-        const data: User = response.data;
-        return data;
+        return response.data as User;
       } else {
         console.log("Error userConfirmation:", response);
         return null;

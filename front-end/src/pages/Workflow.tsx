@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { ReactElement } from "react";
 
-const WeatherPage = () => {
+const WeatherPage = (): ReactElement => {
   return (
     <>
       <h1>Weather Page</h1>

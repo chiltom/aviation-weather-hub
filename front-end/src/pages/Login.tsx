@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { FormEventHandler, ReactElement, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { userLogin } from "../utilities";
+import { userLogin, ContextType } from "../utilities";
 
-const Login = () => {
-  const [emailInput, setEmailInput] = useState("");
-  const [passwordInput, setPasswordInput] = useState("");
-  const { setUser } = useOutletContext();
+const Login = (): ReactElement => {
+  const [emailInput, setEmailInput] = useState<string>("");
+  const [passwordInput, setPasswordInput] = useState<string>("");
+  const { setUser, theme } = useOutletContext<ContextType>();
 
-  const handleLogin = async (e) => {
+  const handleLogin: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const user = await userLogin(emailInput, passwordInput);
     setUser(user);

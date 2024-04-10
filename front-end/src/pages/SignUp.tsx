@@ -1,12 +1,14 @@
+import { ReactElement } from "react";
 import { useOutletContext } from "react-router-dom";
 import SignUpForm from "../components/SignUpForm";
+import { ContextType } from "../utilities";
 
-const Signup = () => {
-  const { setUser, theme } = useOutletContext();
+const Signup = (): ReactElement => {
+  const { user, setUser, theme } = useOutletContext<ContextType>();
 
   return (
     <>
-      <SignUpForm setUser={setUser} theme={theme} />
+      <SignUpForm user={user} setUser={setUser} theme={theme} />
     </>
   );
 };
