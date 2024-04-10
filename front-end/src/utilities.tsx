@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosResponse } from "axios";
 
 // Define context types to be passed down
 export type ContextType = {
@@ -16,21 +16,36 @@ export interface User {
 
 export const api: AxiosInstance = axios.create({
   baseURL: "http://127.0.0.1:8000/api/v1/",
-  withCredentials: true,
 });
 
 // TODO: Check for cookie fixes
 export const signupUser = async (
   email: string,
-  password: string
+  password: string,
+  display_name: string,
+  first_name: string,
+  last_name: string
 ): Promise<User | null> => {
   try {
-    const response = await api.post("users/signup/", {
+    const response: AxiosResponse = await api.post("users/signup/", {
       email: email,
       password: password,
+      display_name: display_name,
+      first_name: first_name,
+      last_name: last_name,
     });
     if (response.status === 201) {
-      return response.data as User;
+      const user: User = {
+        email: response.data["email"],
+        display_name: response.data["display_name"],
+        first_name: response.data["first_name"],
+        last_name: response.data["last_name"],
+      };
+      localStorage.setItem("token", response.data["token"]);
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Token ${response.data["token"]}`;
+      return user;
     } else {
       console.log("signup error");
       return null; // Return undefined if signup fails
@@ -47,13 +62,22 @@ export const userLogin = async (
   password: string
 ): Promise<User | null> => {
   try {
-    const response = await api.post("users/login/", {
+    const response: AxiosResponse = await api.post("users/login/", {
       email: email,
       password: password,
     });
-
-    if (response.status === 201) {
-      return response.data as User;
+    if (response.status === 200) {
+      const user: User = {
+        email: response.data["email"],
+        display_name: response.data["display_name"],
+        first_name: response.data["first_name"],
+        last_name: response.data["last_name"],
+      };
+      localStorage.setItem("token", response.data["token"]);
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Token ${response.data["token"]}`;
+      return user;
     } else {
       console.log("login error");
       return null; // Return undefined if login fails
@@ -67,8 +91,10 @@ export const userLogin = async (
 // TODO: Check for cookie fixes
 export const userLogout = async (): Promise<boolean> => {
   try {
-    const response = await api.post("users/logout/");
+    const response: AxiosResponse = await api.post("users/logout/");
     if (response.status === 204) {
+      localStorage.removeItem("token");
+      delete api.defaults.headers.common["Authorization"];
       console.log("user logged out");
       return true;
     } else {
@@ -83,23 +109,19 @@ export const userLogout = async (): Promise<boolean> => {
 
 // TODO: Check for cookie fixes
 export const userConfirmation = async (): Promise<User | null> => {
-  const token = localStorage.getItem("token");
+  const token: string | null = localStorage.getItem("token");
   if (token) {
     api.defaults.headers.common["Authorization"] = `Token ${token}`;
-    try {
-      const response = await api.get("users/");
-      if (response.status === 200) {
-        return response.data as User;
-      } else {
-        console.log("Error userConfirmation:", response);
-        return null;
-      }
-    } catch (error) {
-      console.error("Error userConfirmation:", error);
-      return null;
+    const response: AxiosResponse = await api.get("users/");
+    if (response.status === 200) {
+      const user: User = {
+        email: response.data["email"],
+        display_name: response.data["display_name"],
+        first_name: response.data["first_name"],
+        last_name: response.data["last_name"],
+      };
+      return user;
     }
-  } else {
-    console.log("No token in localStorage for userConfirmation");
-    return null;
   }
+  return null;
 };

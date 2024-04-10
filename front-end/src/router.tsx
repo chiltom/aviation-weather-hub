@@ -16,7 +16,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     // TODO: Uncomment loader when api is up
-    // loader: userConfirmation,
+    loader: userConfirmation,
     children: [
       {
         index: true,

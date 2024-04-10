@@ -6,6 +6,8 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 import useLocalStorage from "use-local-storage";
 import "./App.css";
 import MyNavbar from "./components/MyNavbar";
@@ -67,10 +69,14 @@ function App(): ReactElement {
 
   return (
     <>
-      <div className="app" data-theme={theme}>
-        <MyNavbar user={user} setUser={setUser} theme={theme} />
-        <Outlet context={{ user, setUser, theme } satisfies ContextType} />
-      </div>
+      <Container className="app px-4" data-theme={theme} fluid>
+        <Row>
+          <MyNavbar user={user} setUser={setUser} theme={theme} />
+        </Row>
+        <Row>
+          <Outlet context={{ user, setUser, theme } satisfies ContextType} />
+        </Row>
+      </Container>
     </>
   );
 }

@@ -2,6 +2,7 @@ from django.test import Client
 from django.urls import reverse
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
+import json
 
 # Test user CRUD capabilities
 
@@ -19,7 +20,7 @@ class Test_user_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 201)
         self.assertTrue(
-            b'{"user":"chiltom"' in response.content and b'"email":"tom@tom.com"' in response.content
+            b'{"display_name":"chiltom"' in response.content and b'"email":"tom@tom.com"' in response.content
         )
 
     # Test user login capabilities by signing one up and logging in afterwards
@@ -39,7 +40,7 @@ class Test_user_crud(APITestCase):
         with self.subTest():
             self.assertEqual(response.status_code, 200)
         self.assertTrue(
-            b'"user":"chiltom"' in response.content and b'"email":"tom@tom.com"' in response.content
+            b'"display_name":"chiltom"' in response.content and b'"email":"tom@tom.com"' in response.content
         )
 
     # Test getting user info after signup
@@ -51,7 +52,9 @@ class Test_user_crud(APITestCase):
                   "display_name": "chiltom", "first_name": "Tom", "last_name": "Childress"},
             content_type="application/json"
         )
-        self.client.cookies = sign_up_response.client.cookies
+        response_body = json.loads(sign_up_response.content)
+        # self.client.cookies = sign_up_response.client.cookies
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {response_body['token']}")
         response = self.client.get(reverse("info"))
         with self.subTest():
             self.assertEqual(response.status_code, 200)
@@ -67,7 +70,9 @@ class Test_user_crud(APITestCase):
                   "display_name": "chiltom", "first_name": "Tom", "last_name": "Childress"},
             content_type="application/json"
         )
-        self.client.cookies = sign_up_response.client.cookies
+        response_body = json.loads(sign_up_response.content)
+        # self.client.cookies = sign_up_response.client.cookies
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {response_body['token']}")
         response = self.client.post(reverse("logout"))
         with self.subTest():
             tokens = Token.objects.all()
