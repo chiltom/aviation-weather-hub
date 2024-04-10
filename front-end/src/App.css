@@ -4,6 +4,7 @@
   font-size: large;
   padding: 10px;
   height: 100vh;
+  overflow: auto;
   transition: all 0.5s;
 }
 

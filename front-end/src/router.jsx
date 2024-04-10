@@ -8,6 +8,7 @@ import Training from "./pages/Training";
 import Flights from "./pages/Flights";
 import Signup from "./pages/SignUp";
 import Login from "./pages/Login";
+import UserInfo from "./pages/UserInfo";
 import { userConfirmation } from "./utilities";
 
 const router = createBrowserRouter([
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "flights/",
         element: <Flights />
+      },
+      {
+        path: "userinfo/",
+        element: <UserInfo />,
       },
       {
         path: "signup/",
