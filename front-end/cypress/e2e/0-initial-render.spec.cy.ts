@@ -13,7 +13,7 @@ describe("Initial render test suite for homepage", () => {
     cy.get(".navbar-brand")
       .should("have.attr", "href")
       .and("contain", "/")
-      .then((href) => cy.visit(href));
+    cy.get(".navbar-brand").click();
     cy.get(".navbar-brand").should("have.text", "Weather Hub");
   });
 });

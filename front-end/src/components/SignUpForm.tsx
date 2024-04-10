@@ -19,7 +19,7 @@ const SignUpForm = ({ setUser, theme }) => {
 
   return (
     <>
-        {/* TODO: Figure out how to set max width of div */}
+      {/* TODO: Figure out how to set max width of div */}
       <div data-bs-theme={theme}>
         <h2 className="text-center">Sign Up</h2>
         <p className="text-center text-secondary">
@@ -58,15 +58,15 @@ const SignUpForm = ({ setUser, theme }) => {
           <Form.Group className="mb-3 flex flex-row">
             <Form.Label>First Name</Form.Label>
             <Form.Control
-                onChange={(e) => setFirstNameInput(e.target.value)}
-                type="firstName"
-                placeholder="Must be in Title case"
+              onChange={(e) => setFirstNameInput(e.target.value)}
+              type="firstName"
+              placeholder="Must be in Title case"
             />
             <Form.Label>Last Name</Form.Label>
             <Form.Control
-                onChange={(e) => setLastNameInput(e.target.value)}
-                type="lastName"
-                placeholder="Must be in Title case"
+              onChange={(e) => setLastNameInput(e.target.value)}
+              type="lastName"
+              placeholder="Must be in Title case"
             />
           </Form.Group>
           <Button variant="primary" type="submit">

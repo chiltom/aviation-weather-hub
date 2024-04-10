@@ -6,7 +6,7 @@ const Signup = () => {
 
   return (
     <>
-      <SignUpForm setUser={setUser} theme={theme}/>
+      <SignUpForm setUser={setUser} theme={theme} />
     </>
   );
 };
