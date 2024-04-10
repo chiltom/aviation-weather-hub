@@ -27,7 +27,7 @@ function App() {
     // Should redirect to hompage if logged in
     const nullUserUrls = ["/login/", "/signup/", "/about/"];
     // Check if current url is one that might need to redirect
-    let isAllowed = nullUserUrls.includes(location.pathname);
+    const isAllowed = nullUserUrls.includes(location.pathname);
     console.log("is allowed: ", isAllowed);
     // Redirect to homepage when logged in user tries to go to signup, etc.
     if (user && isAllowed) {
