@@ -18,13 +18,13 @@ class Test_named_location(TestCase):
             last_name="Childress"
         )
 
-    def test_001_named_location_with_proper_date(self):
+    def test_001_named_location_with_proper_data(self):
         new_named_location = Named_location.objects.create(
             user=self.user,
             city="Savannah",
-            longitude=Decimal('-81.088371'),
-            state="GA",
-            latitude=Decimal('32.076176')
+            longitude=Decimal('-81.0883'),
+            country="US",
+            latitude=Decimal('32.0761')
         )
         new_named_location.full_clean()
         self.assertIsNotNone(new_named_location)
@@ -34,15 +34,15 @@ class Test_named_location(TestCase):
             new_named_location = Named_location.objects.create(
                 user=self.user,
                 city="savannah",
-                longitude=-81.088371,
-                state="ga",
-                latitude=Decimal('32.076176')
+                longitude=-81.0883,
+                country="us",
+                latitude=Decimal('32.0761')
             )
             new_named_location.full_clean()
             self.fail()
         except ValidationError as e:
             self.assertTrue(
-                "city" in e.message_dict and "state" in e.message_dict and "longitude" in e.message_dict
+                "city" in e.message_dict and "country" in e.message_dict and "longitude" in e.message_dict
             )
 
     def test_003_named_location_violating_unique_field_constraints(self):
@@ -50,18 +50,18 @@ class Test_named_location(TestCase):
             first_named_location = Named_location.objects.create(
                 user=self.user,
                 city="Savannah",
-                longitude=Decimal('-81.088371'),
-                state="GA",
-                latitude=Decimal('32.076176')
+                longitude=Decimal('-81.0883'),
+                country="GA",
+                latitude=Decimal('32.0761')
             )
             first_named_location.full_clean()
             first_named_location.save()
             second_named_location = Named_location.objects.create(
                 user=self.user,
                 city="Pooler",
-                state="GA",
-                longitude=Decimal('-81.088371'),
-                latitude=Decimal('32.076176')
+                country="GA",
+                longitude=Decimal('-81.0883'),
+                latitude=Decimal('32.0761')
             )
             second_named_location.full_clean()
             self.fail()
@@ -87,9 +87,9 @@ class Test_named_location_serializer(TestCase):
         data = {
             "user": self.user.id,
             "city": "Savannah",
-            "state": "GA",
-            "latitude": Decimal('32.076176'),
-            "longitude": Decimal('-81.088371')
+            "country": "GA",
+            "latitude": Decimal('32.0761'),
+            "longitude": Decimal('-81.0883')
         }
         try:
             ser_named_location = Named_locationSerializer(data=data)
@@ -102,9 +102,9 @@ class Test_named_location_serializer(TestCase):
         data = {
             "user": self.user.id,
             "city": "Savannah",
-            "state": "GA",
-            "latitude": Decimal('32.076176'),
-            "longitude": Decimal('-81.088371')
+            "country": "GA",
+            "latitude": Decimal('32.0761'),
+            "longitude": Decimal('-81.0883')
         }
         try:
             ser_named_location = Named_locationSerializer(data=data)
@@ -114,9 +114,9 @@ class Test_named_location_serializer(TestCase):
                 {
                     "user": self.user.id,
                     "city": "Savannah",
-                    "state": "GA",
-                    "latitude": '32.076176',
-                    "longitude": '-81.088371'
+                    "country": "GA",
+                    "latitude": '32.0761',
+                    "longitude": '-81.0883'
                 }
             )
         except Exception as e:

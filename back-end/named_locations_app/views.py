@@ -25,8 +25,6 @@ class All_named_locations(TokenReq):
         data['user'] = request.user.id
         data['latitude'] = Decimal(data['latitude'])
         data['longitude'] = Decimal(data['longitude'])
-        # if get_object_or_404(Named_location, latitude=data['latitude'], longitude=data['longitude']):
-        #     return Response("This location is already stored", status=HTTP_400_BAD_REQUEST)
         new_named_location = Named_locationSerializer(data=data)
         if new_named_location.is_valid():
             new_named_location.save()
@@ -43,6 +41,10 @@ class A_named_location(TokenReq):
 
     def put(self, request, city):
         data = request.data.copy()
+        if data.get('latitude'):
+            data['latitude'] = Decimal(data['latitude'])
+        if data.get('longitude'):
+            data['longitude'] = Decimal(data['longitude'])
         curr_named_location = get_object_or_404(
             request.user.named_locations, city=city.title())
         ser_named_location = Named_locationSerializer(

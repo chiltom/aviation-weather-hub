@@ -90,7 +90,7 @@ export const getAllAirports = async (): Promise<Airport[] | null> => {
 export const getAnAirport = async (
   icaoCode: string
 ): Promise<Airport | null> => {
-  const response: AxiosResponse = await api.get(`airports/${icaoCode}`);
+  const response: AxiosResponse = await api.get(`airports/${icaoCode}/`);
   if (response.status === 200) {
     const airport: Airport = {
       icaoCode: response.data["icao_code"],
@@ -131,7 +131,7 @@ export const updateAnAirport = async (
   }
   try {
     const response: AxiosResponse = await api.put(
-      `airports/${currIcaoCode}`,
+      `airports/${currIcaoCode}/`,
       new_airport_data
     );
     if (response.status === 200) {
@@ -161,7 +161,7 @@ export const updateAnAirport = async (
  * @param icaoCode
  */
 export const deleteAnAirport = async (icaoCode: string): Promise<boolean> => {
-  const response: AxiosResponse = await api.delete(`airports/${icaoCode}`);
+  const response: AxiosResponse = await api.delete(`airports/${icaoCode}/`);
   if (response.status === 204) {
     return true;
   } else {

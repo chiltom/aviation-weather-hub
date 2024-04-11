@@ -13,10 +13,10 @@ class Named_location(models.Model):
         User, on_delete=models.CASCADE, related_name="named_locations")
     city = models.CharField(max_length=40, validators=[
                             v.MinLengthValidator(1), validate_city_name])
-    state = models.CharField(max_length=2, validators=[
+    country = models.CharField(max_length=2, validators=[
                              validate_state_abbreviation])
-    latitude = models.DecimalField(max_digits=8, decimal_places=6)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    latitude = models.DecimalField(max_digits=8, decimal_places=4)
+    longitude = models.DecimalField(max_digits=9, decimal_places=4)
 
     class Meta:
         constraints = [

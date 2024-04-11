@@ -24,18 +24,18 @@ class Test_named_location_crud(APITestCase):
             "id": 1,
             "user": 1,
             "city": "Savannah",
-            "state": "GA",
-            "latitude": "32.076176",
-            "longitude": "-81.088371"
+            "country": "US",
+            "latitude": "32.0761",
+            "longitude": "-81.0883"
         }
         response = self.client.post(
             reverse("all_named_locations"),
             data=json.dumps(
                 {
                     "city": "Savannah",
-                    "state": "GA",
-                    "latitude": '32.076176',
-                    "longitude": '-81.088371'
+                    "country": "US",
+                    "latitude": '32.0761',
+                    "longitude": '-81.0883'
                 }
             ),
             content_type="application/json"
@@ -49,18 +49,18 @@ class Test_named_location_crud(APITestCase):
             "id": 2,
             "user": 2,
             "city": "Savannah",
-            "state": "GA",
-            "latitude": "32.076176",
-            "longitude": "-81.088371"
+            "country": "US",
+            "latitude": "32.0761",
+            "longitude": "-81.0883"
         }]
         post_response = self.client.post(
             reverse("all_named_locations"),
             data=json.dumps(
                 {
                     "city": "Savannah",
-                    "state": "GA",
-                    "latitude": '32.076176',
-                    "longitude": '-81.088371'
+                    "country": "US",
+                    "latitude": '32.0761',
+                    "longitude": '-81.0883'
                 }
             ),
             content_type="application/json"
@@ -75,18 +75,18 @@ class Test_named_location_crud(APITestCase):
             "id": 3,
             "user": 3,
             "city": "Savannah",
-            "state": "GA",
-            "latitude": "32.076176",
-            "longitude": "-81.088371"
+            "country": "US",
+            "latitude": "32.0761",
+            "longitude": "-81.0883"
         }
         post_response = self.client.post(
             reverse("all_named_locations"),
             data=json.dumps(
                 {
                     "city": "Savannah",
-                    "state": "GA",
-                    "latitude": '32.076176',
-                    "longitude": '-81.088371'
+                    "country": "US",
+                    "latitude": '32.0761',
+                    "longitude": '-81.0883'
                 }
             ),
             content_type="application/json"
@@ -102,18 +102,18 @@ class Test_named_location_crud(APITestCase):
             'id': 4,
             'user': 4,
             'city': 'Lielvarde',
-            'state': 'LV',
-            'latitude': '56.779167',
-            'longitude': '24.853889'
+            'country': 'LV',
+            'latitude': '56.7791',
+            'longitude': '24.8538'
         }
         post_response = self.client.post(
             reverse("all_named_locations"),
             data=json.dumps(
                 {
                     "city": "Savannah",
-                    "state": "GA",
-                    "latitude": '32.076176',
-                    "longitude": '-81.088371'
+                    "country": "US",
+                    "latitude": '32.0761',
+                    "longitude": '-81.0883'
                 }
             ),
             content_type="application/json"
@@ -123,9 +123,9 @@ class Test_named_location_crud(APITestCase):
             data=json.dumps(
                 {
                     'city': 'Lielvarde',
-                    'state': 'LV',
-                    'latitude': '56.779167',
-                    'longitude': '24.853889'
+                    'country': 'LV',
+                    'latitude': '56.7791',
+                    'longitude': '24.8538'
                 }
             ),
             content_type='application/json'
@@ -140,9 +140,9 @@ class Test_named_location_crud(APITestCase):
             data=json.dumps(
                 {
                     "city": "Savannah",
-                    "state": "GA",
-                    "latitude": '32.076176',
-                    "longitude": '-81.088371'
+                    "country": "US",
+                    "latitude": '32.0761',
+                    "longitude": '-81.0883'
                 }
             ),
             content_type="application/json"
