@@ -9,7 +9,7 @@ import Flights from "./pages/Flights";
 import Signup from "./pages/SignUp";
 import Login from "./pages/Login";
 import UserInfo from "./pages/UserInfo";
-import { userConfirmation } from "./utilities";
+import { userConfirmation } from "./utilities/userUtilities";
 
 const router = createBrowserRouter([
   {

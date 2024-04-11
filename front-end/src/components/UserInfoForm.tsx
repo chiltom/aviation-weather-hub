@@ -2,7 +2,7 @@ import { FormEventHandler, ReactElement, useState } from "react";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
-import { ContextType, User, changeUserInfo } from "../utilities";
+import { ContextType, User, changeUserInfo } from "../utilities/userUtilities";
 
 const UserInfoForm = ({ user, setUser, theme }: ContextType): ReactElement => {
   const [newDisplayNameInput, setNewDisplayNameInput] = useState<string>("");

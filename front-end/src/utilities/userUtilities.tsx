@@ -1,7 +1,13 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
+import { api } from "./axiosConfig";
 
 /**
- * Type and interface definitions
+ * ContextType provides a type for the context that will be inserted
+ * into and loaded from outlet context throughout the router provider.
+ *
+ * It consists of the user and setUser pair that may contain a User object
+ * or null value, the setUser setter for user, and the theme of the client's
+ * OS.
  */
 export type ContextType = {
   user: User | null;
@@ -9,25 +15,20 @@ export type ContextType = {
   theme: string;
 };
 
+// All user related utility functions
+// TODO: Implement cookie authentication for more secure auth method
+
+/**
+ * The User interface consists of an email, display name, first name,
+ * and last name, effectively holding all relevant user information
+ * stored in the server
+ */
 export interface User {
   email: string;
-  display_name: string;
-  first_name: string;
-  last_name: string;
+  displayName: string;
+  firstName: string;
+  lastName: string;
 }
-
-/**
- * Axios instance that defines the config for all further axios
- * requests
- */
-export const api: AxiosInstance = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/v1/",
-});
-
-/**
- * Set of functions to handle all user CRUD capabilities
- * TODO: Implement cookie authentication for more secure auth method
- */
 
 /**
  * This function sends a post request to the server to sign up a
@@ -43,32 +44,31 @@ export const api: AxiosInstance = axios.create({
  *
  * @param email - The new user's email
  * @param password - The new user's password
- * @param display_name - The new user's display name
- * @param first_name - The new user's first name
- * @param last_name - The new user's last_name
- * @returns {User | number}
+ * @param displayName - The new user's display name
+ * @param firstName - The new user's first name
+ * @param lastName - The new user's last_name
  */
 export const signupUser = async (
   email: string,
   password: string,
-  display_name: string,
-  first_name: string,
-  last_name: string
+  displayName: string,
+  firstName: string,
+  lastName: string
 ): Promise<User | null> => {
   try {
     const response: AxiosResponse = await api.post("users/signup/", {
       email: email,
       password: password,
-      display_name: display_name,
-      first_name: first_name,
-      last_name: last_name,
+      display_name: displayName,
+      first_name: firstName,
+      last_name: lastName,
     });
     if (response.status === 201) {
       const user: User = {
         email: response.data["email"],
-        display_name: response.data["display_name"],
-        first_name: response.data["first_name"],
-        last_name: response.data["last_name"],
+        displayName: response.data["display_name"],
+        firstName: response.data["first_name"],
+        lastName: response.data["last_name"],
       };
       localStorage.setItem("token", response.data["token"]);
       api.defaults.headers.common[
@@ -76,11 +76,11 @@ export const signupUser = async (
       ] = `Token ${response.data["token"]}`;
       return user;
     } else {
-      console.log("signup error");
+      console.log(response.data);
       return null; // Return undefined if signup fails
     }
   } catch (error) {
-    console.error("Error signing up:", error);
+    console.error(error);
     return null; // Return undefined if an error occurs
   }
 };
@@ -112,9 +112,9 @@ export const userLogin = async (
     if (response.status === 200) {
       const user: User = {
         email: response.data["email"],
-        display_name: response.data["display_name"],
-        first_name: response.data["first_name"],
-        last_name: response.data["last_name"],
+        displayName: response.data["display_name"],
+        firstName: response.data["first_name"],
+        lastName: response.data["last_name"],
       };
       localStorage.setItem("token", response.data["token"]);
       api.defaults.headers.common[
@@ -122,11 +122,11 @@ export const userLogin = async (
       ] = `Token ${response.data["token"]}`;
       return user;
     } else {
-      console.log("login error");
+      console.log(response.data);
       return null; // Return undefined if login fails
     }
   } catch (error) {
-    console.error("Error logging in:", error);
+    console.error(error);
     return null; // Return undefined if an error occurs
   }
 };
@@ -154,11 +154,11 @@ export const userLogout = async (): Promise<boolean> => {
       console.log("user logged out");
       return true;
     } else {
-      console.log("user logout error");
+      console.log(response.data);
       return false;
     }
   } catch (error) {
-    console.error("Error logging out user:", error);
+    console.error(error);
     return false;
   }
 };
@@ -181,9 +181,9 @@ export const userConfirmation = async (): Promise<User | null> => {
     if (response.status === 200) {
       const user: User = {
         email: response.data["email"],
-        display_name: response.data["display_name"],
-        first_name: response.data["first_name"],
-        last_name: response.data["last_name"],
+        displayName: response.data["display_name"],
+        firstName: response.data["first_name"],
+        lastName: response.data["last_name"],
       };
       return user;
     }
@@ -198,20 +198,20 @@ export const userConfirmation = async (): Promise<User | null> => {
  * If the server authenticates the user and accepts the argument, it
  * then uses the userConfirmation function to ensure that the user's
  * updated data is grabbed from the server.
- * 
- * Finally, the function will return the user object that is returned
+ *
+ * Finally, the function will return the User object that is returned
  * from the userConfirmation.
  *
  * If the server does not authenticate the user, the server returns an
  * error and this function returns a null value.
- * @param display_name
+ * @param displayName
  */
 export const changeUserInfo = async (
-  display_name: string
+  displayName: string
 ): Promise<User | null> => {
   try {
     const response: AxiosResponse = await api.put("users/", {
-      display_name: display_name,
+      display_name: displayName,
     });
     if (response.status === 200) {
       const updatedUser: User | null = await userConfirmation();

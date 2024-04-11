@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
-import { userLogout, ContextType } from "../utilities";
+import { userLogout, ContextType } from "../utilities/userUtilities";
 
 const MyNavbar = ({ user, setUser, theme }: ContextType): ReactElement => {
   const handleUserLogout = async () => {
@@ -50,7 +50,7 @@ const MyNavbar = ({ user, setUser, theme }: ContextType): ReactElement => {
           {!user ? null : (
             <Nav>
               <Nav.Link as={Link} to={"/userinfo/"}>
-                Signed in as: {user.display_name}
+                Signed in as: {user.displayName}
               </Nav.Link>
               <Button
                 onClick={() => handleUserLogout()}

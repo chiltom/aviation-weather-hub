@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
-import { userLogin, ContextType } from "../utilities";
+import { userLogin, ContextType } from "../utilities/userUtilities";
 
 const LoginForm = ({ user, setUser, theme }: ContextType): ReactElement => {
   const [emailInput, setEmailInput] = useState<string>("");

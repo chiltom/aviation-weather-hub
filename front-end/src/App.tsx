@@ -11,7 +11,7 @@ import Row from "react-bootstrap/Row";
 import useLocalStorage from "use-local-storage";
 import "./App.css";
 import MyNavbar from "./components/MyNavbar";
-import { User, ContextType } from "./utilities";
+import { User, ContextType } from "./utilities/userUtilities";
 
 function App(): ReactElement {
   // Gather preferred color scheme from user client's OS and set theme to that

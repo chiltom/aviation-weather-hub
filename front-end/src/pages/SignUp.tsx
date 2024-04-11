@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { useOutletContext } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import SignUpForm from "../components/SignUpForm";
-import { ContextType } from "../utilities";
+import { ContextType } from "../utilities/userUtilities";
 
 const Signup = (): ReactElement => {
   const { user, setUser, theme } = useOutletContext<ContextType>();
