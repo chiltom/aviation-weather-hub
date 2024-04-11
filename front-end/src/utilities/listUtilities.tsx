@@ -1,19 +1,7 @@
 import { AxiosResponse } from "axios";
 import { api } from "./axiosConfig";
+import { Task } from "./taskUtilities";
 // All list related utility functions
-
-/**
- * The Task interface defines the properties of a Task, which
- * consist of a name and completion status. The task is then attached
- * to a parent list, with a reinforced relationship in the server and
- * database using a foreign key relationship. The task holds all relevant
- * information from the server.
- */
-export interface Task {
-  id: number;
-  name: string;
-  completed: boolean;
-}
 
 /**
  * The List interface defines the properties of a List,
@@ -132,8 +120,8 @@ export const getAList = async (listId: number): Promise<List | null> => {
 export const updateAList = async (
   listId: number,
   newName: string
-  /* If needed later on add a new list of tasks and completed parameter,
-    but the function should work as is due to the nature of updating lists'
+  /* If needed later on add a new method for list of tasks and completed,
+     but the function should work as is due to the nature of updating lists'
     completion status on the updating of a task, and list re-render SHOULD
     be implemented on task addition/deletion with a useEffect */
 ): Promise<List | null> => {
