@@ -3,15 +3,16 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 import { signupUser } from "../utilities";
 import { ContextType } from "../utilities";
 
 const SignUpForm = ({ user, setUser, theme }: ContextType) => {
-  const [emailInput, setEmailInput] = useState("");
-  const [passwordInput, setPasswordInput] = useState("");
-  const [displayNameInput, setDisplayNameInput] = useState("");
-  const [firstNameInput, setFirstNameInput] = useState("");
-  const [lastNameInput, setLastNameInput] = useState("");
+  const [emailInput, setEmailInput] = useState<string>("");
+  const [passwordInput, setPasswordInput] = useState<string>("");
+  const [displayNameInput, setDisplayNameInput] = useState<string>("");
+  const [firstNameInput, setFirstNameInput] = useState<string>("");
+  const [lastNameInput, setLastNameInput] = useState<string>("");
 
   const handleSignup: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -26,7 +27,7 @@ const SignUpForm = ({ user, setUser, theme }: ContextType) => {
       setUser(user);
       console.log(user);
     } else {
-      alert("Sign up failed. Please try again.")
+      alert("Sign up failed. Please try again.");
     }
   };
 
@@ -41,51 +42,49 @@ const SignUpForm = ({ user, setUser, theme }: ContextType) => {
             simply used to validate clients for sign-in
           </p>
           <Form onSubmit={handleSignup}>
-            <Form.Group
+            <InputGroup
               className="mb-3 flex flex-row"
-              controlId="formBasicEmail"
             >
-              <Form.Label>Email address</Form.Label>
+              <InputGroup.Text>Email address</InputGroup.Text>
               <Form.Control
                 onChange={(e) => setEmailInput(e.target.value)}
                 type="email"
-                placeholder="Must be a valid email address"
+                placeholder="Valid email address"
               />
-            </Form.Group>
-            <Form.Group
-              className="mb-3 flex flex-row"
-              controlId="formBasicPassword"
+            </InputGroup>
+            <InputGroup
+              className="mb-3 flex justify-center"
             >
-              <Form.Label>Password</Form.Label>
+              <InputGroup.Text>Password</InputGroup.Text>
               <Form.Control
                 onChange={(e) => setPasswordInput(e.target.value)}
                 type="password"
-                placeholder="Password"
+                placeholder=""
               />
-            </Form.Group>
-            <Form.Group className="mb-3 flex flex-row">
-              <Form.Label>Display Name</Form.Label>
+            </InputGroup>
+            <InputGroup className="mb-3 flex justify-center">
+              <InputGroup.Text>Display Name</InputGroup.Text>
               <Form.Control
                 onChange={(e) => setDisplayNameInput(e.target.value)}
                 type="displayName"
-                placeholder="Display name may only contain capital letters, lowercase letters, and the characters '.', '-', '_'"
+                placeholder="Only capital letters, lowercase letters, and the characters '.', '-', '_'"
               />
-            </Form.Group>
+            </InputGroup>
             {/* TODO: Figure out how to make these two fields inline */}
-            <Form.Group className="mb-3 flex flex-row">
-              <Form.Label>First Name</Form.Label>
+            <InputGroup className="mb-3 flex justify-center">
+              <InputGroup.Text>First Name</InputGroup.Text>
               <Form.Control
                 onChange={(e) => setFirstNameInput(e.target.value)}
                 type="firstName"
-                placeholder="Must be in Title case"
+                placeholder="Title case"
               />
-              <Form.Label>Last Name</Form.Label>
+              <InputGroup.Text>Last Name</InputGroup.Text>
               <Form.Control
                 onChange={(e) => setLastNameInput(e.target.value)}
                 type="lastName"
-                placeholder="Must be in Title case"
+                placeholder="Title case"
               />
-            </Form.Group>
+            </InputGroup>
             <Button variant="primary" type="submit">
               Submit
             </Button>

@@ -1,6 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse } from "axios";
 
-// Define context types to be passed down
+/**
+ * Type and interface definitions
+ */
 export type ContextType = {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
@@ -14,11 +16,38 @@ export interface User {
   last_name: string;
 }
 
+/**
+ * Axios instance that defines the config for all further axios
+ * requests
+ */
 export const api: AxiosInstance = axios.create({
   baseURL: "http://127.0.0.1:8000/api/v1/",
 });
 
-// TODO: Check for cookie fixes
+/**
+ * Set of functions to handle all user CRUD capabilities
+ * TODO: Implement cookie authentication for more secure auth method
+ */
+
+/**
+ * This function sends a post request to the server to sign up a
+ * user for the service.
+ *
+ * If the arguments are valid, the user is created by the server
+ * and returned along with a new token for the session. The token
+ * is then added to localStorage and the appropriate Authorization
+ * header with the token value is set. Finally, a User object is
+ * returned from the function.
+ *
+ * If the arguments are invalid, a null value is returned.
+ *
+ * @param email - The new user's email
+ * @param password - The new user's password
+ * @param display_name - The new user's display name
+ * @param first_name - The new user's first name
+ * @param last_name - The new user's last_name
+ * @returns {User | number}
+ */
 export const signupUser = async (
   email: string,
   password: string,
@@ -56,7 +85,21 @@ export const signupUser = async (
   }
 };
 
-// TODO: Check for cookie fixes
+/**
+ * This function takes an existing user's email and password and
+ * sends the credentials to the server for authentication.
+ *
+ * If the user is authenticated, their information is returned with
+ * a token. The token is then added to the client's localStorage and
+ * the proper Authorization header with the token value is set. Finally,
+ * a User object is returned from the function.
+ *
+ * If the user is not authenticated, the server throws a bad response
+ * and this function returns null.
+ *
+ * @param email
+ * @param password
+ */
 export const userLogin = async (
   email: string,
   password: string
@@ -88,7 +131,20 @@ export const userLogin = async (
   }
 };
 
-// TODO: Check for cookie fixes
+/**
+ * No arguments are passed to this function, and instead a post
+ * request is sent to the server and it is validated with the
+ * user's token.
+ *
+ * If the user's token is authenticated the server validates the
+ * request and ends the current user's session. The 204 response
+ * is sent back and this function deletes the user's token. This
+ * ultimately returns a true value from this function upon deletion.
+ *
+ * If the user is not authenticated already, the token does not
+ * exist and the server throws an error. The function then returns
+ * a false value indicating that the logout request failed.
+ */
 export const userLogout = async (): Promise<boolean> => {
   try {
     const response: AxiosResponse = await api.post("users/logout/");
@@ -107,7 +163,16 @@ export const userLogout = async (): Promise<boolean> => {
   }
 };
 
-// TODO: Check for cookie fixes
+/**
+ * This function attempts to grab a user's token from local storage
+ * and use its value. If the token exists, a get request is sent to
+ * the server for the user.
+ *
+ * If the user is authenticated with the token the server returns
+ * the users information and this function returns the User object.
+ *
+ * If the token does not exist, this function returns a null value.
+ */
 export const userConfirmation = async (): Promise<User | null> => {
   const token: string | null = localStorage.getItem("token");
   if (token) {
@@ -124,4 +189,40 @@ export const userConfirmation = async (): Promise<User | null> => {
     }
   }
   return null;
+};
+
+/**
+ * This function takes the user's new display name as an argument
+ * and sends a put request with the user's token to the server.
+ *
+ * If the server authenticates the user and accepts the argument, it
+ * then uses the userConfirmation function to ensure that the user's
+ * updated data is grabbed from the server.
+ * 
+ * Finally, the function will return the user object that is returned
+ * from the userConfirmation.
+ *
+ * If the server does not authenticate the user, the server returns an
+ * error and this function returns a null value.
+ * @param display_name
+ */
+export const changeUserInfo = async (
+  display_name: string
+): Promise<User | null> => {
+  try {
+    const response: AxiosResponse = await api.put("users/", {
+      display_name: display_name,
+    });
+    if (response.status === 200) {
+      const updatedUser: User | null = await userConfirmation();
+      console.log(updatedUser);
+      return updatedUser;
+    } else {
+      console.log(response.status, response.data);
+      return null;
+    }
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 };

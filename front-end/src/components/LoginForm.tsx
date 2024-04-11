@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import InputGroup from "react-bootstrap/InputGroup";
 import { userLogin, ContextType } from "../utilities";
 
 const LoginForm = ({ user, setUser, theme }: ContextType): ReactElement => {
@@ -26,22 +27,22 @@ const LoginForm = ({ user, setUser, theme }: ContextType): ReactElement => {
         <h2 className="text-center">Login</h2>
         <Row>
           <Form onSubmit={handleLogin}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
+            <InputGroup className="mb-3">
+              <InputGroup.Text>Email address</InputGroup.Text>
               <Form.Control
                 onChange={(e) => setEmailInput(e.target.value)}
                 type="email"
                 placeholder="Enter email"
               />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
+            </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text>Password</InputGroup.Text>
               <Form.Control
                 onChange={(e) => setPasswordInput(e.target.value)}
                 type="password"
                 placeholder="Password"
               />
-            </Form.Group>
+            </InputGroup>
             <Button variant="primary" type="submit">
               Submit
             </Button>

@@ -48,14 +48,17 @@ const MyNavbar = ({ user, setUser, theme }: ContextType): ReactElement => {
           {/* Make into link to go to user info page with put request method to change
             user info */}
           {!user ? null : (
-            <Nav.Link as={Link} to={"/userinfo/"}>
-              Signed in as: {user.display_name}
-            </Nav.Link>
-          )}
-          {!user ? null : (
-            <Button onClick={() => handleUserLogout()} variant="outline-danger">
-              Log Out
-            </Button>
+            <Nav>
+              <Nav.Link as={Link} to={"/userinfo/"}>
+                Signed in as: {user.display_name}
+              </Nav.Link>
+              <Button
+                onClick={() => handleUserLogout()}
+                variant="outline-danger"
+              >
+                Log Out
+              </Button>
+            </Nav>
           )}
         </Navbar.Collapse>
       </Navbar>
