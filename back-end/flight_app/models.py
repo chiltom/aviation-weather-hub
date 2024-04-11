@@ -3,6 +3,7 @@ from django.core import validators as v
 from django.utils import timezone
 from user_app.models import User
 from .validators import (
+    validate_callsign,
     validate_aircraft_type_model,
     validate_pilot_responsible,
     validate_origin,
@@ -16,18 +17,22 @@ from .validators import (
     validate_hazard_type
 )
 
+# Add a callsign field to this model with custom validators to ensure that
+# it is all caps and has two nums at the end, implement this in unit tests
+# for models and views and adjust front end accordingly
+
 
 class Flight(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="flights")
     tail_number = models.PositiveIntegerField(
         validators=[v.MinValueValidator(100), v.MaxValueValidator(999)])
+    callsign = models.CharField(max_length=20, validators=[
+                                v.MinLengthValidator(1), validate_callsign])
     aircraft_type_model = models.CharField(
         max_length=20, validators=[validate_aircraft_type_model])
     pilot_responsible = models.CharField(max_length=100, validators=[
                                          validate_pilot_responsible])
-    # Enforce origin and destination with foreign key relationships to airport model,
-    # figure out way to access them by icao code
     origin = models.CharField(max_length=4, validators=[
                               v.MinLengthValidator(4), validate_origin])
     destination = models.CharField(max_length=4, validators=[

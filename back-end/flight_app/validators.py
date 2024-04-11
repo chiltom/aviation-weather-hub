@@ -2,6 +2,16 @@ from django.core.exceptions import ValidationError
 import re
 
 
+def validate_callsign(callsign: str) -> str:
+    error_message = f'''
+        {callsign} is not a valid callsign. It should be all caps with 1-3 numbers at the end.'''
+    regex = r'^[A-Z]+[0-9]{1,3}$'
+    good_name = re.match(regex, callsign)
+    if good_name:
+        return good_name
+    raise ValidationError(error_message, params={'callsign': callsign})
+
+
 def validate_aircraft_type_model(aircraft_type_model: str) -> str:
     error_message = f'''
         {aircraft_type_model} is not a valid aircraft model. It should consist only of

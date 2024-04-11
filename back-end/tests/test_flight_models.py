@@ -21,6 +21,7 @@ class Test_flight(TestCase):
         new_flight = Flight.objects.create(
             user=self.user,
             tail_number=459,
+            callsign="SHADY29",
             aircraft_type_model="CH-47F",
             pilot_responsible="CW2 Pilot Sucks",
             origin="KSVN",
@@ -36,6 +37,7 @@ class Test_flight(TestCase):
         new_flight = Flight.objects.create(
             user=self.user,
             tail_number=459,
+            callsign="SHADY29",
             aircraft_type_model="CH-47F",
             pilot_responsible="CW2 Pilot Sucks",
             origin="KSVN",
@@ -50,6 +52,7 @@ class Test_flight(TestCase):
             new_flight = Flight.objects.create(
                 user=self.user,
                 tail_number=29,
+                callsign="SHADY29",
                 aircraft_type_model="ch47f",
                 pilot_responsible="mr.goodman",
                 origin="ksvn",
@@ -80,6 +83,7 @@ class Test_brief(TestCase):
         self.user.flights.set([Flight.objects.create(
             user=self.user,
             tail_number=459,
+            callsign="SHADY29",
             aircraft_type_model="CH-47F",
             pilot_responsible="CW2 Pilot Sucks",
             origin="KSVN",
@@ -141,6 +145,7 @@ class Test_hazard(TestCase):
         self.user.flights.set([Flight.objects.create(
             user=self.user,
             tail_number=459,
+            callsign="SHADY29",
             aircraft_type_model="CH-47F",
             pilot_responsible="CW2 Pilot Sucks",
             origin="KSVN",
@@ -211,6 +216,7 @@ class Test_serializers(TestCase):
             data = {
                 "user": self.user.id,
                 "tail_number": 459,
+                "callsign": "SHADY29",
                 "aircraft_type_model": "CH-47F",
                 "pilot_responsible": "CW2 Pilot Sucks",
                 "origin": "KSVN",
@@ -230,6 +236,7 @@ class Test_serializers(TestCase):
             data = {
                 "user": self.user.id,
                 "tail_number": 459,
+                "callsign": "SHADY29",
                 "aircraft_type_model": "CH-47F",
                 "pilot_responsible": "CW2 Pilot Sucks",
                 "origin": "KSVN",
@@ -245,6 +252,7 @@ class Test_serializers(TestCase):
                 {
                     "user": self.user.id,
                     "tail_number": 459,
+                    "callsign": "SHADY29",
                     "aircraft_type_model": "CH-47F",
                     "pilot_responsible": "CW2 Pilot Sucks",
                     "origin": "KSVN",
@@ -262,6 +270,7 @@ class Test_serializers(TestCase):
         flight = Flight.objects.create(
             user=self.user,
             tail_number=459,
+            callsign="SHADY29",
             aircraft_type_model="CH-47F",
             pilot_responsible="CW2 Pilot Sucks",
             origin="KSVN",
@@ -291,6 +300,7 @@ class Test_serializers(TestCase):
         flight = Flight.objects.create(
             user=self.user,
             tail_number=459,
+            callsign="SHADY29",
             aircraft_type_model="CH-47F",
             pilot_responsible="CW2 Pilot Sucks",
             origin="KSVN",
@@ -335,6 +345,7 @@ class Test_serializers(TestCase):
         flight = Flight.objects.create(
             user=self.user,
             tail_number=459,
+            callsign="SHADY29",
             aircraft_type_model="CH-47F",
             pilot_responsible="CW2 Pilot Sucks",
             origin="KSVN",
@@ -370,6 +381,7 @@ class Test_serializers(TestCase):
         flight = Flight.objects.create(
             user=self.user,
             tail_number=459,
+            callsign="SHADY29",
             aircraft_type_model="CH-47F",
             pilot_responsible="CW2 Pilot Sucks",
             origin="KSVN",
