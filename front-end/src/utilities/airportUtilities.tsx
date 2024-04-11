@@ -34,17 +34,17 @@ export const createAirport = async (
       name: name,
     });
     if (response.status === 201) {
-      const new_airport: Airport = {
+      const newAirport: Airport = {
         icaoCode: response.data["icao_code"],
         name: response.data["name"],
       };
-      return new_airport;
+      return newAirport;
     } else {
-      console.log(response.data);
+      console.log("Post request failed: ", response.data);
       return null;
     }
   } catch (error) {
-    console.log(error);
+    console.log("Error making request: ", error);
     return null;
   }
 };
@@ -72,7 +72,7 @@ export const getAllAirports = async (): Promise<Airport[] | null> => {
     }
     return userAirportsArr;
   } else {
-    console.log(response.data);
+    console.log("Get request failed: ", response.data);
     return null;
   }
 };
@@ -98,7 +98,7 @@ export const getAnAirport = async (
     };
     return airport;
   } else {
-    console.log(response.data);
+    console.log("Get request failed: ", response.data);
     return null;
   }
 };
@@ -122,17 +122,17 @@ export const updateAnAirport = async (
   newIcaoCode?: string,
   newName?: string
 ): Promise<Airport | null> => {
-  const new_airport_data: { icao_code?: string; name?: string } = {};
+  const newAirportData: { icao_code?: string; name?: string } = {};
   if (newIcaoCode !== "" && newIcaoCode !== undefined) {
-    new_airport_data["icao_code"] = newIcaoCode;
+    newAirportData["icao_code"] = newIcaoCode;
   }
   if (newName !== "" && newName !== undefined) {
-    new_airport_data["name"] = newName;
+    newAirportData["name"] = newName;
   }
   try {
     const response: AxiosResponse = await api.put(
       `airports/${currIcaoCode}/`,
-      new_airport_data
+      newAirportData
     );
     if (response.status === 200) {
       const updatedAirport: Airport = {
@@ -141,11 +141,11 @@ export const updateAnAirport = async (
       };
       return updatedAirport;
     } else {
-      console.log(response.data);
+      console.log("Update failed: ", response.data);
       return null;
     }
   } catch (error) {
-    console.log(error);
+    console.log("Error making request: ", error);
     return null;
   }
 };
@@ -165,7 +165,7 @@ export const deleteAnAirport = async (icaoCode: string): Promise<boolean> => {
   if (response.status === 204) {
     return true;
   } else {
-    console.log(response.data);
+    console.log("Deletion failed: ", response.data);
     return false;
   }
 };
