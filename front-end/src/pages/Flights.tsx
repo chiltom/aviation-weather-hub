@@ -1,5 +1,6 @@
 import { ReactElement } from "react";
 
+// TODO: Think about using accordion under each flight to show all data
 const Flights = (): ReactElement => {
   return (
     <>

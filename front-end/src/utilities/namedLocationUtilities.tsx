@@ -162,16 +162,12 @@ export const updateANamedLocation = async (
   newCountry?: string
 ): Promise<NamedLocation | null> => {
   const newNamedLocationData: { city?: string; country?: string } = {};
-  if (newCity !== "" && newCity !== undefined) {
-    newNamedLocationData["city"] = newCity;
-  } else {
-    newNamedLocationData["city"] = currCity;
-  }
-  if (newCountry !== "" && newCountry !== undefined) {
-    newNamedLocationData["country"] = newCountry;
-  } else {
-    newNamedLocationData["country"] = currCountry;
-  }
+  newCity !== "" && newCity !== undefined
+    ? (newNamedLocationData["city"] = newCity)
+    : (newNamedLocationData["city"] = currCity);
+  newCountry !== "" && newCountry !== undefined
+    ? (newNamedLocationData["country"] = newCountry)
+    : (newNamedLocationData["country"] = currCountry);
   try {
     const infoResponse: AxiosResponse = await api.get(
       `coordinates/city/${newNamedLocationData["city"]}/country/${newNamedLocationData["country"]}/`
