@@ -289,7 +289,7 @@ export const updateABrief = async (
  * @param flightId
  * @param briefId
  */
-export const deleteAFlight = async (
+export const deleteABrief = async (
   flightId: number,
   briefId: number
 ): Promise<boolean> => {

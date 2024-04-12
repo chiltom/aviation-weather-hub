@@ -178,7 +178,7 @@ export const getAFlight = async (flightId: number): Promise<Flight | null> => {
 /**
  * This function takes the current flight's id and the optional flight data
  * elements as parameters and sends a put request to the server endpoint to
- * update the brief with the new data.
+ * update the flight with the new data.
  *
  * If the update is successful, the updated Flight object is returned.
  *
