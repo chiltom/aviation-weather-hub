@@ -123,12 +123,10 @@ export const updateAnAirport = async (
   newName?: string
 ): Promise<Airport | null> => {
   const newAirportData: { icao_code?: string; name?: string } = {};
-  if (newIcaoCode !== "" && newIcaoCode !== undefined) {
-    newAirportData["icao_code"] = newIcaoCode;
-  }
-  if (newName !== "" && newName !== undefined) {
-    newAirportData["name"] = newName;
-  }
+  newIcaoCode !== "" && newIcaoCode
+    ? (newAirportData["icao_code"] = newIcaoCode)
+    : null;
+  newName !== "" && newName ? (newAirportData["name"] = newName) : null;
   try {
     const response: AxiosResponse = await api.put(
       `airports/${currIcaoCode}/`,
