@@ -78,7 +78,7 @@ export const createFlight = async (
       takeoff_time: takeoffTime,
       arrival_time: arrivalTime,
     });
-    if (response.status === 200) {
+    if (response.status === 201) {
       const newFlight: Flight = {
         id: response.data["id"],
         tailNumber: response.data["tail_number"],
@@ -107,7 +107,7 @@ export const createFlight = async (
  * This function makes a get request to the server endpoint to grab an array
  * of all of the user's current flights.
  *
- * If an array of lists is returned from the server, the array is then iterated
+ * If an array of flights is returned from the server, the array is then iterated
  * over and each element is destructured into a Flight object.
  *
  * The destructured objects are all pushed to a Flight array that is returned.

@@ -46,7 +46,7 @@ export const createNamedLocation = async (
     const infoResponse: AxiosResponse = await api.get(
       `coordinates/city/${city}/country/${country}/`
     );
-    if (infoResponse.status === 200) {
+    if (infoResponse.status === 201) {
       const namedLocation: NamedLocation = {
         city: infoResponse.data["city"],
         country: infoResponse.data["country"],
