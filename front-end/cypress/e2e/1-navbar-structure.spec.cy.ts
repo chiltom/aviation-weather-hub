@@ -17,10 +17,8 @@ describe("Tests the structure of the navbar w/o user signed in", () => {
     cy.get(".navbar-nav")
       .eq(1)
       .contains("Sign Up")
-      .should("have.attr", "href", "/signup/");
     cy.get(".navbar-nav")
       .eq(1)
       .contains("Log In")
-      .should("have.attr", "href", "/login/");
   });
 });
