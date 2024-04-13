@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-const Training = (): ReactElement => {
+const Training: React.FC = (): ReactElement => {
   return (
     <>
       <h1>Training</h1>

@@ -1,5 +1,4 @@
 import { ReactElement, useState, useEffect } from "react";
-import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import {
@@ -11,7 +10,9 @@ import {
 } from "../utilities/airportUtilities";
 import { ContextType } from "../utilities/userUtilities";
 
-const Airports = ({ theme }: ContextType): ReactElement => {
+const Airports: React.FC<ContextType> = ({
+  theme,
+}: ContextType): ReactElement => {
   const [airports, setAirports] = useState<Airport[]>([]);
   const [editAirportIcao, setEditAirportIcao] = useState<string | null>(null);
   const [newAirportName, setNewAirportName] = useState<string>("");
@@ -73,10 +74,10 @@ const Airports = ({ theme }: ContextType): ReactElement => {
    * method to update the airport.
    *
    * If the request is successful, the airports are mapped over and if a previous airport's
-   * id matches the updated airport's id, it is replaced with the updated Airport object.
+   * icaoCode matches the updated airport's icaoCode, it is replaced with the updated Airport object.
    *
    * If the request is unsuccessful, nothing happens.
-   * @param airportId
+   * @param icaoCode
    * @param newIcaoCode
    * @param newAirportName
    */
@@ -91,7 +92,6 @@ const Airports = ({ theme }: ContextType): ReactElement => {
       newAirportName
     );
     if (updatedAirport) {
-      console.log(updatedAirport);
       setAirports((prevAirports) =>
         prevAirports.map((airport) =>
           airport.icaoCode === icaoCode ? updatedAirport : airport
@@ -125,7 +125,7 @@ const Airports = ({ theme }: ContextType): ReactElement => {
    * to a button.
    *
    * If the button is clicked, it sets the editAirportIcao state to the current airport's icao
-   * and sets the input boxs' value to the current airport's icaoCode and name. It then allows
+   * and sets the input boxes' value to the current airport's icaoCode and name. It then allows
    * the user to edit the airport's icaoCode and name and submit a new set.
    * @param icaoCode
    * @param currIcaoCode
@@ -163,100 +163,98 @@ const Airports = ({ theme }: ContextType): ReactElement => {
 
   return (
     <>
-      <Container data-bs-theme={theme}>
-        <ListGroup>
-          <ListGroup.Item className="d-flex justify-content-center align-items-center">
-            <h4>Airports</h4>
-          </ListGroup.Item>
-          {airports.map((airport) => (
-            <ListGroup.Item
-              key={airport.icaoCode}
-              className="d-flex justify-content-between align-items-center"
-            >
-              {editAirportIcao === airport.icaoCode ? (
-                <div className="d-flex flex-grow-1 justify-content-between">
-                  <div className="d-flex align-items-center">
-                    <input
-                      type="text"
-                      value={newAirportIcao}
-                      onChange={(e) => setNewAirportIcao(e.target.value)}
-                      className="form-control"
-                    />
-                    <input
-                      type="text"
-                      value={newAirportName}
-                      onChange={(e) => setNewAirportName(e.target.value)}
-                      className="form-control"
-                    />
-                  </div>
+      <ListGroup className="h-100" data-bs-theme={theme}>
+        <ListGroup.Item className="d-flex justify-content-center align-items-center">
+          <h4>Airports</h4>
+        </ListGroup.Item>
+        {airports.map((airport) => (
+          <ListGroup.Item
+            key={airport.icaoCode}
+            className="d-flex justify-content-between align-items-center"
+          >
+            {editAirportIcao === airport.icaoCode ? (
+              <div className="d-flex flex-grow-1 justify-content-between">
+                <div className="d-flex align-items-center">
+                  <input
+                    type="text"
+                    value={newAirportIcao}
+                    onChange={(e) => setNewAirportIcao(e.target.value)}
+                    className="form-control"
+                  />
+                  <input
+                    type="text"
+                    value={newAirportName}
+                    onChange={(e) => setNewAirportName(e.target.value)}
+                    className="form-control"
+                  />
+                </div>
+                <Button
+                  variant="outline-success"
+                  onClick={() => handleSubmitAirportUpdate(airport.icaoCode)}
+                >
+                  Save
+                </Button>
+              </div>
+            ) : (
+              <>
+                <div>
+                  <strong>{airport.icaoCode}</strong> - {airport.name}
+                </div>
+                <div>
                   <Button
-                    variant="outline-success"
-                    onClick={() => handleSubmitAirportUpdate(airport.icaoCode)}
+                    variant="outline-primary"
+                    size="sm"
+                    className="mr-2"
+                    onClick={() =>
+                      handleEditAirportUpdate(
+                        airport.icaoCode,
+                        airport.icaoCode,
+                        airport.name
+                      )
+                    }
                   >
-                    Save
+                    Edit
+                  </Button>
+                  <Button
+                    variant="outline-danger"
+                    size="sm"
+                    onClick={() => handleAirportDelete(airport.icaoCode)}
+                  >
+                    Delete
                   </Button>
                 </div>
-              ) : (
-                <>
-                  <div>
-                    <strong>{airport.icaoCode}</strong> - {airport.name}
-                  </div>
-                  <div>
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      className="mr-2"
-                      onClick={() =>
-                        handleEditAirportUpdate(
-                          airport.icaoCode,
-                          airport.icaoCode,
-                          airport.name
-                        )
-                      }
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
-                      onClick={() => handleAirportDelete(airport.icaoCode)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
-                </>
-              )}
-            </ListGroup.Item>
-          ))}
-          {createAirportStatus ? (
-            <ListGroup.Item className="d-flex">
-              <input
-                type="text"
-                value={createAirportIcao}
-                onChange={(e) => setCreateAirportIcao(e.target.value)}
-                className="form-control mr-2"
-                placeholder="New ICAO Code"
-              />
-              <input
-                type="text"
-                value={createAirportName}
-                onChange={(e) => setCreateAirportName(e.target.value)}
-                className="form-control mr-2"
-                placeholder="New Airport Name"
-              />
-              <Button variant="success" onClick={handleCreateAirportSubmit}>
-                Create
-              </Button>
-            </ListGroup.Item>
-          ) : (
-            <ListGroup.Item>
-              <Button variant="primary" onClick={handleCreateAirportEdit}>
-                Add New Airport
-              </Button>
-            </ListGroup.Item>
-          )}
-        </ListGroup>
-      </Container>
+              </>
+            )}
+          </ListGroup.Item>
+        ))}
+        {createAirportStatus ? (
+          <ListGroup.Item className="d-flex">
+            <input
+              type="text"
+              value={createAirportIcao}
+              onChange={(e) => setCreateAirportIcao(e.target.value)}
+              className="form-control mr-2"
+              placeholder="New ICAO Code"
+            />
+            <input
+              type="text"
+              value={createAirportName}
+              onChange={(e) => setCreateAirportName(e.target.value)}
+              className="form-control mr-2"
+              placeholder="New Airport Name"
+            />
+            <Button variant="success" onClick={handleCreateAirportSubmit}>
+              Create
+            </Button>
+          </ListGroup.Item>
+        ) : (
+          <ListGroup.Item>
+            <Button variant="primary" onClick={handleCreateAirportEdit}>
+              Add New Airport
+            </Button>
+          </ListGroup.Item>
+        )}
+      </ListGroup>
     </>
   );
 };

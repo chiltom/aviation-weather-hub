@@ -6,7 +6,11 @@ import Nav from "react-bootstrap/Nav";
 import InputGroup from "react-bootstrap/InputGroup";
 import { userLogin, ContextType } from "../utilities/userUtilities";
 
-const LoginForm = ({ user, setUser, theme }: ContextType): ReactElement => {
+const LoginForm: React.FC<ContextType> = ({
+  user,
+  setUser,
+  theme,
+}: ContextType): ReactElement => {
   const [show, setShow] = useState<boolean>(false);
   const [emailInput, setEmailInput] = useState<string>("");
   const [passwordInput, setPasswordInput] = useState<string>("");

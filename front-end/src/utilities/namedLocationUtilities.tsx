@@ -46,18 +46,18 @@ export const createNamedLocation = async (
     const infoResponse: AxiosResponse = await api.get(
       `coordinates/city/${city}/country/${country}/`
     );
-    if (infoResponse.status === 201) {
+    if (infoResponse.status === 200) {
       const namedLocation: NamedLocation = {
         city: infoResponse.data["city"],
         country: infoResponse.data["country"],
-        latitude: infoResponse.data["latitude"],
-        longitude: infoResponse.data["longitude"],
+        latitude: String(infoResponse.data["latitude"]),
+        longitude: String(infoResponse.data["longitude"]),
       };
       const creationResponse: AxiosResponse = await api.post(
         `named-locations/`,
         namedLocation
       );
-      if (creationResponse.status === 200) {
+      if (creationResponse.status === 201) {
         return namedLocation;
       } else {
         console.log("Creation error: ", creationResponse.data);
@@ -176,8 +176,8 @@ export const updateANamedLocation = async (
       const namedLocation: NamedLocation = {
         city: infoResponse.data["city"],
         country: infoResponse.data["country"],
-        latitude: infoResponse.data["latitude"],
-        longitude: infoResponse.data["longitude"],
+        latitude: String(infoResponse.data["latitude"]),
+        longitude: String(infoResponse.data["longitude"]),
       };
       const updateResponse: AxiosResponse = await api.put(
         `named-locations/${currCity}/`,

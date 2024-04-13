@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-const HomePage = (): ReactElement => {
+const HomePage: React.FC = (): ReactElement => {
   return (
     <>
       <h1>The Aviation Weather Hub</h1>

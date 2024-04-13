@@ -19,7 +19,7 @@ import {
 } from "../utilities/taskUtilities";
 import { ContextType } from "../utilities/userUtilities";
 
-const Lists = ({ theme }: ContextType): ReactElement => {
+const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {
   const [lists, setLists] = useState<List[]>([]);
   const [editListId, setEditListId] = useState<number | null>(null);
   const [newListName, setNewListName] = useState<string>("");
@@ -329,9 +329,7 @@ const Lists = ({ theme }: ContextType): ReactElement => {
         className="border border-secondary d-flex flex-column rounded-3 p-0 align-items-end"
         fluid
       >
-        <Accordion
-          className="d-flex flex-column flex-grow-1 w-100"
-        >
+        <Accordion className="d-flex flex-column flex-grow-1 w-100">
           {lists.map((list, index) => (
             <Accordion.Item key={list.id} eventKey={`${index}`}>
               <Accordion.Header className="flex w-full">
@@ -484,6 +482,7 @@ const Lists = ({ theme }: ContextType): ReactElement => {
           <Button
             onClick={() => handleCreateListEdit()}
             variant="primary"
+            size="sm"
             className="w-25"
           >
             Create New List

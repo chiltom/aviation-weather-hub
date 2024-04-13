@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 
-const AboutPage = (): ReactElement => {
+const AboutPage: React.FC = (): ReactElement => {
   return (
     <>
       <h1>About Page</h1>

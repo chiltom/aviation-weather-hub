@@ -7,7 +7,11 @@ import SignUpForm from "./SignUpModal";
 import { userLogout, ContextType } from "../utilities/userUtilities";
 import LoginForm from "./LoginModal";
 
-const MyNavbar = ({ user, setUser, theme }: ContextType): ReactElement => {
+const MyNavbar: React.FC<ContextType> = ({
+  user,
+  setUser,
+  theme,
+}: ContextType): ReactElement => {
   const handleUserLogout = async () => {
     const loggedOut = await userLogout();
     if (loggedOut) {

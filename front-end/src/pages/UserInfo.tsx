@@ -6,7 +6,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import UserInfoForm from "../components/UserInfoForm";
 import { ContextType, User } from "../utilities/userUtilities";
 
-const UserInfo = (): ReactElement => {
+const UserInfo: React.FC = (): ReactElement => {
   const { user, setUser, theme } = useOutletContext<ContextType>();
 
   const renderUserInfo = (user: User): ReactElement => {
