@@ -1,6 +1,7 @@
 import { ReactElement, useState, useEffect } from "react";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
+import Accordion from "react-bootstrap/Accordion";
 import {
   List,
   createList,
@@ -18,7 +19,7 @@ import {
 } from "../utilities/taskUtilities";
 import { ContextType } from "../utilities/userUtilities";
 
-const Lists = ({ user, setUser, theme }: ContextType): ReactElement => {
+const Lists = ({ theme }: ContextType): ReactElement => {
   const [lists, setLists] = useState<List[]>([]);
   const [editListId, setEditListId] = useState<number | null>(null);
   const [newListName, setNewListName] = useState<string>("");
@@ -38,11 +39,6 @@ const Lists = ({ user, setUser, theme }: ContextType): ReactElement => {
     };
     fetchLists();
   }, []);
-
-  // Delete later, just to see list data
-  useEffect(() => {
-    console.log(lists);
-  }, [lists]);
 
   /**
    * Handler for create new list button
@@ -321,112 +317,143 @@ const Lists = ({ user, setUser, theme }: ContextType): ReactElement => {
     <>
       <h2 className="text-3xl font-bold mb-4 text-center">Lists</h2>
       <Container data-bs-theme={theme} fluid>
-        {lists.map((list) => (
-          <div key={list.id} className="mb-4">
-            {editListId === list.id ? (
-              <div className="flex items-center mb-2">
-                <input
-                  type="text"
-                  value={newListName}
-                  onChange={(e) => setNewListName(e.target.value)}
-                  className="form-control flex-grow mr-2"
-                />
-                <Button
-                  onClick={() => handleSubmitListName(list.id)}
-                  variant="primary"
-                >
-                  Save
-                </Button>
-              </div>
-            ) : (
-              <h2 className="text-2xl font-bold mb-2">{list.name}</h2>
-            )}
-            <Button
-              onClick={() => handleListDelete(list.id)}
-              variant="danger"
-              className="mr-2"
-            >
-              Delete List
-            </Button>
-            <Button
-              onClick={() => handleEditListName(list.id, list.name)}
-              variant="secondary"
-              className="mr-2"
-            >
-              Rename List
-            </Button>
-            <ul className="list-disc pl-6">
-              {list.tasks.map((task) => (
-                <li key={task.id} className="mb-2">
-                  {editTaskId === task.id ? (
-                    <div className="flex items-center mb-2">
-                      <input
-                        type="text"
-                        value={newTaskName}
-                        onChange={(e) => setNewTaskName(e.target.value)}
-                        className="form-control flex-grow mr-2"
-                      />
+        <Accordion defaultActiveKey="0">
+          {lists.map((list, index) => (
+            <Accordion.Item key={list.id} eventKey={`${index}`}>
+              <Accordion.Header className="flex w-full">
+                {editListId === list.id ? (
+                  <div className="d-flex flex-grow-1 me-3">
+                    <input
+                      type="text"
+                      value={newListName}
+                      onChange={(e) => setNewListName(e.target.value)}
+                      className="form-control flex-grow mr-2"
+                    />
+                    <Button
+                      onClick={() => handleSubmitListName(list.id)}
+                      variant="primary"
+                      size="sm"
+                    >
+                      Save
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="d-flex flex-grow-1 justify-content-between align-items-center">
+                    <h3 className="d-flex align-items-center">{list.name}</h3>
+                    <div className="d-flex align-items-center mx-3">
                       <Button
-                        onClick={() => handleSubmitTaskName(task.list, task.id)}
-                        variant="primary"
-                      >
-                        Save
-                      </Button>
-                    </div>
-                  ) : (
-                    <div>
-                      <h4 className="text-lg font-medium mr-2">{task.name}</h4>
-                      <Button
-                        onClick={() => handleEditTaskName(task.id, task.name)}
-                        variant="link"
+                        onClick={() => handleEditListName(list.id, list.name)}
+                        variant="secondary"
+                        size="sm"
                         className="mr-2"
                       >
-                        Edit
+                        Rename List
+                      </Button>
+                      <Button
+                        onClick={() => handleListDelete(list.id)}
+                        variant="danger"
+                        size="sm"
+                      >
+                        Delete List
                       </Button>
                     </div>
-                  )}
-                  <input
-                    type="checkbox"
-                    checked={task.completed}
-                    onChange={(e) =>
-                      handleTaskCompletion(task.list, task.id, e.target.checked)
-                    }
-                    className="mr-2"
-                  />
+                  </div>
+                )}
+              </Accordion.Header>
+              <Accordion.Body className="d-flex flex-column">
+                <ul className="list-unstyled">
+                  {list.tasks.map((task) => (
+                    <li
+                      key={task.id}
+                      className="mb-2 d-flex align-items-center justify-content-between"
+                    >
+                      {editTaskId === task.id ? (
+                        <div className="d-flex align-items-center w-100">
+                          <input
+                            type="text"
+                            value={newTaskName}
+                            onChange={(e) => setNewTaskName(e.target.value)}
+                            className="form-control flex-grow-1 mr-2"
+                          />
+                          <Button
+                            onClick={() =>
+                              handleSubmitTaskName(list.id, task.id)
+                            }
+                            variant="primary"
+                            size="sm"
+                          >
+                            Save
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="d-flex justify-content-between align-items-center w-100">
+                          <input
+                            type="checkbox"
+                            checked={task.completed}
+                            onChange={(e) =>
+                              handleTaskCompletion(
+                                list.id,
+                                task.id,
+                                e.target.checked
+                              )
+                            }
+                            className="mr-2"
+                          />
+                          <h4 className="text-lg font-medium flex-grow-1 my-0 mx-3">
+                            {task.name}
+                          </h4>
+                          <Button
+                            onClick={() =>
+                              handleEditTaskName(task.id, task.name)
+                            }
+                            variant="link"
+                            size="sm"
+                            className="mr-2"
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            onClick={() => handleTaskDelete(list.id, task.id)}
+                            variant="danger"
+                            size="sm"
+                          >
+                            Delete Task
+                          </Button>
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+                {createTaskListId === list.id ? (
+                  <div className="flex items-center mt-2">
+                    <input
+                      type="text"
+                      value={createTaskName}
+                      onChange={(e) => setCreateTaskName(e.target.value)}
+                      className="form-control flex-grow-1 mr-2"
+                    />
+                    <Button
+                      onClick={() => handleCreateTaskSubmit(list.id)}
+                      variant="primary"
+                      size="sm"
+                    >
+                      Save
+                    </Button>
+                  </div>
+                ) : (
                   <Button
-                    onClick={() => handleTaskDelete(list.id, task.id)}
-                    variant="danger"
+                    onClick={() => handleCreateTaskEdit(list.id)}
+                    variant="success"
+                    size="sm"
+                    className="mt-2"
                   >
-                    Delete Task
+                    Create New Task
                   </Button>
-                </li>
-              ))}
-            </ul>
-            {createTaskListId === list.id ? (
-              <div className="flex items-center">
-                <input
-                  type="text"
-                  value={createTaskName}
-                  onChange={(e) => setCreateTaskName(e.target.value)}
-                  className="form-control flex-grow mr-2"
-                />
-                <Button
-                  onClick={() => handleCreateTaskSubmit(list.id)}
-                  variant="primary"
-                >
-                  Save
-                </Button>
-              </div>
-            ) : (
-              <Button
-                onClick={() => handleCreateTaskEdit(list.id)}
-                variant="success"
-              >
-                Create New Task
-              </Button>
-            )}
-          </div>
-        ))}
+                )}
+              </Accordion.Body>
+            </Accordion.Item>
+          ))}
+        </Accordion>
         {createListStatus === false ? (
           <Button
             onClick={() => handleCreateListEdit()}
@@ -443,7 +470,11 @@ const Lists = ({ user, setUser, theme }: ContextType): ReactElement => {
               onChange={(e) => setCreateListName(e.target.value)}
               className="form-control flex-grow mr-2"
             />
-            <Button onClick={() => handleCreateListSubmit()} variant="primary">
+            <Button
+              onClick={() => handleCreateListSubmit()}
+              variant="primary"
+              size="sm"
+            >
               Save
             </Button>
           </div>

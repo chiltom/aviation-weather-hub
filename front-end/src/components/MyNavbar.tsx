@@ -15,7 +15,7 @@ const MyNavbar = ({ user, setUser, theme }: ContextType): ReactElement => {
 
   return (
     <>
-      <Navbar expand="lg" sticky="top" data-bs-theme={theme}>
+      <Navbar expand="lg" className="sticky-top" data-bs-theme={theme}>
         <Navbar.Brand as={Link} to={"/"}>
           Weather Hub
         </Navbar.Brand>
