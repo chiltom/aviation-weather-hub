@@ -7,7 +7,7 @@ import {
   createNamedLocation,
   updateANamedLocation,
   deleteANamedLocation,
-} from "../utilities/namedLocationUtilities";
+} from "../utilities/locations/namedLocationUtilities";
 import { ContextType } from "../utilities/userUtilities";
 
 const NamedLocations: React.FC<ContextType> = ({

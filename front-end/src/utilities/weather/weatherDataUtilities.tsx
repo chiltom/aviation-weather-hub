@@ -1,4 +1,4 @@
-import { api } from "./axiosConfig";
+import { api } from "../axiosConfig";
 import { AxiosResponse } from "axios";
 // All weather data related utility functions
 

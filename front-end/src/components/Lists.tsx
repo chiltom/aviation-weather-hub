@@ -9,14 +9,14 @@ import {
   getAllLists,
   updateAList,
   deleteAList,
-} from "../utilities/listUtilities";
+} from "../utilities/lists/listUtilities";
 import {
   Task,
   createTask,
   updateTaskName,
   updateTaskCompleted,
   deleteATask,
-} from "../utilities/taskUtilities";
+} from "../utilities/lists/taskUtilities";
 import { ContextType } from "../utilities/userUtilities";
 
 const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {

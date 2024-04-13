@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { api } from "./axiosConfig";
+import { api } from "../axiosConfig";
 import { Brief } from "./briefUtilities";
 // All flight crud utilities
 
