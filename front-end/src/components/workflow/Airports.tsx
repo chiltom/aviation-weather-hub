@@ -9,6 +9,7 @@ import {
   deleteAnAirport,
 } from "../../utilities/locations/airportUtilities";
 import { ContextType } from "../../utilities/userUtilities";
+import { useWeather, WeatherContextType } from "../../hooks/weatherContext";
 
 const Airports: React.FC<ContextType> = ({
   theme,
@@ -21,6 +22,7 @@ const Airports: React.FC<ContextType> = ({
     useState<boolean>(false);
   const [createAirportName, setCreateAirportName] = useState<string>("");
   const [createAirportIcao, setCreateAirportIcao] = useState<string>("");
+  const { setIcaoCode }: WeatherContextType = useWeather();
 
   /**
    * useEffect hook to fetch all airports upon initial render of the component
@@ -200,11 +202,17 @@ const Airports: React.FC<ContextType> = ({
                 <div>
                   <strong>{airport.icaoCode}</strong> - {airport.name}
                 </div>
-                <div>
+                <div className="d-flex flex-wrap">
                   <Button
                     variant="outline-primary"
+                    onClick={() => setIcaoCode(airport.icaoCode)}
                     size="sm"
-                    className="mr-2"
+                  >
+                    Weather
+                  </Button>
+                  <Button
+                    variant="outline-secondary"
+                    size="sm"
                     onClick={() =>
                       handleEditAirportUpdate(
                         airport.icaoCode,
@@ -212,6 +220,7 @@ const Airports: React.FC<ContextType> = ({
                         airport.name
                       )
                     }
+                    className="mx-1"
                   >
                     Edit
                   </Button>

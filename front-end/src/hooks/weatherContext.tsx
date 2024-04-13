@@ -10,9 +10,13 @@ import {
  * Defines the type for the context, which consists of an icaoCode and a
  * state setter for the icaoCode.
  */
-interface WeatherContextType {
+export interface WeatherContextType {
   icaoCode: string | null;
   setIcaoCode: React.Dispatch<React.SetStateAction<string | null>>;
+  latitude: string | null;
+  setLatitude: React.Dispatch<React.SetStateAction<string | null>>;
+  longitude: string | null;
+  setLongitude: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 /**
@@ -41,9 +45,18 @@ export const WeatherProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }): ReactElement => {
   const [icaoCode, setIcaoCode] = useState<string | null>(null);
+  const [latitude, setLatitude] = useState<string | null>(null);
+  const [longitude, setLongitude] = useState<string | null>(null);
 
   // Provides the state and updater function to all context consumers
-  const value = { icaoCode, setIcaoCode };
+  const value = {
+    icaoCode,
+    setIcaoCode,
+    latitude,
+    setLatitude,
+    longitude,
+    setLongitude,
+  };
 
   return (
     <WeatherContext.Provider value={value}>{children}</WeatherContext.Provider>

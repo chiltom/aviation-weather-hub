@@ -9,6 +9,7 @@ import {
   deleteANamedLocation,
 } from "../../utilities/locations/namedLocationUtilities";
 import { ContextType } from "../../utilities/userUtilities";
+import { useWeather, WeatherContextType } from "../../hooks/weatherContext";
 
 const NamedLocations: React.FC<ContextType> = ({
   theme,
@@ -26,6 +27,17 @@ const NamedLocations: React.FC<ContextType> = ({
     useState<string>("");
   const [createNamedLocationCountry, setCreateNamedLocationCountry] =
     useState<string>("");
+  const { setLatitude, setLongitude }: WeatherContextType = useWeather();
+
+  /**
+   * Handles the selection of a named location and passes it up to the weather provider
+   * @param latitude
+   * @param longitude
+   */
+  const handleSelectLocation = (latitude: string, longitude: string): void => {
+    setLatitude(latitude);
+    setLongitude(longitude);
+  };
 
   /**
    * useEffect hook to fetch all named locations upon initial render of the component
@@ -190,7 +202,7 @@ const NamedLocations: React.FC<ContextType> = ({
     <>
       <ListGroup className="h-100" data-bs-theme={theme}>
         <ListGroup.Item className="d-flex justify-content-center align-items-center">
-          <h4>Cities - Countries</h4>
+          <h4>Cities</h4>
         </ListGroup.Item>
         {namedLocations.map((namedLocation) => (
           <ListGroup.Item
@@ -231,11 +243,23 @@ const NamedLocations: React.FC<ContextType> = ({
                   <strong>{namedLocation.city}</strong> -{" "}
                   <strong>{namedLocation.country}</strong>
                 </div>
-                <div>
+                <div className="d-flex flex-wrap">
                   <Button
+                    onClick={() =>
+                      handleSelectLocation(
+                        namedLocation.latitude,
+                        namedLocation.longitude
+                      )
+                    }
                     variant="outline-primary"
                     size="sm"
-                    className="mr-2"
+                  >
+                    Weather
+                  </Button>
+                  <Button
+                    variant="outline-secondary"
+                    size="sm"
+                    className="mx-1"
                     onClick={() =>
                       handleEditNamedLocationUpdate(
                         namedLocation.city,

@@ -1,4 +1,4 @@
-import { api } from "../axiosConfig";
+import { api } from "./axiosConfig";
 import { AxiosResponse } from "axios";
 // All weather data related utility functions
 
@@ -15,7 +15,7 @@ import { AxiosResponse } from "axios";
  */
 export const getAirportMetars = async (
   icaoCodes: string
-): Promise<object | null> => {
+): Promise<string | null> => {
   const formattedCodes: string = icaoCodes.replace(/ /g, "");
   const response: AxiosResponse = await api.get(
     `metars/airports/${formattedCodes}/`
@@ -23,7 +23,7 @@ export const getAirportMetars = async (
   if (response.status === 200) {
     // Use for (const [key, value] of Object.entries(response)) to grab
     // metars from this returned object and display them in the component
-    return response.data;
+    return response.data[icaoCodes];
   } else {
     console.log("Get request failed: ", response.data);
     return null;
@@ -45,14 +45,19 @@ export const getAirportMetars = async (
 export const getNamedLocationMetar = async (
   latitude: string,
   longitude: string
-): Promise<object | null> => {
-  const response: AxiosResponse = await api.get(
-    `metars/lat/${latitude}/lon/${longitude}/`
-  );
-  if (response.status === 200) {
-    return response.data;
-  } else {
-    console.log("Get request failed: ", response.data);
+): Promise<string | null> => {
+  try {
+    const response: AxiosResponse = await api.get(
+      `metars/lat/${latitude}/lon/${longitude}/`
+    );
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      console.log("Get request failed: ", response.data);
+      return null;
+    }
+  } catch (error) {
+    console.log("Error making request: ", error);
     return null;
   }
 };
@@ -70,7 +75,7 @@ export const getNamedLocationMetar = async (
  */
 export const getAirportTafs = async (
   icaoCodes: string
-): Promise<object | null> => {
+): Promise<string | null> => {
   const formattedCodes: string = icaoCodes.replace(/ /g, "");
   const response: AxiosResponse = await api.get(
     `tafs/airports/${formattedCodes}/`
@@ -78,7 +83,7 @@ export const getAirportTafs = async (
   if (response.status === 200) {
     // Use for (const [key, value] of Object.entries(response)) to grab
     // metars from this returned object and display them in the component
-    return response.data;
+    return response.data[icaoCodes];
   } else {
     console.log("Get request failed: ", response.data);
     return null;
@@ -100,7 +105,7 @@ export const getAirportTafs = async (
 export const getNamedLocationTaf = async (
   latitude: string,
   longitude: string
-): Promise<object | null> => {
+): Promise<string | null> => {
   const response: AxiosResponse = await api.get(
     `tafs/lat/${latitude}/lon/${longitude}`
   );

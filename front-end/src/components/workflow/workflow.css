@@ -1,0 +1,7 @@
+.console {
+    background-color: black;
+    color: limegreen;
+    padding: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 4px;
+}

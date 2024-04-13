@@ -323,7 +323,7 @@ const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {
 
   return (
     <>
-      <h2 className="text-3xl font-bold mb-4 text-center">Lists</h2>
+      <h2 className="text-3xl font-bold my-2 text-center">Lists</h2>
       <Container
         data-bs-theme={theme}
         className="border border-secondary d-flex flex-column rounded-3 p-0 align-items-end"
