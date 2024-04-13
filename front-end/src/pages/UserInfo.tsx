@@ -2,7 +2,6 @@ import { ReactElement } from "react";
 import { useOutletContext } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
 import UserInfoForm from "../components/UserInfoForm";
 import { ContextType, User } from "../utilities/userUtilities";
@@ -12,15 +11,13 @@ const UserInfo = (): ReactElement => {
 
   const renderUserInfo = (user: User): ReactElement => {
     return (
-      <Col className="my-auto">
-        <ListGroup className="mb-4 w-50">
-          <ListGroup.Item>Display Name: {user.displayName}</ListGroup.Item>
-          <ListGroup.Item>Email: {user.email}</ListGroup.Item>
-          <ListGroup.Item>
-            Name: {user.firstName + " " + user.lastName}
-          </ListGroup.Item>
-        </ListGroup>
-      </Col>
+      <ListGroup className="mb-4 w-50">
+        <ListGroup.Item>Display Name: {user.displayName}</ListGroup.Item>
+        <ListGroup.Item>Email: {user.email}</ListGroup.Item>
+        <ListGroup.Item>
+          Name: {user.firstName + " " + user.lastName}
+        </ListGroup.Item>
+      </ListGroup>
     );
   };
 
@@ -30,7 +27,9 @@ const UserInfo = (): ReactElement => {
         <Row>
           <h2 className="text-center">User Information</h2>
         </Row>
-        <Row className="text-center">{user ? renderUserInfo(user) : null}</Row>
+        <Row className="text-center d-flex justify-content-center mt-2">
+          {user ? renderUserInfo(user) : null}
+        </Row>
         <Row>
           <UserInfoForm user={user} setUser={setUser} theme={theme} />
         </Row>

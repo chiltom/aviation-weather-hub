@@ -161,6 +161,10 @@ const Lists = ({ theme }: ContextType): ReactElement => {
         // If task updates successfully, get updated list for completion update
         const updatedList: List | null = await getAList(listId);
         if (updatedList) {
+          // Don't hardcode this in the end, the back-end is updating this list to
+          // false as of new task creation, figure out why this is not registering
+          // while getting the updated list after task creation in the front-end
+          updatedList.completed = false;
           setLists((prevLists) =>
             // Map over lists and find correct list, then set to updatedList,
             // if not proper list keep original values
@@ -290,34 +294,45 @@ const Lists = ({ theme }: ContextType): ReactElement => {
     }
   };
 
+  /**
+   * This function takes a list's id and a task's id as parameters and uses
+   * the deleteATask method to delete a task.
+   *
+   * If this is successful, the updated list is grabbed from the server
+   * using the getAList method and the updatedList replaces it's old value
+   * in the List array.
+   * @param listId
+   * @param taskId
+   */
   const handleTaskDelete = async (
     listId: number,
     taskId: number
   ): Promise<void> => {
     const success: boolean = await deleteATask(listId, taskId);
     if (success) {
-      setLists((prevLists) =>
-        prevLists.map((list) =>
-          list.id === listId
-            ? /* Once the list id matching the list id parameter is found while
-                 mapping over the previous lists, the list is destructured and the
-                 tasks are filtered -> if the task id matches the task id parameter,
-                 the task is not returned, all others are */
-              {
-                ...list,
-                tasks: list.tasks.filter((task) => task.id !== taskId),
-              }
-            : list
-        )
-      );
+      const updatedList: List | null = await getAList(listId);
+      if (updatedList) {
+        setLists((prevLists) =>
+          prevLists.map((list) =>
+            list.id === updatedList.id ? updatedList : list
+          )
+        );
+      }
     }
   };
 
   return (
     <>
       <h2 className="text-3xl font-bold mb-4 text-center">Lists</h2>
-      <Container data-bs-theme={theme} fluid>
-        <Accordion defaultActiveKey="0">
+      <Container
+        data-bs-theme={theme}
+        className="border border-secondary d-flex flex-column rounded-3 p-0 align-items-end"
+        fluid
+      >
+        <Accordion
+          defaultActiveKey="0"
+          className="d-flex flex-column flex-grow-1 w-100"
+        >
           {lists.map((list, index) => (
             <Accordion.Item key={list.id} eventKey={`${index}`}>
               <Accordion.Header className="flex w-full">
@@ -339,7 +354,13 @@ const Lists = ({ theme }: ContextType): ReactElement => {
                   </div>
                 ) : (
                   <div className="d-flex flex-grow-1 justify-content-between align-items-center">
-                    <h3 className="d-flex align-items-center">{list.name}</h3>
+                    {list.completed ? (
+                      <h3 className="d-flex align-items-center text-decoration-line-through fw-lighter">
+                        {list.name}
+                      </h3>
+                    ) : (
+                      <h3 className="d-flex align-items-center">{list.name}</h3>
+                    )}
                     <div className="d-flex align-items-center mx-3">
                       <Button
                         onClick={() => handleEditListName(list.id, list.name)}
@@ -399,9 +420,15 @@ const Lists = ({ theme }: ContextType): ReactElement => {
                             }
                             className="mr-2"
                           />
-                          <h4 className="text-lg font-medium flex-grow-1 my-0 mx-3">
-                            {task.name}
-                          </h4>
+                          {task.completed ? (
+                            <h4 className="text-lg font-medium flex-grow-1 my-0 mx-3 text-decoration-line-through fw-lighter">
+                              {task.name}
+                            </h4>
+                          ) : (
+                            <h4 className="text-lg font-medium flex-grow-1 my-0 mx-3">
+                              {task.name}
+                            </h4>
+                          )}
                           <Button
                             onClick={() =>
                               handleEditTaskName(task.id, task.name)
@@ -458,12 +485,12 @@ const Lists = ({ theme }: ContextType): ReactElement => {
           <Button
             onClick={() => handleCreateListEdit()}
             variant="primary"
-            className="mb-4"
+            className="w-25"
           >
             Create New List
           </Button>
         ) : (
-          <div className="flex items-center mb-4">
+          <div className="flex items-center d-flex">
             <input
               type="text"
               value={createListName}
