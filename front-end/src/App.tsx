@@ -10,7 +10,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import useLocalStorage from "use-local-storage";
 import "./App.css";
-import MyNavbar from "./components/MyNavbar";
+import MyNavbar from "./components/app/MyNavbar";
 import { User, ContextType } from "./utilities/userUtilities";
 
 function App(): ReactElement {

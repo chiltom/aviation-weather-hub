@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import ListGroup from "react-bootstrap/ListGroup";
-import UserInfoForm from "../components/UserInfoForm";
+import UserInfoForm from "../components/user/UserInfoForm";
 import { ContextType, User } from "../utilities/userUtilities";
 
 const UserInfo: React.FC = (): ReactElement => {

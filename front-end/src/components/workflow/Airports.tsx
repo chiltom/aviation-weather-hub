@@ -7,8 +7,8 @@ import {
   createAirport,
   updateAnAirport,
   deleteAnAirport,
-} from "../utilities/locations/airportUtilities";
-import { ContextType } from "../utilities/userUtilities";
+} from "../../utilities/locations/airportUtilities";
+import { ContextType } from "../../utilities/userUtilities";
 
 const Airports: React.FC<ContextType> = ({
   theme,

@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
-import SignUpForm from "./SignUpModal";
-import { userLogout, ContextType } from "../utilities/userUtilities";
-import LoginForm from "./LoginModal";
+import SignUpForm from "../user/SignUpModal";
+import { userLogout, ContextType } from "../../utilities/userUtilities";
+import LoginForm from "../user/LoginModal";
 
 const MyNavbar: React.FC<ContextType> = ({
   user,

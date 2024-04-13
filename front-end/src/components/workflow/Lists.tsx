@@ -9,15 +9,15 @@ import {
   getAllLists,
   updateAList,
   deleteAList,
-} from "../utilities/lists/listUtilities";
+} from "../../utilities/lists/listUtilities";
 import {
   Task,
   createTask,
   updateTaskName,
   updateTaskCompleted,
   deleteATask,
-} from "../utilities/lists/taskUtilities";
-import { ContextType } from "../utilities/userUtilities";
+} from "../../utilities/lists/taskUtilities";
+import { ContextType } from "../../utilities/userUtilities";
 
 const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {
   const [lists, setLists] = useState<List[]>([]);

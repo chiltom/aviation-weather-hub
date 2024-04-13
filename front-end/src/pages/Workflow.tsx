@@ -1,9 +1,9 @@
 import { ReactElement } from "react";
 import { useOutletContext } from "react-router-dom";
-import Lists from "../components/Lists";
+import Lists from "../components/workflow/Lists";
 import { ContextType } from "../utilities/userUtilities";
-import Airports from "../components/Airports";
-import NamedLocations from "../components/NamedLocations";
+import Airports from "../components/workflow/Airports";
+import NamedLocations from "../components/workflow/NamedLocations";
 
 const Workflow: React.FC = (): ReactElement => {
   const { user, setUser, theme } = useOutletContext<ContextType>();
