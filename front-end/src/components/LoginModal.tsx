@@ -1,31 +1,40 @@
 import { FormEventHandler, ReactElement, useState } from "react";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Modal from "react-bootstrap/Modal";
+import Nav from "react-bootstrap/Nav";
 import InputGroup from "react-bootstrap/InputGroup";
 import { userLogin, ContextType } from "../utilities/userUtilities";
 
 const LoginForm = ({ user, setUser, theme }: ContextType): ReactElement => {
+  const [show, setShow] = useState<boolean>(false);
   const [emailInput, setEmailInput] = useState<string>("");
   const [passwordInput, setPasswordInput] = useState<string>("");
+
+  const handleClose = (): void => setShow(false);
+  const handleShow = (): void => setShow(true);
 
   const handleLogin: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const user = await userLogin(emailInput, passwordInput);
     if (user !== null) {
       setUser(user);
-      console.log(user)
+      console.log(user);
     } else {
-      alert("Login failed. Please try again.")
+      alert("Login failed. Please try again.");
     }
   };
 
   return (
     <>
-      <Container data-bs-theme={theme}>
-        <h2 className="text-center">Login</h2>
-        <Row>
+      <Nav.Link onClick={handleShow} data-bs-theme={theme}>
+        Log In
+      </Nav.Link>
+      <Modal show={show} onHide={handleClose} data-bs-theme={theme}>
+        <Modal.Header closeButton>
+          <Modal.Title className="text-white bg-slate">Log In</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
           <Form onSubmit={handleLogin}>
             <InputGroup className="mb-3">
               <InputGroup.Text>Email address</InputGroup.Text>
@@ -33,6 +42,7 @@ const LoginForm = ({ user, setUser, theme }: ContextType): ReactElement => {
                 onChange={(e) => setEmailInput(e.target.value)}
                 type="email"
                 placeholder="Enter email"
+                autoFocus
               />
             </InputGroup>
             <InputGroup className="mb-3">
@@ -47,8 +57,8 @@ const LoginForm = ({ user, setUser, theme }: ContextType): ReactElement => {
               Submit
             </Button>
           </Form>
-        </Row>
-      </Container>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

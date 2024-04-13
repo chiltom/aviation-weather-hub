@@ -6,8 +6,6 @@ import ErrorPage from "./pages/ErrorPage";
 import Workflow from "./pages/Workflow";
 import Training from "./pages/Training";
 import Flights from "./pages/Flights";
-import Signup from "./pages/SignUp";
-import Login from "./pages/Login";
 import UserInfo from "./pages/UserInfo";
 import { userConfirmation } from "./utilities/userUtilities";
 
@@ -41,14 +39,6 @@ const router = createBrowserRouter([
       {
         path: "userinfo/",
         element: <UserInfo />,
-      },
-      {
-        path: "signup/",
-        element: <Signup />,
-      },
-      {
-        path: "login/",
-        element: <Login />,
       },
     ],
     errorElement: <ErrorPage />,

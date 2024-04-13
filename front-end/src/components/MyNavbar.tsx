@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
+import SignUpForm from "./SignUpModal";
 import { userLogout, ContextType } from "../utilities/userUtilities";
+import LoginForm from "./LoginModal";
 
 const MyNavbar = ({ user, setUser, theme }: ContextType): ReactElement => {
   const handleUserLogout = async () => {
@@ -37,12 +39,8 @@ const MyNavbar = ({ user, setUser, theme }: ContextType): ReactElement => {
           </Nav>
           {user ? null : (
             <Nav>
-              <Nav.Link as={Link} to={"/signup/"} className="hover:drop-shadow">
-                Sign Up
-              </Nav.Link>
-              <Nav.Link as={Link} to={"/login/"} className="hover:drop-shadow">
-                Log In
-              </Nav.Link>
+              <SignUpForm user={user} setUser={setUser} theme={theme} />
+              <LoginForm user={user} setUser={setUser} theme={theme} />
             </Nav>
           )}
           {/* Make into link to go to user info page with put request method to change
