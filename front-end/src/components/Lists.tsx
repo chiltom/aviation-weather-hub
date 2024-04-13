@@ -330,7 +330,6 @@ const Lists = ({ theme }: ContextType): ReactElement => {
         fluid
       >
         <Accordion
-          defaultActiveKey="0"
           className="d-flex flex-column flex-grow-1 w-100"
         >
           {lists.map((list, index) => (

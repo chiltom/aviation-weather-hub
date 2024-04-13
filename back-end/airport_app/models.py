@@ -10,7 +10,7 @@ from .validators import (
 class Airport(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="airports")
-    icao_code = models.CharField(max_length=4, unique=True, validators=[v.MinLengthValidator(
+    icao_code = models.CharField(max_length=4, validators=[v.MinLengthValidator(
         4), v.MaxLengthValidator(4), validate_icao_code])
     name = models.CharField(max_length=100, validators=[
                             v.MinLengthValidator(1), validate_airport_name])

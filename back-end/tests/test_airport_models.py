@@ -43,28 +43,6 @@ class Test_airport(TestCase):
                 "icao_code" in e.message_dict and "name" in e.message_dict
             )
 
-    def test_003_airport_with_duplicate_icao_code(self):
-        new_airport = Airport.objects.create(
-            user=self.user,
-            name="Savannah",
-            icao_code="KSVN"
-        )
-        new_airport.full_clean()
-        new_airport.save()
-        try:
-            newer_airport = Airport.objects.create(
-                user=self.user,
-                name="Brunswick",
-                icao_code="KSVN"
-            )
-            newer_airport.full_clean()
-            self.fail()
-        except IntegrityError as e:
-            self.assertIn(
-                'duplicate key value violates unique constraint "airport_app_airport_icao_code_94104d8b_uniq',
-                str(e)
-            )
-
 
 class Test_airport_serializer(TestCase):
     def setUp(self):
@@ -77,7 +55,7 @@ class Test_airport_serializer(TestCase):
             last_name="Childress"
         )
 
-    def test_004_airport_serializer_with_proper_data(self):
+    def test_003_airport_serializer_with_proper_data(self):
         try:
             data = {
                 "user": self.user.id,
@@ -90,7 +68,7 @@ class Test_airport_serializer(TestCase):
             print(ser_airport.errors)
             self.fail()
 
-    def test_005_airport_serializer_with_proper_response(self):
+    def test_004_airport_serializer_with_proper_response(self):
         try:
             data = {
                 "user": self.user.id,
