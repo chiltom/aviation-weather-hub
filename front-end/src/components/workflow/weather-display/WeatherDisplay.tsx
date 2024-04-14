@@ -42,9 +42,11 @@ const WeatherDisplay: React.FC = (): ReactElement => {
       latitude,
       longitude
     );
-    if (newMetar) {
-      setMetar(newMetar);
-    }
+    newMetar
+      ? setMetar(newMetar)
+      : alert(
+          "That location doesn't have any nearby air stations providing METARs right now."
+        );
   };
 
   /**
@@ -64,9 +66,9 @@ const WeatherDisplay: React.FC = (): ReactElement => {
    */
   const handleMetarAirportUpdate = async (icaoCode: string): Promise<void> => {
     const newMetar: string | null = await getAirportMetars(icaoCode);
-    if (newMetar) {
-      setMetar(newMetar);
-    }
+    newMetar
+      ? setMetar(newMetar)
+      : alert("Unable to grab a METAR for that air station.");
   };
 
   /**
@@ -93,9 +95,11 @@ const WeatherDisplay: React.FC = (): ReactElement => {
       latitude,
       longitude
     );
-    if (newTaf) {
-      setTaf(newTaf);
-    }
+    newTaf
+      ? setTaf(newTaf)
+      : alert(
+          "That location doesn't have any nearby air stations providing TAFs right now."
+        );
   };
 
   /**
@@ -116,9 +120,9 @@ const WeatherDisplay: React.FC = (): ReactElement => {
    */
   const handleTafAirportUpdate = async (icaoCode: string): Promise<void> => {
     const newTaf: string | null = await getAirportTafs(icaoCode);
-    if (newTaf) {
-      setTaf(newTaf);
-    }
+    newTaf
+      ? setTaf(newTaf)
+      : alert("Unable to grab a METAR for that air station.");
   };
 
   /**
