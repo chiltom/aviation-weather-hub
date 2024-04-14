@@ -56,7 +56,7 @@ const WeatherDisplay: React.FC = (): ReactElement => {
       <h4>Weather</h4>
       <div className="console">
         {metar ? <span>{metar}</span> : null}
-        {taf ? <span>{Object.values(taf)[0]}</span> : null}
+        {taf ? <span>{taf}</span> : null}
       </div>
     </>
   );
