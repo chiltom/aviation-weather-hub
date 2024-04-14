@@ -2,14 +2,15 @@ import { ReactElement, useState, useEffect, useCallback } from "react";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import {
-  Airport,
   getAllAirports,
   createAirport,
   updateAnAirport,
   deleteAnAirport,
 } from "../../utilities/locations/airportUtilities";
-import { ContextType } from "../../utilities/userUtilities";
-import { useWeather, WeatherContextType } from "../../hooks/weatherContext";
+import { Airport } from "../../types/locationTypes";
+import { ContextType } from "../../types/userTypes";
+import { useWeather } from "../../providers/weatherContext";
+import { WeatherContextType } from "../../types/weatherTypes";
 
 const Airports: React.FC<ContextType> = ({
   theme,

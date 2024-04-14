@@ -1,11 +1,11 @@
 import { ReactElement } from "react";
 import { useOutletContext } from "react-router-dom";
-import Lists from "../components/workflow/Lists";
-import { ContextType } from "../utilities/userUtilities";
+import Lists from "../components/workflow/lists/Lists";
+import { ContextType } from "../types/userTypes";
 import Airports from "../components/workflow/Airports";
 import NamedLocations from "../components/workflow/NamedLocations";
-import { WeatherProvider } from "../hooks/weatherContext";
-import WeatherDisplay from "../components/workflow/WeatherDisplay";
+import { WeatherProvider } from "../providers/weatherContext";
+import WeatherDisplay from "../components/workflow/weather-display/WeatherDisplay";
 
 const Workflow: React.FC = (): ReactElement => {
   const { user, setUser, theme } = useOutletContext<ContextType>();
@@ -16,7 +16,6 @@ const Workflow: React.FC = (): ReactElement => {
       <WeatherProvider>
         <div className="d-flex flex-column">
           <div className="d-flex flex-grow-1 align-items-center my-3">
-            {/* airports and locations stuff */}
             <div className="d-flex flex-column flex-grow-1 h-100 mx-1">
               <Airports user={user} setUser={setUser} theme={theme} />
             </div>

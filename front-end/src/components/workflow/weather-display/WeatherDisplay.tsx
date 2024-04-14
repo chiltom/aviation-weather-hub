@@ -1,13 +1,15 @@
 import { useState, ReactElement, useEffect } from "react";
-import Button from "react-bootstrap/Button";
-import { useWeather, WeatherContextType } from "../../hooks/weatherContext";
+import { useWeather } from "../../../providers/weatherContext";
+import { WeatherContextType } from "../../../types/weatherTypes";
 import {
   getAirportMetars,
   getAirportTafs,
   getNamedLocationMetar,
   getNamedLocationTaf,
-} from "../../utilities/weatherDataUtilities";
-import "../../styles/workflow.css";
+} from "../../../utilities/weatherDataUtilities";
+import "../../../styles/workflow.css";
+import MetarDisplay from "./MetarDisplay";
+import TafDisplay from "./TafDisplay";
 
 const WeatherDisplay: React.FC = (): ReactElement => {
   const {
@@ -135,29 +137,9 @@ const WeatherDisplay: React.FC = (): ReactElement => {
       {metar || taf ? (
         <div className="console">
           {metar ? (
-            <div className="d-flex justify-content-between align-items-center">
-              <span className="mr-2">{metar}</span>
-              <Button
-                variant="outline-danger"
-                onClick={() => setMetar(null)}
-                size="sm"
-              >
-                Clear
-              </Button>
-            </div>
+            <MetarDisplay metar={metar} clearMetar={() => setMetar(null)} />
           ) : null}
-          {taf ? (
-            <div className="d-flex justify-content-between align-items-center">
-              <span className="mr-2">{taf}</span>
-              <Button
-                variant="outline-danger"
-                onClick={() => setTaf(null)}
-                size="sm"
-              >
-                Clear
-              </Button>
-            </div>
-          ) : null}
+          {taf ? <TafDisplay taf={taf} clearTaf={() => setTaf(null)} /> : null}
         </div>
       ) : null}
     </>

@@ -1,20 +1,6 @@
 import { AxiosResponse } from "axios";
 import { api } from "../axiosConfig";
-import { Brief } from "./briefUtilities";
-
-/**
- * The Hazard interface defines the properties of a hazard, which consist of:
- * - Hazard id
- * - Parent brief's id
- * - The type of hazard
- * - The information pertaining to the hazard
- */
-export interface Hazard {
-  id: number;
-  brief: number;
-  type: string;
-  information: string;
-}
+import { Brief, Hazard } from "../../types/flightTypes";
 
 /**
  * This function takes all of the required data for a hazard record as well

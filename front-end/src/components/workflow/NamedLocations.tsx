@@ -2,14 +2,15 @@ import { ReactElement, useState, useEffect, useCallback } from "react";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import {
-  NamedLocation,
   getAllNamedLocations,
   createNamedLocation,
   updateANamedLocation,
   deleteANamedLocation,
 } from "../../utilities/locations/namedLocationUtilities";
-import { ContextType } from "../../utilities/userUtilities";
-import { useWeather, WeatherContextType } from "../../hooks/weatherContext";
+import { NamedLocation } from "../../types/locationTypes";
+import { ContextType } from "../../types/userTypes";
+import { useWeather } from "../../providers/weatherContext";
+import { WeatherContextType } from "../../types/weatherTypes";
 
 const NamedLocations: React.FC<ContextType> = ({
   theme,

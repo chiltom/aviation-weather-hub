@@ -1,22 +1,7 @@
 import { AxiosResponse } from "axios";
 import { api } from "../axiosConfig";
+import { NamedLocation } from "../../types/locationTypes";
 // All named location related utility functions
-
-/**
- * The NamedLocation interface defines the properties of a named location,
- * which consist of the city's name, the two-letter country abbreviation,
- * and the latitude and longitude of the location which make up its
- * coordinates.
- *
- * A NamedLocation object will hold all relevant information for the
- * location
- */
-export interface NamedLocation {
-  city: string;
-  country: string;
-  latitude: string;
-  longitude: string;
-}
 
 /**
  * This function takes a city name and country abbreviation and creates

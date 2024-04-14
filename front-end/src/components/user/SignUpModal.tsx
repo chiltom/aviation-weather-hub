@@ -1,17 +1,17 @@
-import React, { FormEventHandler, useState } from "react";
+import { FormEventHandler, ReactElement, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Nav from "react-bootstrap/Nav";
 import InputGroup from "react-bootstrap/InputGroup";
 import { signupUser } from "../../utilities/userUtilities";
-import { ContextType } from "../../utilities/userUtilities";
+import { ContextType } from "../../types/userTypes";
 
 const SignUpForm: React.FC<ContextType> = ({
   user,
   setUser,
   theme,
-}: ContextType) => {
+}: ContextType): ReactElement => {
   const [show, setShow] = useState<boolean>(false);
   const [emailInput, setEmailInput] = useState<string>("");
   const [passwordInput, setPasswordInput] = useState<string>("");

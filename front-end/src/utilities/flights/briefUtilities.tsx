@@ -1,34 +1,6 @@
 import { AxiosResponse } from "axios";
 import { api } from "../axiosConfig";
-import { Hazard } from "./hazardUtilities";
-
-/**
- * The Brief interface defines the properties of a brief, which consist of:
- * - Brief id
- * - Parent flight id
- * - Surface winds
- * - Flight level winds
- * - Visibility
- * - Sky condition
- * - Temperature
- * - Altimeter setting
- * - Brief time
- * - Void time
- * - An array of hazards associated with the brief
- */
-export interface Brief {
-  id: number;
-  flight: number;
-  surfaceWinds: string;
-  flightLevelWinds: string;
-  visibility: string;
-  skyCondition: string;
-  temperature: string;
-  altimeterSetting: string;
-  briefTime: string;
-  voidTime: string;
-  hazards: Hazard[];
-}
+import { Brief } from "../../types/flightTypes";
 
 /**
  * This function takes all of the required data for a brief record and makes

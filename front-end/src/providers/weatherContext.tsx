@@ -5,25 +5,7 @@ import {
   ReactNode,
   ReactElement,
 } from "react";
-
-/**
- * Defines the type for the context, which consists of an icaoCode and a
- * state setter for the icaoCode.
- */
-export interface WeatherContextType {
-  metarIcaoCode: string | null;
-  setMetarIcaoCode: React.Dispatch<React.SetStateAction<string | null>>;
-  metarLatitude: string | null;
-  setMetarLatitude: React.Dispatch<React.SetStateAction<string | null>>;
-  metarLongitude: string | null;
-  setMetarLongitude: React.Dispatch<React.SetStateAction<string | null>>;
-  tafIcaoCode: string | null;
-  setTafIcaoCode: React.Dispatch<React.SetStateAction<string | null>>;
-  tafLatitude: string | null;
-  setTafLatitude: React.Dispatch<React.SetStateAction<string | null>>;
-  tafLongitude: string | null;
-  setTafLongitude: React.Dispatch<React.SetStateAction<string | null>>;
-}
+import { WeatherContextType } from "../types/weatherTypes";
 
 /**
  * A variable that holds the context with the initial value being undefined

@@ -11,14 +11,14 @@ import Row from "react-bootstrap/Row";
 import useLocalStorage from "use-local-storage";
 import "./App.css";
 import MyNavbar from "./components/app/MyNavbar";
-import { User, ContextType } from "./utilities/userUtilities";
+import { User, ContextType } from "./types/userTypes";
 
 function App(): ReactElement {
   // Gather preferred color scheme from user client's OS and set theme to that
   const defaultDark: boolean = window.matchMedia(
     "(prefers-color-scheme:dark)"
   ).matches;
-  const [theme, setTheme] = useLocalStorage(
+  const [theme, setTheme] = useLocalStorage<string>(
     "theme",
     defaultDark ? "dark" : "light"
   );
@@ -29,7 +29,7 @@ function App(): ReactElement {
    * the state as a User
    * If the userData is null, set the user in the state as null
    */
-  const userData = useLoaderData();
+  const userData: object | unknown = useLoaderData();
   const [user, setUser] = useState<User | null>(
     typeof userData === "object" && userData !== null
       ? (userData as User)

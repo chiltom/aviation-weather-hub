@@ -1,20 +1,7 @@
 import { AxiosResponse } from "axios";
 import { api } from "../axiosConfig";
-import { Task } from "./taskUtilities";
+import { List } from "../../types/listTypes";
 // All list related utility functions
-
-/**
- * The List interface defines the properties of a List,
- * which consist of a name, an array of tasks, and completion
- * status, effectively holding all relevant information from
- * the server.
- */
-export interface List {
-  id: number;
-  name: string;
-  tasks: Task[];
-  completed: boolean;
-}
 
 /**
  * This function takes a list name as a parameter and sends a post request to
