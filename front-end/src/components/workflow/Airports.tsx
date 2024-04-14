@@ -9,7 +9,8 @@ import {
 } from "../../utilities/locations/airportUtilities";
 import { Airport } from "../../types/locationTypes";
 import { ContextType } from "../../types/userTypes";
-import { useWeather, WeatherContextType } from "../../providers/weatherContext";
+import { useWeather } from "../../providers/weatherContext";
+import { WeatherContextType } from "../../types/weatherTypes";
 
 const Airports: React.FC<ContextType> = ({
   theme,

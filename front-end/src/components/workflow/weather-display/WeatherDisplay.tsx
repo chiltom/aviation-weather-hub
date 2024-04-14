@@ -1,8 +1,6 @@
 import { useState, ReactElement, useEffect } from "react";
-import {
-  useWeather,
-  WeatherContextType,
-} from "../../../providers/weatherContext";
+import { useWeather } from "../../../providers/weatherContext";
+import { WeatherContextType } from "../../../types/weatherTypes";
 import {
   getAirportMetars,
   getAirportTafs,

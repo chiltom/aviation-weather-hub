@@ -15,3 +15,22 @@ export interface TafDisplayProps {
   taf: string | null;
   clearTaf: () => void;
 }
+
+/**
+ * Defines the context type for the weather provider, which consists of an icaoCode and a
+ * state setter for the icaoCode.
+ */
+export interface WeatherContextType {
+  metarIcaoCode: string | null;
+  setMetarIcaoCode: React.Dispatch<React.SetStateAction<string | null>>;
+  metarLatitude: string | null;
+  setMetarLatitude: React.Dispatch<React.SetStateAction<string | null>>;
+  metarLongitude: string | null;
+  setMetarLongitude: React.Dispatch<React.SetStateAction<string | null>>;
+  tafIcaoCode: string | null;
+  setTafIcaoCode: React.Dispatch<React.SetStateAction<string | null>>;
+  tafLatitude: string | null;
+  setTafLatitude: React.Dispatch<React.SetStateAction<string | null>>;
+  tafLongitude: string | null;
+  setTafLongitude: React.Dispatch<React.SetStateAction<string | null>>;
+}

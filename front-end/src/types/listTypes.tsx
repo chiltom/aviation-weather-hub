@@ -24,3 +24,12 @@ export interface Task {
   name: string;
   completed: boolean;
 }
+
+/**
+ * Interface for passing down props from parent list component to child
+ * tasks component
+ */
+export interface TasksProps {
+  list: List;
+  setLists: React.Dispatch<React.SetStateAction<List[]>>;
+}
