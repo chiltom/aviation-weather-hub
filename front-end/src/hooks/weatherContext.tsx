@@ -11,24 +11,38 @@ import {
  * state setter for the icaoCode.
  */
 export interface WeatherContextType {
-  icaoCode: string | null;
-  setIcaoCode: React.Dispatch<React.SetStateAction<string | null>>;
-  latitude: string | null;
-  setLatitude: React.Dispatch<React.SetStateAction<string | null>>;
-  longitude: string | null;
-  setLongitude: React.Dispatch<React.SetStateAction<string | null>>;
+  metarIcaoCode: string | null;
+  setMetarIcaoCode: React.Dispatch<React.SetStateAction<string | null>>;
+  metarLatitude: string | null;
+  setMetarLatitude: React.Dispatch<React.SetStateAction<string | null>>;
+  metarLongitude: string | null;
+  setMetarLongitude: React.Dispatch<React.SetStateAction<string | null>>;
+  tafIcaoCode: string | null;
+  setTafIcaoCode: React.Dispatch<React.SetStateAction<string | null>>;
+  tafLatitude: string | null;
+  setTafLatitude: React.Dispatch<React.SetStateAction<string | null>>;
+  tafLongitude: string | null;
+  setTafLongitude: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 /**
  * A variable that holds the context with the initial value being undefined
  * but asserts the type that the incoming hook must be.
+ *
+ * This means that if the context falls outside of the WeatherContext.Provider
+ * tree, it will be undefined. If it falls within the provider, however, the context
+ * can be used within the useWeather hook.
  */
 const WeatherContext: React.Context<WeatherContextType | undefined> =
   createContext<WeatherContextType | undefined>(undefined);
 
 /**
  * Creates a custom hook to use the context within the provider, allowing any
- * component within the weather provider to use the useWeather hook.
+ * component within the weather provider to use the useWeather hook with all
+ * associated state and setters.
+ *
+ * Any component that does not fall within the WeatherContext.Provider below
+ * that tries to access this hook will throw the error below.
  */
 export const useWeather = (): WeatherContextType => {
   const context: WeatherContextType | undefined = useContext(WeatherContext);
@@ -39,23 +53,34 @@ export const useWeather = (): WeatherContextType => {
 };
 
 /**
- * The provider component that will be used in other components.
+ * The provider component that will provide WeatherContext and all of its
+ * associated state and setters to child components within its scope.
  */
 export const WeatherProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }): ReactElement => {
-  const [icaoCode, setIcaoCode] = useState<string | null>(null);
-  const [latitude, setLatitude] = useState<string | null>(null);
-  const [longitude, setLongitude] = useState<string | null>(null);
+  const [metarIcaoCode, setMetarIcaoCode] = useState<string | null>(null);
+  const [metarLatitude, setMetarLatitude] = useState<string | null>(null);
+  const [metarLongitude, setMetarLongitude] = useState<string | null>(null);
+  const [tafIcaoCode, setTafIcaoCode] = useState<string | null>(null);
+  const [tafLatitude, setTafLatitude] = useState<string | null>(null);
+  const [tafLongitude, setTafLongitude] = useState<string | null>(null);
 
-  // Provides the state and updater function to all context consumers
+  // Provides the state and updater functions as well as the clearing function
+  // to all context consumers
   const value = {
-    icaoCode,
-    setIcaoCode,
-    latitude,
-    setLatitude,
-    longitude,
-    setLongitude,
+    metarIcaoCode,
+    setMetarIcaoCode,
+    metarLatitude,
+    setMetarLatitude,
+    metarLongitude,
+    setMetarLongitude,
+    tafIcaoCode,
+    setTafIcaoCode,
+    tafLatitude,
+    setTafLatitude,
+    tafLongitude,
+    setTafLongitude,
   };
 
   return (

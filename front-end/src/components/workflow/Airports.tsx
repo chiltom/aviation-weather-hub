@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect } from "react";
+import { ReactElement, useState, useEffect, useCallback } from "react";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import {
@@ -22,7 +22,7 @@ const Airports: React.FC<ContextType> = ({
     useState<boolean>(false);
   const [createAirportName, setCreateAirportName] = useState<string>("");
   const [createAirportIcao, setCreateAirportIcao] = useState<string>("");
-  const { setIcaoCode }: WeatherContextType = useWeather();
+  const { setMetarIcaoCode, setTafIcaoCode }: WeatherContextType = useWeather();
 
   /**
    * useEffect hook to fetch all airports upon initial render of the component
@@ -51,7 +51,7 @@ const Airports: React.FC<ContextType> = ({
    * It then awaits the completion of creating a new list and sets the createAirportName
    * and createAirportIcao state back to null.
    */
-  const handleCreateAirportSubmit = async (): Promise<void> => {
+  const handleCreateAirportSubmit = useCallback(async (): Promise<void> => {
     if (
       createAirportName.trim() !== "" &&
       createAirportName &&
@@ -69,7 +69,7 @@ const Airports: React.FC<ContextType> = ({
       setCreateAirportIcao("");
       setCreateAirportStatus(false);
     }
-  };
+  }, [createAirportName, createAirportIcao]);
 
   /**
    * This function takes an airport update event and attempts to use the updateAnAirport
@@ -151,17 +151,20 @@ const Airports: React.FC<ContextType> = ({
    * sets the editAirportIcao value back to null so it is no longer editable again
    * @param icaoCode
    */
-  const handleSubmitAirportUpdate = async (icaoCode: string): Promise<void> => {
-    if (
-      newAirportIcao.trim() !== "" &&
-      newAirportName.trim() !== "" &&
-      newAirportIcao &&
-      newAirportName
-    ) {
-      await handleAirportUpdate(icaoCode, newAirportIcao, newAirportName);
-      setEditAirportIcao(null);
-    }
-  };
+  const handleSubmitAirportUpdate = useCallback(
+    async (icaoCode: string): Promise<void> => {
+      if (
+        newAirportIcao.trim() !== "" &&
+        newAirportName.trim() !== "" &&
+        newAirportIcao &&
+        newAirportName
+      ) {
+        await handleAirportUpdate(icaoCode, newAirportIcao, newAirportName);
+        setEditAirportIcao(null);
+      }
+    },
+    [newAirportIcao, newAirportName]
+  );
 
   return (
     <>
@@ -205,10 +208,18 @@ const Airports: React.FC<ContextType> = ({
                 <div className="d-flex flex-wrap">
                   <Button
                     variant="outline-primary"
-                    onClick={() => setIcaoCode(airport.icaoCode)}
+                    onClick={() => setMetarIcaoCode(() => airport.icaoCode)}
                     size="sm"
                   >
-                    Weather
+                    METAR
+                  </Button>
+                  <Button
+                    variant="outline-primary"
+                    onClick={() => setTafIcaoCode(() => airport.icaoCode)}
+                    size="sm"
+                    className="mx-1"
+                  >
+                    TAF
                   </Button>
                   <Button
                     variant="outline-secondary"

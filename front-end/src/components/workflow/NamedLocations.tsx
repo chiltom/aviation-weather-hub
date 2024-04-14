@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect } from "react";
+import { ReactElement, useState, useEffect, useCallback } from "react";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import {
@@ -27,16 +27,39 @@ const NamedLocations: React.FC<ContextType> = ({
     useState<string>("");
   const [createNamedLocationCountry, setCreateNamedLocationCountry] =
     useState<string>("");
-  const { setLatitude, setLongitude }: WeatherContextType = useWeather();
+  const {
+    setMetarLatitude,
+    setMetarLongitude,
+    setTafLatitude,
+    setTafLongitude,
+  }: WeatherContextType = useWeather();
 
   /**
    * Handles the selection of a named location and passes it up to the weather provider
+   * to gather METAR data.
    * @param latitude
    * @param longitude
    */
-  const handleSelectLocation = (latitude: string, longitude: string): void => {
-    setLatitude(latitude);
-    setLongitude(longitude);
+  const handleSelectMetarLocation = (
+    latitude: string,
+    longitude: string
+  ): void => {
+    setMetarLatitude(() => latitude);
+    setMetarLongitude(() => longitude);
+  };
+
+  /**
+   * Handles the selectino of a named location and passes it up to the weather provider
+   * to gather TAF data.
+   * @param latitude
+   * @param longitude
+   */
+  const handleSelectTafLocation = (
+    latitude: string,
+    longitude: string
+  ): void => {
+    setTafLatitude(() => latitude);
+    setTafLongitude(() => longitude);
   };
 
   /**
@@ -67,27 +90,29 @@ const NamedLocations: React.FC<ContextType> = ({
    * It then awaits the completion of creating a new named location and sets the
    * createNamedLocationCity and createNamedLocationCountry back to null.
    */
-  const handleCreateNamedLocationSubmit = async (): Promise<void> => {
-    if (
-      createNamedLocationCity.trim() !== "" &&
-      createNamedLocationCity &&
-      createNamedLocationCountry.trim() !== "" &&
-      createNamedLocationCountry
-    ) {
-      const newNamedLocation: NamedLocation | null = await createNamedLocation(
-        createNamedLocationCity,
+  const handleCreateNamedLocationSubmit =
+    useCallback(async (): Promise<void> => {
+      if (
+        createNamedLocationCity.trim() !== "" &&
+        createNamedLocationCity &&
+        createNamedLocationCountry.trim() !== "" &&
         createNamedLocationCountry
-      );
-      if (newNamedLocation) {
-        setNamedLocations((prevNamedLocations) =>
-          prevNamedLocations.concat(newNamedLocation)
-        );
+      ) {
+        const newNamedLocation: NamedLocation | null =
+          await createNamedLocation(
+            createNamedLocationCity,
+            createNamedLocationCountry
+          );
+        if (newNamedLocation) {
+          setNamedLocations((prevNamedLocations) =>
+            prevNamedLocations.concat(newNamedLocation)
+          );
+        }
+        setCreateNamedLocationCity("");
+        setCreateNamedLocationCountry("");
+        setCreateNamedLocationStatus(false);
       }
-      setCreateNamedLocationCity("");
-      setCreateNamedLocationCountry("");
-      setCreateNamedLocationStatus(false);
-    }
-  };
+    }, [createNamedLocationCity, createNamedLocationCountry]);
 
   /**
    * This function takes a named location update event and attempts to use the updateANamedLocation
@@ -178,25 +203,25 @@ const NamedLocations: React.FC<ContextType> = ({
    * @param city
    * @param country
    */
-  const handleSubmitNamedLocationUpdate = async (
-    city: string,
-    country: string
-  ): Promise<void> => {
-    if (
-      newNamedLocationCity.trim() !== "" &&
-      newNamedLocationCity &&
-      newNamedLocationCountry.trim() !== "" &&
-      newNamedLocationCountry
-    ) {
-      await handleNamedLocationUpdate(
-        city,
-        country,
-        newNamedLocationCity,
+  const handleSubmitNamedLocationUpdate = useCallback(
+    async (city: string, country: string): Promise<void> => {
+      if (
+        newNamedLocationCity.trim() !== "" &&
+        newNamedLocationCity &&
+        newNamedLocationCountry.trim() !== "" &&
         newNamedLocationCountry
-      );
-      setEditNamedLocationCity(null);
-    }
-  };
+      ) {
+        await handleNamedLocationUpdate(
+          city,
+          country,
+          newNamedLocationCity,
+          newNamedLocationCountry
+        );
+        setEditNamedLocationCity(null);
+      }
+    },
+    [newNamedLocationCity, newNamedLocationCountry]
+  );
 
   return (
     <>
@@ -246,7 +271,7 @@ const NamedLocations: React.FC<ContextType> = ({
                 <div className="d-flex flex-wrap">
                   <Button
                     onClick={() =>
-                      handleSelectLocation(
+                      handleSelectMetarLocation(
                         namedLocation.latitude,
                         namedLocation.longitude
                       )
@@ -254,7 +279,20 @@ const NamedLocations: React.FC<ContextType> = ({
                     variant="outline-primary"
                     size="sm"
                   >
-                    Weather
+                    METAR
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      handleSelectTafLocation(
+                        namedLocation.latitude,
+                        namedLocation.longitude
+                      )
+                    }
+                    variant="outline-primary"
+                    size="sm"
+                    className="mx-1"
+                  >
+                    TAF
                   </Button>
                   <Button
                     variant="outline-secondary"
