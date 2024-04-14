@@ -1,16 +1,7 @@
 import { AxiosResponse } from "axios";
 import { api } from "../axiosConfig";
+import { Airport } from "../../types/locationTypes";
 // All airport related utility functions
-
-/**
- * The Airport interface defines the properties of an Airport,
- * which consist of an icaoCode and name, effectively holding
- * all relevant Airport information from the server
- */
-export interface Airport {
-  icaoCode: string;
-  name: string;
-}
 
 /**
  * This function takes an icao_code and name for an airport as arguments

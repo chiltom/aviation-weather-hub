@@ -4,7 +4,8 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import Nav from "react-bootstrap/Nav";
 import InputGroup from "react-bootstrap/InputGroup";
-import { userLogin, ContextType } from "../../utilities/userUtilities";
+import { userLogin } from "../../utilities/userUtilities";
+import { ContextType } from "../../types/userTypes";
 
 const LoginForm: React.FC<ContextType> = ({
   user,

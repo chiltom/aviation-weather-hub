@@ -3,21 +3,21 @@ import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
 import {
-  List,
   createList,
   getAList,
   getAllLists,
   updateAList,
   deleteAList,
 } from "../../utilities/lists/listUtilities";
+import { List } from "../../types/listTypes";
 import {
-  Task,
   createTask,
   updateTaskName,
   updateTaskCompleted,
   deleteATask,
 } from "../../utilities/lists/taskUtilities";
-import { ContextType } from "../../utilities/userUtilities";
+import { Task } from "../../types/listTypes";
+import { ContextType } from "../../types/userTypes";
 
 const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {
   const [lists, setLists] = useState<List[]>([]);

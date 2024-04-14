@@ -1,20 +1,7 @@
 import { AxiosResponse } from "axios";
 import { api } from "../axiosConfig";
+import { Task } from "../../types/listTypes";
 // All task related utility functions
-
-/**
- * The Task interface defines the properties of a Task, which
- * consist of a name and completion status. The task is then attached
- * to a parent list, with a reinforced relationship in the server and
- * database using a foreign key relationship. The task holds all relevant
- * information from the server.
- */
-export interface Task {
-  id: number;
-  list: number;
-  name: string;
-  completed: boolean;
-}
 
 /**
  * This function takes a listId and name for a task as arguments and sends a

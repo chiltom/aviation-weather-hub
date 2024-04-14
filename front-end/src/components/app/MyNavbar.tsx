@@ -4,7 +4,8 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
 import SignUpForm from "../user/SignUpModal";
-import { userLogout, ContextType } from "../../utilities/userUtilities";
+import { userLogout } from "../../utilities/userUtilities";
+import { ContextType } from "../../types/userTypes";
 import LoginForm from "../user/LoginModal";
 
 const MyNavbar: React.FC<ContextType> = ({

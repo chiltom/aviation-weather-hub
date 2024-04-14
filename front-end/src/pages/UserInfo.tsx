@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import ListGroup from "react-bootstrap/ListGroup";
 import UserInfoForm from "../components/user/UserInfoForm";
-import { ContextType, User } from "../utilities/userUtilities";
+import { ContextType, User } from "../types/userTypes";
 
 const UserInfo: React.FC = (): ReactElement => {
   const { user, setUser, theme } = useOutletContext<ContextType>();
