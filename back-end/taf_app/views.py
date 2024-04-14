@@ -37,7 +37,7 @@ class A_coordinate_taf(TokenReq):
         load_dotenv()
         request_lat = str(round(Decimal(lat), 2))
         request_lon = str(round(Decimal(lon), 2))
-        endpoint = f"""https://api.checkwx.com/metar/lat/{
+        endpoint = f"""https://api.checkwx.com/taf/lat/{
             request_lat}/lon/{request_lon}/"""
         response = requests.get(
             endpoint, headers={"X-API-Key": os.environ['CHECK_WX_KEY']})

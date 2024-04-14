@@ -4,6 +4,8 @@ import Lists from "../components/workflow/Lists";
 import { ContextType } from "../utilities/userUtilities";
 import Airports from "../components/workflow/Airports";
 import NamedLocations from "../components/workflow/NamedLocations";
+import { WeatherProvider } from "../hooks/weatherContext";
+import WeatherDisplay from "../components/workflow/WeatherDisplay";
 
 const Workflow: React.FC = (): ReactElement => {
   const { user, setUser, theme } = useOutletContext<ContextType>();
@@ -11,20 +13,25 @@ const Workflow: React.FC = (): ReactElement => {
   return (
     <>
       <h1>Weather Page</h1>
-      <div className="d-flex flex-column">
-        <div className="d-flex flex-grow-1 align-items-center my-3">
-          {/* airports and locations stuff */}
-          <div className="d-flex flex-column flex-grow-1 h-100 mx-1">
-            <Airports user={user} setUser={setUser} theme={theme} />
+      <WeatherProvider>
+        <div className="d-flex flex-column">
+          <div className="d-flex flex-grow-1 align-items-center my-3">
+            {/* airports and locations stuff */}
+            <div className="d-flex flex-column flex-grow-1 h-100 mx-1">
+              <Airports user={user} setUser={setUser} theme={theme} />
+            </div>
+            <div className="d-flex flex-column flex-grow-1 h-100 mx-1">
+              <NamedLocations user={user} setUser={setUser} theme={theme} />
+            </div>
+          </div>
+          <div>
+            <WeatherDisplay />
           </div>
           <div className="d-flex flex-column flex-grow-1 h-100 mx-1">
-            <NamedLocations user={user} setUser={setUser} theme={theme} />
+            <Lists user={user} setUser={setUser} theme={theme} />
           </div>
         </div>
-        <div className="d-flex flex-column flex-grow-1 h-100 mx-1">
-          <Lists user={user} setUser={setUser} theme={theme} />
-        </div>
-      </div>
+      </WeatherProvider>
     </>
   );
 };

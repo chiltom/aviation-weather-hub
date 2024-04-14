@@ -1,4 +1,4 @@
-import { ReactElement, useState, useEffect } from "react";
+import { ReactElement, useState, useEffect, useCallback } from "react";
 import Container from "react-bootstrap/Container";
 import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
@@ -54,7 +54,7 @@ const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {
    * It then awaits the completion of creating a new list and sets the
    * createListName state back to null.
    */
-  const handleCreateListSubmit = async (): Promise<void> => {
+  const handleCreateListSubmit = useCallback(async (): Promise<void> => {
     if (createListName.trim() !== "" && createListName) {
       const newList: List | null = await createList(createListName);
       if (newList) {
@@ -63,7 +63,7 @@ const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {
       setCreateListName("");
       setCreateListStatus(false);
     }
-  };
+  }, [createListName]);
 
   /**
    * This function takes a list update event and attempts to use the updateAList
@@ -131,12 +131,15 @@ const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {
    * list id value to null so no list is editable again.
    * @param listId
    */
-  const handleSubmitListName = async (listId: number): Promise<void> => {
-    if (newListName.trim() !== "" && newListName) {
-      await handleListUpdate(listId, newListName);
-      setEditListId(null);
-    }
-  };
+  const handleSubmitListName = useCallback(
+    async (listId: number): Promise<void> => {
+      if (newListName.trim() !== "" && newListName) {
+        await handleListUpdate(listId, newListName);
+        setEditListId(null);
+      }
+    },
+    [newListName]
+  );
 
   /**
    * Event handler for the add new task button
@@ -154,28 +157,31 @@ const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {
    * createTaskName state back to null.
    * @param listId
    */
-  const handleCreateTaskSubmit = async (listId: number): Promise<void> => {
-    if (createTaskName.trim() !== "" && createTaskName) {
-      const newTask: Task | null = await createTask(listId, createTaskName);
-      if (newTask) {
-        // If task updates successfully, get updated list for completion update
-        const updatedList: List | null = await getAList(listId);
-        if (updatedList) {
-          // Don't hardcode this in the end, the back-end is updating this list to
-          // false as of new task creation, figure out why this is not registering
-          // while getting the updated list after task creation in the front-end
-          updatedList.completed = false;
-          setLists((prevLists) =>
-            // Map over lists and find correct list, then set to updatedList,
-            // if not proper list keep original values
-            prevLists.map((list) => (list.id === listId ? updatedList : list))
-          );
+  const handleCreateTaskSubmit = useCallback(
+    async (listId: number): Promise<void> => {
+      if (createTaskName.trim() !== "" && createTaskName) {
+        const newTask: Task | null = await createTask(listId, createTaskName);
+        if (newTask) {
+          // If task updates successfully, get updated list for completion update
+          const updatedList: List | null = await getAList(listId);
+          if (updatedList) {
+            // Don't hardcode this in the end, the back-end is updating this list to
+            // false as of new task creation, figure out why this is not registering
+            // while getting the updated list after task creation in the front-end
+            updatedList.completed = false;
+            setLists((prevLists) =>
+              // Map over lists and find correct list, then set to updatedList,
+              // if not proper list keep original values
+              prevLists.map((list) => (list.id === listId ? updatedList : list))
+            );
+          }
         }
+        setCreateTaskName("");
+        setCreateTaskListId(null);
       }
-      setCreateTaskName("");
-      setCreateTaskListId(null);
-    }
-  };
+    },
+    [createTaskName]
+  );
 
   /**
    * Function that handles the editing of a task name and attaches it to a button.
@@ -200,15 +206,15 @@ const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {
    * @param listId
    * @param taskId
    */
-  const handleSubmitTaskName = async (
-    listId: number,
-    taskId: number
-  ): Promise<void> => {
-    if (newTaskName.trim() !== "" && newTaskName) {
-      await handleTaskUpdate(listId, taskId, newTaskName);
-      setEditTaskId(null);
-    }
-  };
+  const handleSubmitTaskName = useCallback(
+    async (listId: number, taskId: number): Promise<void> => {
+      if (newTaskName.trim() !== "" && newTaskName) {
+        await handleTaskUpdate(listId, taskId, newTaskName);
+        setEditTaskId(null);
+      }
+    },
+    [newTaskName]
+  );
 
   /**
    * This function takes a list's id, the specific task's id, and a new name
@@ -323,7 +329,7 @@ const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {
 
   return (
     <>
-      <h2 className="text-3xl font-bold mb-4 text-center">Lists</h2>
+      <h2 className="text-3xl font-bold my-2 text-center">Lists</h2>
       <Container
         data-bs-theme={theme}
         className="border border-secondary d-flex flex-column rounded-3 p-0 align-items-end"

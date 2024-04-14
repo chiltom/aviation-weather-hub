@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, useState } from "react";
 import { Link } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -12,6 +12,8 @@ const MyNavbar: React.FC<ContextType> = ({
   setUser,
   theme,
 }: ContextType): ReactElement => {
+  const [expanded, setExpanded] = useState<boolean>(false);
+
   const handleUserLogout = async () => {
     const loggedOut = await userLogout();
     if (loggedOut) {
@@ -21,23 +23,51 @@ const MyNavbar: React.FC<ContextType> = ({
 
   return (
     <>
-      <Navbar expand="lg" className="sticky-top" data-bs-theme={theme}>
+      <Navbar
+        expanded={expanded}
+        expand="lg"
+        className="sticky-top"
+        data-bs-theme={theme}
+      >
         <Navbar.Brand as={Link} to={"/"}>
           Weather Hub
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Toggle
+          aria-controls="basic-navbar-nav"
+          onClick={() => setExpanded(!expanded)}
+        />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link as={Link} to={"/about/"} className="hover:drop-shadow">
+            <Nav.Link
+              as={Link}
+              to={"/about/"}
+              onClick={() => setExpanded(false)}
+              className="hover:drop-shadow"
+            >
               About
             </Nav.Link>
-            <Nav.Link as={Link} to={"/training/"} className="hover:drop-shadow">
+            <Nav.Link
+              as={Link}
+              to={"/training/"}
+              onClick={() => setExpanded(false)}
+              className="hover:drop-shadow"
+            >
               Training
             </Nav.Link>
-            <Nav.Link as={Link} to={"/workflow/"} className="hover:drop-shadow">
+            <Nav.Link
+              as={Link}
+              to={"/workflow/"}
+              onClick={() => setExpanded(false)}
+              className="hover:drop-shadow"
+            >
               Workflow
             </Nav.Link>
-            <Nav.Link as={Link} to={"/flights/"} className="hover:drop-shadow">
+            <Nav.Link
+              as={Link}
+              to={"/flights/"}
+              onClick={() => setExpanded(false)}
+              className="hover:drop-shadow"
+            >
               Flights
             </Nav.Link>
           </Nav>
@@ -47,11 +77,13 @@ const MyNavbar: React.FC<ContextType> = ({
               <LoginForm user={user} setUser={setUser} theme={theme} />
             </Nav>
           )}
-          {/* Make into link to go to user info page with put request method to change
-            user info */}
           {!user ? null : (
             <Nav>
-              <Nav.Link as={Link} to={"/userinfo/"}>
+              <Nav.Link
+                as={Link}
+                to={"/userinfo/"}
+                onClick={() => setExpanded(false)}
+              >
                 Signed in as: {user.displayName}
               </Nav.Link>
               <Button
