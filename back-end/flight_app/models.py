@@ -82,7 +82,7 @@ class Brief(models.Model):
 class Hazard(models.Model):
     brief = models.ForeignKey(
         Brief, on_delete=models.CASCADE, related_name="hazards")
-    type = models.CharField(max_length=30, unique=True,
+    type = models.CharField(max_length=30,
                             validators=[validate_hazard_type])
     information = models.TextField(default="unknown")
 

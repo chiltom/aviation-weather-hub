@@ -1,4 +1,5 @@
 import React, { ReactElement, useState, useEffect, useCallback } from "react";
+import InputGroup from "react-bootstrap/InputGroup";
 import Tabs from "react-bootstrap/Tabs";
 import Tab from "react-bootstrap/Tab";
 import Card from "react-bootstrap/Card";
@@ -233,7 +234,14 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
   return (
     <>
       {!loading ? (
-        <Card className="d-flex flex-column justify-content-between">
+        <div className="flex-grow-1">
+          <div className="d-flex flex-row justify-content-end">
+            <CreateBriefModal
+              theme={theme}
+              flightId={flightId}
+              setBriefs={setComponentBriefs}
+            />
+          </div>
           <Tabs defaultActiveKey="0" id="brief-tabs">
             {componentBriefs.map((brief, idx) => (
               <Tab
@@ -291,7 +299,7 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
                         ) : (
                           <ListGroup.Item className="d-flex flex-row justify-content-between align-items-center">
                             {hazard.type}: {hazard.information}
-                            <div>
+                            <div className="d-flex flex-row justify-content-end align-items-center">
                               <Button
                                 variant="outline-secondary"
                                 size="sm"
@@ -302,6 +310,7 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
                                     hazard.information
                                   )
                                 }
+                                className="mx-2"
                               >
                                 Edit
                               </Button>
@@ -319,59 +328,66 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
                         )}
                       </React.Fragment>
                     ))}
+                    {createHazardBrief?.id === brief.id ? (
+                      <div className="d-flex flex-row justify-content-evenly align-items-center">
+                        <InputGroup>
+                          <InputGroup.Text>Type</InputGroup.Text>
+                          <input
+                            type="text"
+                            value={newHazardType}
+                            onChange={(e) => setNewHazardType(e.target.value)}
+                            className="form-control"
+                          />
+                          <InputGroup.Text>Information</InputGroup.Text>
+                          <input
+                            type="text"
+                            value={newHazardInformation}
+                            onChange={(e) =>
+                              setNewHazardInformation(e.target.value)
+                            }
+                            className="form-control"
+                          />
+                          <Button
+                            onClick={() => handleCreateHazardSubmit(brief)}
+                            variant="primary"
+                            size="sm"
+                          >
+                            Submit
+                          </Button>
+                        </InputGroup>
+                      </div>
+                    ) : (
+                      <ListGroup.Item className="d-flex flex-row justify-content-end">
+                        <Button
+                          variant="outline-primary"
+                          onClick={() => setCreateHazardBrief(brief)}
+                          className="w-25"
+                          size="sm"
+                        >
+                          Create Hazard
+                        </Button>
+                      </ListGroup.Item>
+                    )}
                   </ListGroup>
-                  {createHazardBrief?.id === brief.id ? (
-                    <div className="d-flex flex-row justify-content-evenly align-items-center">
-                      <input
-                        type="text"
-                        value={newHazardType}
-                        onChange={(e) => setNewHazardType(e.target.value)}
-                      />
-                      <input
-                        type="text"
-                        value={newHazardInformation}
-                        onChange={(e) =>
-                          setNewHazardInformation(e.target.value)
-                        }
-                      />
-                      <Button
-                        onClick={() => handleCreateHazardSubmit(brief)}
-                        variant="primary"
-                        size="sm"
-                      >
-                        Submit
-                      </Button>
-                    </div>
-                  ) : (
-                    <Button
-                      variant="success"
-                      onClick={() => setCreateHazardBrief(brief)}
-                    >
-                      Create New Hazard
-                    </Button>
-                  )}
                 </Card.Body>
-                <EditBriefModal
-                  theme={theme}
-                  setBriefs={setComponentBriefs}
-                  briefId={brief.id}
-                  flightId={brief.flight}
-                />
-                <Button
-                  variant="outline-danger"
-                  onClick={() => handleDelete(flightId, brief.id)}
-                >
-                  Delete
-                </Button>
+                <div className="d-flex flex-row justify-content-end" style={{paddingRight: "20px"}}>
+                  <EditBriefModal
+                    theme={theme}
+                    setBriefs={setComponentBriefs}
+                    briefId={brief.id}
+                    flightId={brief.flight}
+                  />
+                  <Button
+                    variant="outline-danger"
+                    onClick={() => handleDelete(flightId, brief.id)}
+                  >
+                    Delete
+                  </Button>
+                </div>
               </Tab>
             ))}
           </Tabs>
-          <CreateBriefModal
-            theme={theme}
-            flightId={flightId}
-            setBriefs={setComponentBriefs}
-          />
-        </Card>
+        </div>
       ) : null}
     </>
   );

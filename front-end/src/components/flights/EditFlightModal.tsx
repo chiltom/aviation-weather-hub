@@ -78,7 +78,7 @@ const EditFlightModal: React.FC<EditFlightModalProps> = ({
 
   return (
     <>
-      <Button variant="outline-primary" onClick={handleShow}>
+      <Button variant="outline-secondary" onClick={handleShow} className="mx-2">
         Edit
       </Button>
       <Modal show={show} onHide={handleClose} data-bs-theme={theme}>

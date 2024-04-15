@@ -13,6 +13,7 @@ import {
 import BriefTabs from "./BriefTabs";
 import EditFlightModal from "./EditFlightModal";
 import CreateFlightModal from "./CreateFlightModal";
+import "../../styles/flights.css";
 
 const FlightCards: React.FC<ContextType> = ({ theme }): ReactElement => {
   const [flights, setFlights] = useState<Flight[]>([]);
@@ -25,6 +26,16 @@ const FlightCards: React.FC<ContextType> = ({ theme }): ReactElement => {
     fetchFlights();
   }, []);
 
+  /**
+   * Handles the deletion of a specified flight by passing in the flight id as
+   * a parameter.
+   *
+   * If the request is successful, the flights are mapped over and the flight
+   * matching the parameter is filtered out.
+   *
+   * If the request is unsuccessful, nothing happens.
+   * @param flightId
+   */
   const handleDelete = async (flightId: number): Promise<void> => {
     const success: boolean = await deleteAFlight(flightId);
     success
@@ -41,46 +52,51 @@ const FlightCards: React.FC<ContextType> = ({ theme }): ReactElement => {
         className="d-flex flex-column gap-2 m-2"
         fluid
       >
-        <Row
-          sm={1}
-          className="d-flex flex-row gap-2 justify-content-evenly align-items-center"
-        >
-          {flights.map((flight) => (
-            <Col
-              key={flight.id}
-              className="d-flex flex-row flex-grow-1 justify-content-center"
-            >
-              <Card className="px-0">
-                <Card.Header>Callsign: {flight.callsign}</Card.Header>
-                <Card.Body>
-                  <Card.Text>
-                    {flight.tailNumber} - {flight.aircraftTypeModel}
-                  </Card.Text>
-                  <Card.Text>POC: {flight.pilotResponsible}</Card.Text>
-                  <Card.Text>
-                    {flight.origin} - {flight.destination}
-                  </Card.Text>
-                  <Card.Text>Flight Level: {flight.flightLevel}</Card.Text>
-                  <Card.Text>Takeoff: {flight.takeoffTime}</Card.Text>
-                  <Card.Text>Arrival: {flight.arrivalTime}</Card.Text>
-                  <EditFlightModal
-                    setFlights={setFlights}
-                    id={flight.id}
-                    theme={theme}
-                  />
-                  <Button
-                    variant="danger"
-                    onClick={() => handleDelete(flight.id)}
-                  >
-                    Delete
-                  </Button>
-                </Card.Body>
-              </Card>
-              <BriefTabs flightId={flight.id} theme={theme} />
-            </Col>
-          ))}
+        <Row className="d-flex flex-row">
+          <span className="text-white">
+            Number of Flights: {flights.length}{" "}
+            <CreateFlightModal theme={theme} setFlights={setFlights} />
+          </span>
         </Row>
-        <CreateFlightModal theme={theme} setFlights={setFlights} />
+        {flights.map((flight) => (
+          <Row key={flight.id} className="mb-3">
+            <Card className="d-flex w-100">
+              <Row noGutters className="w-100">
+                <Col md={6} className="flight-details">
+                  <Card.Header>Callsign: {flight.callsign}</Card.Header>
+                  <Card.Body>
+                    <Card.Text>
+                      {flight.tailNumber} - {flight.aircraftTypeModel}
+                    </Card.Text>
+                    <Card.Text>POC: {flight.pilotResponsible}</Card.Text>
+                    <Card.Text>
+                      {flight.origin} - {flight.destination}
+                    </Card.Text>
+                    <Card.Text>Flight Level: {flight.flightLevel}</Card.Text>
+                    <Card.Text>Takeoff: {flight.takeoffTime}</Card.Text>
+                    <Card.Text>Arrival: {flight.arrivalTime}</Card.Text>
+                    <div className="d-flex flex-row justify-content-end align-items-center">
+                      <EditFlightModal
+                        setFlights={setFlights}
+                        id={flight.id}
+                        theme={theme}
+                      />
+                      <Button
+                        variant="outline-danger"
+                        onClick={() => handleDelete(flight.id)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </Card.Body>
+                </Col>
+                <Col md={6} className="brief-details">
+                  <BriefTabs flightId={flight.id} theme={theme} />
+                </Col>
+              </Row>
+            </Card>
+          </Row>
+        ))}
       </Container>
     </>
   );

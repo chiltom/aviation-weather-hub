@@ -62,7 +62,7 @@ const CreateBriefModal: React.FC<EditBriefModalProps> = ({
 
   return (
     <>
-      <Button variant="success" onClick={handleShow}>
+      <Button variant="outline-primary" onClick={handleShow} className="w-25">
         Create Brief
       </Button>
       <Modal show={show} onHide={handleClose} data-bs-theme={theme}>

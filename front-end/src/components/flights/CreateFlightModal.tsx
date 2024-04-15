@@ -64,7 +64,7 @@ const CreateFlightModal: React.FC<CreateFlightModalProps> = ({
 
   return (
     <>
-      <Button variant="success" onClick={handleShow}>
+      <Button variant="outline-primary" onClick={handleShow} className="w-25">
         Create Flight
       </Button>
       <Modal show={show} onHide={handleClose} data-bs-theme={theme}>
