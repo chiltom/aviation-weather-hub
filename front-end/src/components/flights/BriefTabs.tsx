@@ -234,7 +234,7 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
   return (
     <>
       {!loading ? (
-        <div className="flex-grow-1">
+        <div>
           <div className="d-flex flex-row justify-content-end">
             <CreateBriefModal
               theme={theme}
@@ -269,33 +269,44 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
                     {brief.hazards.map((hazard) => (
                       <React.Fragment key={hazard.id}>
                         {editHazardId === hazard.id ? (
-                          <ListGroup.Item className="d-flex flex-row justify-content-between align-items-center">
-                            <input
-                              type="text"
-                              value={updatedHazardType}
-                              onChange={(e) =>
-                                setUpdatedHazardType(e.target.value)
-                              }
-                              className="flex-grow-1 form-control mr-2"
-                            />
-                            <input
-                              type="text"
-                              value={updatedHazardInformation}
-                              onChange={(e) =>
-                                setUpdatedHazardInformation(e.target.value)
-                              }
-                              className="flex-grow-1 form-control mr-2"
-                            />
-                            <Button
-                              onClick={() =>
-                                handleSubmitHazardUpdate(brief, hazard.id)
-                              }
-                              variant="primary"
-                              size="sm"
-                            >
-                              Save
-                            </Button>
-                          </ListGroup.Item>
+                          <div>
+                            <InputGroup>
+                              <InputGroup.Text>Type</InputGroup.Text>
+                              <input
+                                type="text"
+                                value={updatedHazardType}
+                                onChange={(e) =>
+                                  setUpdatedHazardType(e.target.value)
+                                }
+                                className="form-control"
+                              />
+                              <InputGroup.Text>Info</InputGroup.Text>
+                              <input
+                                type="text"
+                                value={updatedHazardInformation}
+                                onChange={(e) =>
+                                  setUpdatedHazardInformation(e.target.value)
+                                }
+                                className="form-control"
+                              />
+                              <Button
+                                onClick={() =>
+                                  handleSubmitHazardUpdate(brief, hazard.id)
+                                }
+                                variant="primary"
+                                size="sm"
+                              >
+                                Save
+                              </Button>
+                              <Button
+                                variant="danger"
+                                onClick={() => setEditHazardId(null)}
+                                size="sm"
+                              >
+                                Cancel
+                              </Button>
+                            </InputGroup>
+                          </div>
                         ) : (
                           <ListGroup.Item className="d-flex flex-row justify-content-between align-items-center">
                             {hazard.type}: {hazard.information}
@@ -354,6 +365,13 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
                           >
                             Submit
                           </Button>
+                          <Button
+                            onClick={() => setCreateHazardBrief(null)}
+                            variant="danger"
+                            size="sm"
+                          >
+                            Cancel
+                          </Button>
                         </InputGroup>
                       </div>
                     ) : (
@@ -370,7 +388,10 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
                     )}
                   </ListGroup>
                 </Card.Body>
-                <div className="d-flex flex-row justify-content-end" style={{paddingRight: "20px"}}>
+                <div
+                  className="d-flex flex-row justify-content-end"
+                  style={{ paddingRight: "20px" }}
+                >
                   <EditBriefModal
                     theme={theme}
                     setBriefs={setComponentBriefs}

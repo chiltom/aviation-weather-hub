@@ -1,5 +1,6 @@
 import { ReactElement, useState, useEffect, useCallback } from "react";
 import Button from "react-bootstrap/Button";
+import InputGroup from "react-bootstrap/InputGroup";
 import ListGroup from "react-bootstrap/ListGroup";
 import {
   getAllAirports,
@@ -180,26 +181,36 @@ const AirportsListGroup: React.FC<ContextType> = ({
           >
             {editAirportIcao === airport.icaoCode ? (
               <div className="d-flex flex-grow-1 justify-content-between">
-                <div className="d-flex align-items-center">
+                <InputGroup>
+                  <InputGroup.Text>ICAO</InputGroup.Text>
                   <input
                     type="text"
                     value={newAirportIcao}
                     onChange={(e) => setNewAirportIcao(e.target.value)}
                     className="form-control"
                   />
+                  <InputGroup.Text>Name</InputGroup.Text>
                   <input
                     type="text"
                     value={newAirportName}
                     onChange={(e) => setNewAirportName(e.target.value)}
                     className="form-control"
                   />
-                </div>
-                <Button
-                  variant="outline-success"
-                  onClick={() => handleSubmitAirportUpdate(airport.icaoCode)}
-                >
-                  Save
-                </Button>
+                  <Button
+                    variant="outline-primary"
+                    onClick={() => handleSubmitAirportUpdate(airport.icaoCode)}
+                    size="sm"
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    variant="outline-danger"
+                    onClick={() => setEditAirportIcao(null)}
+                    size="sm"
+                  >
+                    Cancel
+                  </Button>
+                </InputGroup>
               </div>
             ) : (
               <>
@@ -249,28 +260,46 @@ const AirportsListGroup: React.FC<ContextType> = ({
           </ListGroup.Item>
         ))}
         {createAirportStatus ? (
-          <ListGroup.Item className="d-flex">
-            <input
-              type="text"
-              value={createAirportIcao}
-              onChange={(e) => setCreateAirportIcao(e.target.value)}
-              className="form-control mr-2"
-              placeholder="New ICAO Code"
-            />
-            <input
-              type="text"
-              value={createAirportName}
-              onChange={(e) => setCreateAirportName(e.target.value)}
-              className="form-control mr-2"
-              placeholder="New Airport Name"
-            />
-            <Button variant="success" onClick={handleCreateAirportSubmit}>
-              Create
-            </Button>
+          <ListGroup.Item>
+            <InputGroup>
+              <InputGroup.Text>ICAO</InputGroup.Text>
+              <input
+                type="text"
+                value={createAirportIcao}
+                onChange={(e) => setCreateAirportIcao(e.target.value)}
+                className="form-control mr-2"
+                placeholder="New ICAO Code"
+              />
+              <InputGroup.Text>Name</InputGroup.Text>
+              <input
+                type="text"
+                value={createAirportName}
+                onChange={(e) => setCreateAirportName(e.target.value)}
+                className="form-control mr-2"
+                placeholder="New Airport Name"
+              />
+              <Button
+                variant="outline-primary"
+                onClick={handleCreateAirportSubmit}
+                size="sm"
+              >
+                Create
+              </Button>
+              <Button
+                variant="outline-danger"
+                onClick={() => setCreateAirportStatus(false)}
+                size="sm"
+              >
+                Cancel
+              </Button>
+            </InputGroup>
           </ListGroup.Item>
         ) : (
           <ListGroup.Item>
-            <Button variant="primary" onClick={handleCreateAirportEdit}>
+            <Button
+              variant="outline-primary"
+              onClick={handleCreateAirportEdit}
+            >
               Add New Airport
             </Button>
           </ListGroup.Item>

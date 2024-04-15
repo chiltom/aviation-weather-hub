@@ -1,6 +1,7 @@
 import { ReactElement, useState, useEffect, useCallback } from "react";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
+import InputGroup from "react-bootstrap/InputGroup";
 import {
   getAllNamedLocations,
   createNamedLocation,
@@ -237,37 +238,47 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
           >
             {editNamedLocationCity === namedLocation.city ? (
               <div className="d-flex flex-grow-1 justify-content-between">
-                <div className="d-flex align-items-center">
+                <InputGroup>
+                  <InputGroup.Text>City</InputGroup.Text>
                   <input
                     type="text"
                     value={newNamedLocationCity}
                     onChange={(e) => setNewNamedLocationCity(e.target.value)}
                     className="form-control"
                   />
+                  <InputGroup.Text>Country</InputGroup.Text>
                   <input
                     type="text"
                     value={newNamedLocationCountry}
                     onChange={(e) => setNewNamedLocationCountry(e.target.value)}
                     className="form-control"
                   />
-                </div>
-                <Button
-                  variant="outline-success"
-                  onClick={() =>
-                    handleSubmitNamedLocationUpdate(
-                      namedLocation.city,
-                      namedLocation.country
-                    )
-                  }
-                >
-                  Save
-                </Button>
+                  <Button
+                    variant="outline-primary"
+                    onClick={() =>
+                      handleSubmitNamedLocationUpdate(
+                        namedLocation.city,
+                        namedLocation.country
+                      )
+                    }
+                    size="sm"
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    variant="outline-danger"
+                    onClick={() => setEditNamedLocationCity(null)}
+                    size="sm"
+                  >
+                    Cancel
+                  </Button>
+                </InputGroup>
               </div>
             ) : (
               <>
                 <div>
                   <strong>{namedLocation.city}</strong> -{" "}
-                  <strong>{namedLocation.country}</strong>
+                  {namedLocation.country}
                 </div>
                 <div className="d-flex flex-wrap">
                   <Button
@@ -325,27 +336,45 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
         ))}
         {createNamedLocationStatus ? (
           <ListGroup.Item className="d-flex">
-            <input
-              type="text"
-              value={createNamedLocationCity}
-              onChange={(e) => setCreateNamedLocationCity(e.target.value)}
-              className="form-control mr-2"
-              placeholder="New City"
-            />
-            <input
-              type="text"
-              value={createNamedLocationCountry}
-              onChange={(e) => setCreateNamedLocationCountry(e.target.value)}
-              className="form-control mr-2"
-              placeholder="New Country Abbretviation"
-            />
-            <Button variant="success" onClick={handleCreateNamedLocationSubmit}>
-              Create
-            </Button>
+            <InputGroup>
+              <InputGroup.Text>City</InputGroup.Text>
+              <input
+                type="text"
+                value={createNamedLocationCity}
+                onChange={(e) => setCreateNamedLocationCity(e.target.value)}
+                className="form-control mr-2"
+                placeholder="New City"
+              />
+              <InputGroup.Text>Country</InputGroup.Text>
+              <input
+                type="text"
+                value={createNamedLocationCountry}
+                onChange={(e) => setCreateNamedLocationCountry(e.target.value)}
+                className="form-control mr-2"
+                placeholder="New Country Abbretviation"
+              />
+              <Button
+                variant="outline-primary"
+                onClick={handleCreateNamedLocationSubmit}
+                size="sm"
+              >
+                Submit
+              </Button>
+              <Button
+                variant="outline-danger"
+                onClick={() => setCreateNamedLocationStatus(false)}
+                size="sm"
+              >
+                Cancel
+              </Button>
+            </InputGroup>
           </ListGroup.Item>
         ) : (
           <ListGroup.Item>
-            <Button variant="primary" onClick={handleCreateNamedLocationEdit}>
+            <Button
+              variant="outline-primary"
+              onClick={handleCreateNamedLocationEdit}
+            >
               Add New Location
             </Button>
           </ListGroup.Item>

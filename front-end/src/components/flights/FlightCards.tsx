@@ -69,9 +69,8 @@ const FlightCards: React.FC<ContextType> = ({ theme }): ReactElement => {
                       {flight.tailNumber} - {flight.aircraftTypeModel}
                     </Card.Text>
                     <Card.Text>POC: {flight.pilotResponsible}</Card.Text>
-                    <Card.Text>
-                      {flight.origin} - {flight.destination}
-                    </Card.Text>
+                    <Card.Text>Origin: {flight.origin}</Card.Text>
+                    <Card.Text>Destination {flight.destination}</Card.Text>
                     <Card.Text>Flight Level: {flight.flightLevel}</Card.Text>
                     <Card.Text>Takeoff: {flight.takeoffTime}</Card.Text>
                     <Card.Text>Arrival: {flight.arrivalTime}</Card.Text>

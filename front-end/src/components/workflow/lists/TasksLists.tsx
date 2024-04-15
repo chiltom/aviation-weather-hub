@@ -1,5 +1,6 @@
 import { ReactElement, useState, useCallback } from "react";
 import Button from "react-bootstrap/Button";
+import InputGroup from "react-bootstrap/InputGroup";
 import { getAList } from "../../../utilities/lists/listUtilities";
 import {
   createTask,
@@ -220,10 +221,17 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
                 />
                 <Button
                   onClick={() => handleSubmitTaskName(list.id, task.id)}
-                  variant="primary"
+                  variant="outline-primary"
                   size="sm"
                 >
                   Save
+                </Button>
+                <Button
+                  variant="outline-danger"
+                  onClick={() => setEditTaskId(null)}
+                  size="sm"
+                >
+                  Cancel
                 </Button>
               </div>
             ) : (
@@ -247,7 +255,7 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
                 )}
                 <Button
                   onClick={() => handleEditTaskName(task.id, task.name)}
-                  variant="link"
+                  variant="outline-secondary"
                   size="sm"
                   className="mr-2"
                 >
@@ -255,7 +263,7 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
                 </Button>
                 <Button
                   onClick={() => handleTaskDelete(list.id, task.id)}
-                  variant="danger"
+                  variant="outline-danger"
                   size="sm"
                 >
                   Delete Task
@@ -267,24 +275,34 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
       </ul>
       {createTaskListId === list.id ? (
         <div className="flex items-center mt-2">
-          <input
-            type="text"
-            value={createTaskName}
-            onChange={(e) => setCreateTaskName(e.target.value)}
-            className="form-control flex-grow-1 mr-2"
-          />
-          <Button
-            onClick={() => handleCreateTaskSubmit(list.id)}
-            variant="primary"
-            size="sm"
-          >
-            Save
-          </Button>
+          <InputGroup>
+            <InputGroup.Text>Name</InputGroup.Text>
+            <input
+              type="text"
+              value={createTaskName}
+              onChange={(e) => setCreateTaskName(e.target.value)}
+              className="form-control flex-grow-1 mr-2"
+            />
+            <Button
+              onClick={() => handleCreateTaskSubmit(list.id)}
+              variant="outline-primary"
+              size="sm"
+            >
+              Save
+            </Button>
+            <Button
+              variant="outline-danger"
+              onClick={() => setCreateTaskListId(null)}
+              size="sm"
+            >
+              Cancel
+            </Button>
+          </InputGroup>
         </div>
       ) : (
         <Button
           onClick={() => handleCreateTaskEdit(list.id)}
-          variant="success"
+          variant="outline-primary"
           size="sm"
           className="mt-2"
         >

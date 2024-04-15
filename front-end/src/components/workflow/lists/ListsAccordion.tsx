@@ -1,6 +1,7 @@
 import { ReactElement, useState, useEffect, useCallback } from "react";
 import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
+import InputGroup from "react-bootstrap/InputGroup";
 import { AccordionEventKey } from "react-bootstrap/esm/AccordionContext";
 import {
   createList,
@@ -163,19 +164,29 @@ const ListsAccordion: React.FC<ContextType> = ({
               <Accordion.Header className="flex w-full">
                 {editListId === list.id ? (
                   <div className="d-flex flex-grow-1 me-3">
-                    <input
-                      type="text"
-                      value={newListName}
-                      onChange={(e) => setNewListName(e.target.value)}
-                      className="form-control flex-grow mr-2"
-                    />
-                    <Button
-                      onClick={() => handleSubmitListName(list.id)}
-                      variant="primary"
-                      size="sm"
-                    >
-                      Save
-                    </Button>
+                    <InputGroup>
+                      <InputGroup.Text>Name</InputGroup.Text>
+                      <input
+                        type="text"
+                        value={newListName}
+                        onChange={(e) => setNewListName(e.target.value)}
+                        className="form-control flex-grow mr-2"
+                      />
+                      <Button
+                        onClick={() => handleSubmitListName(list.id)}
+                        variant="outline-primary"
+                        size="sm"
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        onClick={() => setEditListId(null)}
+                        variant="outline-danger"
+                        size="sm"
+                      >
+                        Cancel
+                      </Button>
+                    </InputGroup>
                   </div>
                 ) : (
                   <div className="d-flex flex-grow-1 justify-content-between align-items-center">
@@ -189,7 +200,7 @@ const ListsAccordion: React.FC<ContextType> = ({
                     <div className="d-flex align-items-center mx-3">
                       <Button
                         onClick={() => handleEditListName(list.id, list.name)}
-                        variant="secondary"
+                        variant="outline-secondary"
                         size="sm"
                         className="mr-2"
                       >
@@ -197,7 +208,7 @@ const ListsAccordion: React.FC<ContextType> = ({
                       </Button>
                       <Button
                         onClick={() => handleListDelete(list.id)}
-                        variant="danger"
+                        variant="outline-danger"
                         size="sm"
                       >
                         Delete List
@@ -215,27 +226,35 @@ const ListsAccordion: React.FC<ContextType> = ({
         {createListStatus === false ? (
           <Button
             onClick={() => handleCreateListEdit()}
-            variant="primary"
-            size="sm"
-            className="w-25"
+            variant="outline-primary"
           >
             Create New List
           </Button>
         ) : (
-          <div className="flex items-center d-flex">
-            <input
-              type="text"
-              value={createListName}
-              onChange={(e) => setCreateListName(e.target.value)}
-              className="form-control flex-grow mr-2"
-            />
-            <Button
-              onClick={() => handleCreateListSubmit()}
-              variant="primary"
-              size="sm"
-            >
-              Save
-            </Button>
+          <div className="d-flex align-items-center w-100">
+            <InputGroup>
+              <InputGroup.Text>Name</InputGroup.Text>
+              <input
+                type="text"
+                value={createListName}
+                onChange={(e) => setCreateListName(e.target.value)}
+                className="form-control flex-grow mr-2"
+              />
+              <Button
+                onClick={() => handleCreateListSubmit()}
+                variant="outline-primary"
+                size="sm"
+              >
+                Save
+              </Button>
+              <Button
+                variant="outline-danger"
+                onClick={() => setCreateListStatus(false)}
+                size="sm"
+              >
+                Cancel
+              </Button>
+            </InputGroup>
           </div>
         )}
       </div>
