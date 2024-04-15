@@ -6,7 +6,10 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { Flight } from "../../types/flightTypes";
 import { ContextType } from "../../types/userTypes";
-import { getAllFlights } from "../../utilities/flights/flightUtilities";
+import {
+  deleteAFlight,
+  getAllFlights,
+} from "../../utilities/flights/flightUtilities";
 import BriefTabs from "./BriefTabs";
 import EditFlightModal from "./EditFlightModal";
 import CreateFlightModal from "./CreateFlightModal";
@@ -20,7 +23,16 @@ const FlightCards: React.FC<ContextType> = ({ theme }): ReactElement => {
       fetchedFlights ? setFlights(fetchedFlights) : null;
     };
     fetchFlights();
-  }, [flights]);
+  }, []);
+
+  const handleDelete = async (flightId: number): Promise<void> => {
+    const success: boolean = await deleteAFlight(flightId);
+    success
+      ? setFlights((prevFlights) =>
+          prevFlights.filter((flight) => flight.id !== flightId)
+        )
+      : alert("Deletion unsuccessful");
+  };
 
   return (
     <>
@@ -56,7 +68,12 @@ const FlightCards: React.FC<ContextType> = ({ theme }): ReactElement => {
                     id={flight.id}
                     theme={theme}
                   />
-                  <Button variant="danger">Delete</Button>
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDelete(flight.id)}
+                  >
+                    Delete
+                  </Button>
                 </Card.Body>
               </Card>
               <BriefTabs flightId={flight.id} />
