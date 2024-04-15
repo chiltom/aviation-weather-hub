@@ -5,7 +5,10 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Brief } from "../../types/flightTypes";
-import { getAllBriefs } from "../../utilities/flights/briefUtilities";
+import {
+  deleteABrief,
+  getAllBriefs,
+} from "../../utilities/flights/briefUtilities";
 import EditBriefModal from "./EditBriefModal";
 import CreateBriefModal from "./CreateBriefModal";
 
@@ -31,6 +34,18 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
   useEffect(() => {
     setLoading(false);
   }, [componentBriefs]);
+
+  const handleDelete = async (
+    flightId: number,
+    briefId: number
+  ): Promise<void> => {
+    const success: boolean = await deleteABrief(flightId, briefId);
+    success
+      ? setComponentBriefs((prevBriefs) =>
+          prevBriefs.filter((brief) => brief.id !== briefId)
+        )
+      : alert("Deletion unsuccessful");
+  };
 
   return (
     <>
@@ -84,7 +99,12 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
                   briefId={brief.id}
                   flightId={brief.flight}
                 />
-                <Button variant="outline-danger">Delete</Button>
+                <Button
+                  variant="outline-danger"
+                  onClick={() => handleDelete(flightId, brief.id)}
+                >
+                  Delete
+                </Button>
               </Tab>
             ))}
           </Tabs>
