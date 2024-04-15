@@ -183,9 +183,7 @@ export const updateABrief = async (
   newVisibility?: string,
   newSkyCondition?: string,
   newTemperature?: string,
-  newAltimeterSetting?: string,
-  newBriefTime?: string,
-  newVoidTime?: string
+  newAltimeterSetting?: string
 ): Promise<Brief | null> => {
   const newData: {
     surface_winds?: string;
@@ -194,8 +192,6 @@ export const updateABrief = async (
     sky_condition?: string;
     temperature?: string;
     altimeter_setting?: string;
-    brief_time?: string;
-    void_time?: string;
   } = {};
   newSurfaceWinds !== "" && newSurfaceWinds
     ? (newData["surface_winds"] = newSurfaceWinds)
@@ -214,12 +210,6 @@ export const updateABrief = async (
     : null;
   newAltimeterSetting !== "" && newAltimeterSetting
     ? (newData["altimeter_setting"] = newAltimeterSetting)
-    : null;
-  newBriefTime !== "" && newBriefTime
-    ? (newData["brief_time"] = newBriefTime)
-    : null;
-  newVoidTime !== "" && newVoidTime
-    ? (newData["void_time"] = newVoidTime)
     : null;
   try {
     const response: AxiosResponse = await api.put(

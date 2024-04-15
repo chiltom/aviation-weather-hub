@@ -76,7 +76,7 @@ const FlightCards: React.FC<ContextType> = ({ theme }): ReactElement => {
                   </Button>
                 </Card.Body>
               </Card>
-              <BriefTabs flightId={flight.id} />
+              <BriefTabs flightId={flight.id} theme={theme} />
             </Col>
           ))}
         </Row>

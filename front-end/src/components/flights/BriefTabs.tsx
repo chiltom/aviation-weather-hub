@@ -6,12 +6,14 @@ import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import { Brief } from "../../types/flightTypes";
 import { getAllBriefs } from "../../utilities/flights/briefUtilities";
+import EditBriefModal from "./EditBriefModal";
 
 interface BriefProps {
   flightId: number;
+  theme: string;
 }
 
-const BriefTabs: React.FC<BriefProps> = ({ flightId }): ReactElement => {
+const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
   const [componentBriefs, setComponentBriefs] = useState<Brief[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -75,6 +77,13 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId }): ReactElement => {
                     ))}
                   </ListGroup>
                 </Card.Body>
+                <EditBriefModal
+                  theme={theme}
+                  setBriefs={setComponentBriefs}
+                  briefId={brief.id}
+                  flightId={brief.flight}
+                />
+                <Button variant="outline-danger">Delete</Button>
               </Tab>
             ))}
           </Tabs>
