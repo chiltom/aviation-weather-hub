@@ -20,7 +20,8 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
    * name into the createTask function.
    *
    * It then awaits the completion of creating a new task and sets the
-   * createTaskName state back to null.
+   * createTaskName state back to an empty string, as well as setting the create
+   * task list id back to null.
    * @param listId
    */
   const handleCreateTaskSubmit = useCallback(
@@ -179,7 +180,7 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
    * the deleteATask method to delete a task.
    *
    * If this is successful, the updated list is grabbed from the server
-   * using the getAList method and the updatedList replaces it's old value
+   * using the getAList method and the updatedList replaces its old value
    * in the List array.
    * @param listId
    * @param taskId
