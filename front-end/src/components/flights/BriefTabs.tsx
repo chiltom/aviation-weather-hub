@@ -7,6 +7,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { Brief } from "../../types/flightTypes";
 import { getAllBriefs } from "../../utilities/flights/briefUtilities";
 import EditBriefModal from "./EditBriefModal";
+import CreateBriefModal from "./CreateBriefModal";
 
 interface BriefProps {
   flightId: number;
@@ -87,7 +88,11 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
               </Tab>
             ))}
           </Tabs>
-          <Button variant="success">Add Brief</Button>
+          <CreateBriefModal
+            theme={theme}
+            flightId={flightId}
+            setBriefs={setComponentBriefs}
+          />
         </Card>
       ) : null}
     </>
