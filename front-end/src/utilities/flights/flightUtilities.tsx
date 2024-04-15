@@ -131,7 +131,7 @@ export const getAFlight = async (flightId: number): Promise<Flight | null> => {
       aircraftTypeModel: response.data["aircraft_type_model"],
       pilotResponsible: response.data["pilot_responsible"],
       origin: response.data["origin"],
-      destination: response.data["origin"],
+      destination: response.data["destination"],
       flightLevel: response.data["flight_level"],
       takeoffTime: response.data["takeoff_time"],
       arrivalTime: response.data["arrival_time"],

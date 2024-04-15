@@ -9,6 +9,7 @@ import { ContextType } from "../../types/userTypes";
 import { getAllFlights } from "../../utilities/flights/flightUtilities";
 import BriefTabs from "./BriefTabs";
 import EditFlightModal from "./EditFlightModal";
+import CreateFlightModal from "./CreateFlightModal";
 
 const FlightCards: React.FC<ContextType> = ({ theme }): ReactElement => {
   const [flights, setFlights] = useState<Flight[]>([]);
@@ -62,6 +63,7 @@ const FlightCards: React.FC<ContextType> = ({ theme }): ReactElement => {
             </Col>
           ))}
         </Row>
+        <CreateFlightModal theme={theme} setFlights={setFlights} />
       </Container>
     </>
   );
