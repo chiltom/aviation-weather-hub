@@ -22,6 +22,11 @@ const SignUpForm: React.FC<ContextType> = ({
   const handleClose = (): void => setShow(false);
   const handleShow = (): void => setShow(true);
 
+  /**
+   * Handles the submission of a user sign up. If successful, the user is set at
+   * the state set in application. If unsuccessful, alerts that the user's signup
+   * failed.
+   */
   const handleSignup: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const user = await signupUser(

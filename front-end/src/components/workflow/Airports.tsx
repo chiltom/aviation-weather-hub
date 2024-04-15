@@ -9,10 +9,10 @@ import {
 } from "../../utilities/locations/airportUtilities";
 import { Airport } from "../../types/locationTypes";
 import { ContextType } from "../../types/userTypes";
-import { useWeather } from "../../providers/weatherContext";
+import { useWeather } from "../../providers/WeatherContextProvider";
 import { WeatherContextType } from "../../types/weatherTypes";
 
-const Airports: React.FC<ContextType> = ({
+const AirportsListGroup: React.FC<ContextType> = ({
   theme,
 }: ContextType): ReactElement => {
   const [airports, setAirports] = useState<Airport[]>([]);
@@ -280,4 +280,4 @@ const Airports: React.FC<ContextType> = ({
   );
 };
 
-export default Airports;
+export default AirportsListGroup;

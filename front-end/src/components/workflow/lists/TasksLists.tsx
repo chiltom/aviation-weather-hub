@@ -9,7 +9,7 @@ import {
 } from "../../../utilities/lists/taskUtilities";
 import { List, Task, TasksProps } from "../../../types/listTypes";
 
-const Tasks: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
+const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
   const [editTaskId, setEditTaskId] = useState<number | null>(null);
   const [newTaskName, setNewTaskName] = useState<string>("");
   const [createTaskListId, setCreateTaskListId] = useState<number | null>(null);
@@ -294,4 +294,4 @@ const Tasks: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
   );
 };
 
-export default Tasks;
+export default TasksLists;

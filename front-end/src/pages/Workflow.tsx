@@ -1,11 +1,11 @@
 import { ReactElement } from "react";
 import { useOutletContext } from "react-router-dom";
-import Lists from "../components/workflow/lists/Lists";
+import ListsAccordion from "../components/workflow/lists/ListsAccordion";
 import { ContextType } from "../types/userTypes";
-import Airports from "../components/workflow/Airports";
-import NamedLocations from "../components/workflow/NamedLocations";
-import { WeatherProvider } from "../providers/weatherContext";
+import NamedLocationsListGroup from "../components/workflow/NamedLocationsListGroup";
+import { WeatherProvider } from "../providers/WeatherContextProvider";
 import WeatherDisplay from "../components/workflow/weather-display/WeatherDisplay";
+import AirportsListGroup from "../components/workflow/Airports";
 
 const Workflow: React.FC = (): ReactElement => {
   const { user, setUser, theme } = useOutletContext<ContextType>();
@@ -17,17 +17,17 @@ const Workflow: React.FC = (): ReactElement => {
         <div className="d-flex flex-column">
           <div className="d-flex flex-grow-1 align-items-center my-3">
             <div className="d-flex flex-column flex-grow-1 h-100 mx-1">
-              <Airports user={user} setUser={setUser} theme={theme} />
+              <AirportsListGroup user={user} setUser={setUser} theme={theme} />
             </div>
             <div className="d-flex flex-column flex-grow-1 h-100 mx-1">
-              <NamedLocations user={user} setUser={setUser} theme={theme} />
+              <NamedLocationsListGroup user={user} setUser={setUser} theme={theme} />
             </div>
           </div>
           <div>
             <WeatherDisplay />
           </div>
           <div className="d-flex flex-column flex-grow-1 h-100 mx-1">
-            <Lists user={user} setUser={setUser} theme={theme} />
+            <ListsAccordion user={user} setUser={setUser} theme={theme} />
           </div>
         </div>
       </WeatherProvider>

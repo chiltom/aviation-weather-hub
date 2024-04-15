@@ -9,10 +9,10 @@ import {
 } from "../../utilities/locations/namedLocationUtilities";
 import { NamedLocation } from "../../types/locationTypes";
 import { ContextType } from "../../types/userTypes";
-import { useWeather } from "../../providers/weatherContext";
+import { useWeather } from "../../providers/WeatherContextProvider";
 import { WeatherContextType } from "../../types/weatherTypes";
 
-const NamedLocations: React.FC<ContextType> = ({
+const NamedLocationsListGroup: React.FC<ContextType> = ({
   theme,
 }: ContextType): ReactElement => {
   const [namedLocations, setNamedLocations] = useState<NamedLocation[]>([]);
@@ -355,4 +355,4 @@ const NamedLocations: React.FC<ContextType> = ({
   );
 };
 
-export default NamedLocations;
+export default NamedLocationsListGroup;

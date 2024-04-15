@@ -10,9 +10,11 @@ import {
 } from "../../../utilities/lists/listUtilities";
 import { List } from "../../../types/listTypes";
 import { ContextType } from "../../../types/userTypes";
-import Tasks from "./Tasks";
+import TasksLists from "./TasksLists";
 
-const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {
+const ListsAccordion: React.FC<ContextType> = ({
+  theme,
+}: ContextType): ReactElement => {
   const [lists, setLists] = useState<List[]>([]);
   const [editListId, setEditListId] = useState<number | null>(null);
   const [newListName, setNewListName] = useState<string>("");
@@ -205,7 +207,7 @@ const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {
                 )}
               </Accordion.Header>
               <Accordion.Body className="d-flex flex-column">
-                <Tasks list={list} setLists={setLists} />
+                <TasksLists list={list} setLists={setLists} />
               </Accordion.Body>
             </Accordion.Item>
           ))}
@@ -241,4 +243,4 @@ const Lists: React.FC<ContextType> = ({ theme }: ContextType): ReactElement => {
   );
 };
 
-export default Lists;
+export default ListsAccordion;

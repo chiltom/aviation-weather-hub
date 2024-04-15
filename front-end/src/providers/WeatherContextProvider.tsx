@@ -48,8 +48,7 @@ export const WeatherProvider: React.FC<{ children: ReactNode }> = ({
   const [tafLatitude, setTafLatitude] = useState<string | null>(null);
   const [tafLongitude, setTafLongitude] = useState<string | null>(null);
 
-  // Provides the state and updater functions as well as the clearing function
-  // to all context consumers
+  // Provides the state and updater functions to all context consumers
   const value = {
     metarIcaoCode,
     setMetarIcaoCode,

@@ -1,5 +1,5 @@
 import { useState, ReactElement, useEffect } from "react";
-import { useWeather } from "../../../providers/weatherContext";
+import { useWeather } from "../../../providers/WeatherContextProvider";
 import { WeatherContextType } from "../../../types/weatherTypes";
 import {
   getAirportMetars,

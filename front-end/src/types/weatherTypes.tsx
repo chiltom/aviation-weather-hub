@@ -17,8 +17,8 @@ export interface TafDisplayProps {
 }
 
 /**
- * Defines the context type for the weather provider, which consists of an icaoCode and a
- * state setter for the icaoCode.
+ * Defines the context type for the weather provider, which consists of all necessary
+ * state and setters for the various methods needed to gather weather data.
  */
 export interface WeatherContextType {
   metarIcaoCode: string | null;
