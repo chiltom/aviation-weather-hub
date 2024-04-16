@@ -202,7 +202,7 @@ const ListsAccordion: React.FC<ContextType> = ({
                         onClick={() => handleEditListName(list.id, list.name)}
                         variant="outline-secondary"
                         size="sm"
-                        className="mr-2"
+                        className="mr-2 rename-list-button"
                       >
                         Rename List
                       </Button>

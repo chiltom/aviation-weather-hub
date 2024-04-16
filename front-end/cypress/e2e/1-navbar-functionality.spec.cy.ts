@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 
-describe("Tests the navbar w/o user signed in", () => {
-  it("Makes sure the navbar appears on the page", () => {
+describe("Tests the navbar w/o user signed in", (): void => {
+  it("Makes sure the navbar appears on the page", (): void => {
     cy.visit("/");
     cy.get(".navbar").should("exist");
     cy.get(".navbar-toggler").should("exist"); // Check this in cypress local
@@ -26,7 +26,7 @@ describe("Tests the navbar w/o user signed in", () => {
     cy.get(".navbar-nav").eq(1).contains("Log In");
   });
 
-  it("Accesses the anonymous user allowed pages", () => {
+  it("Accesses the anonymous user allowed pages", (): void => {
     cy.visit("/");
     cy.get(".navbar-nav").eq(0).contains("About").click();
     cy.get("h1").contains("About");
@@ -55,8 +55,8 @@ describe("Tests the navbar w/o user signed in", () => {
   });
 });
 
-describe("Tests the navbar w/ the user signed in", () => {
-  it("Logs in to an account", () => {
+describe("Tests the navbar w/ the user signed in", (): void => {
+  it("Logs in to an account", (): void => {
     cy.visit("/");
     cy.get(".navbar-nav").eq(1).contains("Log In").click();
     cy.get(".modal-title").should("have.text", "Log In");
@@ -70,7 +70,7 @@ describe("Tests the navbar w/ the user signed in", () => {
     cy.get(".navbar-nav>button").should("have.text", "Log Out");
   });
 
-  it("Accesses all user allowed pages", () => {
+  it("Accesses all user allowed pages", (): void => {
     cy.visit("/");
     cy.get(".navbar-nav").eq(1).contains("Log In").click();
     cy.get(".modal-title").should("have.text", "Log In");

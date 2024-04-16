@@ -243,7 +243,7 @@ const AirportsListGroup: React.FC<ContextType> = ({
                         airport.name
                       )
                     }
-                    className="mx-1"
+                    className="mx-1 edit-airport-button"
                   >
                     Edit
                   </Button>

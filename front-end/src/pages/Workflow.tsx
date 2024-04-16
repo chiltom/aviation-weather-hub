@@ -5,7 +5,7 @@ import { ContextType } from "../types/userTypes";
 import NamedLocationsListGroup from "../components/workflow/NamedLocationsListGroup";
 import { WeatherProvider } from "../providers/WeatherContextProvider";
 import WeatherDisplay from "../components/workflow/weather-display/WeatherDisplay";
-import AirportsListGroup from "../components/workflow/Airports";
+import AirportsListGroup from "../components/workflow/AirportsListGroup";
 
 const Workflow: React.FC = (): ReactElement => {
   const { user, setUser, theme } = useOutletContext<ContextType>();

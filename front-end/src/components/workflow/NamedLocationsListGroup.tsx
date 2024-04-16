@@ -277,7 +277,7 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
             ) : (
               <>
                 <div>
-                  <strong>{namedLocation.city}</strong> -{" "}
+                  <strong className="named-location-city-name">{namedLocation.city}</strong> -{" "}
                   {namedLocation.country}
                 </div>
                 <div className="d-flex flex-wrap">
@@ -309,7 +309,7 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
                   <Button
                     variant="outline-secondary"
                     size="sm"
-                    className="mx-1"
+                    className="mx-1 edit-named-location-button"
                     onClick={() =>
                       handleEditNamedLocationUpdate(
                         namedLocation.city,

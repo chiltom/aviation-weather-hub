@@ -257,7 +257,7 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
                   onClick={() => handleEditTaskName(task.id, task.name)}
                   variant="outline-secondary"
                   size="sm"
-                  className="mr-2"
+                  className="mr-2 edit-task-button"
                 >
                   Edit
                 </Button>
@@ -265,6 +265,7 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
                   onClick={() => handleTaskDelete(list.id, task.id)}
                   variant="outline-danger"
                   size="sm"
+                  className="delete-task-button"
                 >
                   Delete Task
                 </Button>
