@@ -326,6 +326,7 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
                     onClick={() =>
                       handleNamedLocationDelete(namedLocation.city)
                     }
+                    className="named-location-delete"
                   >
                     Delete
                   </Button>
@@ -358,7 +359,7 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
                 onClick={handleCreateNamedLocationSubmit}
                 size="sm"
               >
-                Submit
+                Create
               </Button>
               <Button
                 variant="outline-danger"

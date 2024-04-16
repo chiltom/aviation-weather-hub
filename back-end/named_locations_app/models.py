@@ -21,7 +21,7 @@ class Named_location(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['latitude', 'longitude'], name='unique coordinates')
+                fields=['latitude', 'longitude', 'user'], name='unique coordinates per user')
         ]
 
     def __str__(self) -> str:

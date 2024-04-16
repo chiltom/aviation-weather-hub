@@ -251,6 +251,7 @@ const AirportsListGroup: React.FC<ContextType> = ({
                     variant="outline-danger"
                     size="sm"
                     onClick={() => handleAirportDelete(airport.icaoCode)}
+                    className="airport-delete"
                   >
                     Delete
                   </Button>

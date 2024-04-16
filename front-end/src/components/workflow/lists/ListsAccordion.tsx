@@ -210,6 +210,7 @@ const ListsAccordion: React.FC<ContextType> = ({
                         onClick={() => handleListDelete(list.id)}
                         variant="outline-danger"
                         size="sm"
+                        className="delete-list"
                       >
                         Delete List
                       </Button>

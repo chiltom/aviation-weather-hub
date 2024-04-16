@@ -15,5 +15,11 @@ class Airport(models.Model):
     name = models.CharField(max_length=100, validators=[
                             v.MinLengthValidator(1), validate_airport_name])
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['icao_code', 'user'], name='unique icao code per user')
+        ]
+
     def __str__(self) -> str:
         return f"{self.icao_code}: {self.name}"
