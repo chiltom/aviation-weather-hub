@@ -67,7 +67,7 @@ class Test_named_location(TestCase):
             self.fail()
         except IntegrityError as e:
             self.assertIn(
-                'duplicate key value violates unique constraint "unique coordinates"',
+                'duplicate key value violates unique constraint "unique coordinates per user"',
                 str(e)
             )
 
