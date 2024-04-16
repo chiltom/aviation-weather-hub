@@ -38,12 +38,32 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
   const [newHazardInformation, setNewHazardInformation] = useState<string>("");
 
   /**
+   * Event handler that handles the deletion request of a brief. If the request to the server
+   * is successful and the brief is deleted, the previous briefs state is filtered through and
+   * the brief with the id matching the briefId parameter is left out of the returned briefs.
+   * @param flightId
+   * @param briefId
+   */
+  const handleDelete = async (
+    flightId: number,
+    briefId: number
+  ): Promise<void> => {
+    const success: boolean = await deleteABrief(flightId, briefId);
+    success
+      ? setComponentBriefs((prevBriefs) =>
+          prevBriefs.filter((brief) => brief.id !== briefId)
+        )
+      : alert("Deletion unsuccessful");
+  };
+
+  /**
    * This function handles the creation of a new hazard by submitting the new hazard
    * type and information into the createBrief function along with the parent brief.
    *
    * If then awaits the completion of creating a new hazard and sets the newHazardType
    * and newHazardInformation state back to empty strings, as well as the createHazardBrief
    * value back to null
+   * @param {Brief} brief The brief the hazard will fall under
    */
   const handleCreateHazardSubmit = useCallback(
     async (brief: Brief): Promise<void> => {
@@ -218,18 +238,6 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
   useEffect(() => {
     setLoading(false);
   }, [componentBriefs]);
-
-  const handleDelete = async (
-    flightId: number,
-    briefId: number
-  ): Promise<void> => {
-    const success: boolean = await deleteABrief(flightId, briefId);
-    success
-      ? setComponentBriefs((prevBriefs) =>
-          prevBriefs.filter((brief) => brief.id !== briefId)
-        )
-      : alert("Deletion unsuccessful");
-  };
 
   return (
     <>

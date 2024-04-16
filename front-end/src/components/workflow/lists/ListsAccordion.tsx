@@ -96,24 +96,6 @@ const ListsAccordion: React.FC<ContextType> = ({
   };
 
   /**
-   * This function takes a list's id as its parameter and attempts to use the
-   * deleteAList method to delete the list.
-   *
-   * If the request is successful, the previous lists are mapped over and if the
-   * deleted list's id matches a list id in the previous lists, it is filtered out.
-   * Otherwise, the remaining lists are left.
-   *
-   * If the request is unsuccessful, nothing happens.
-   * @param listId
-   */
-  const handleListDelete = async (listId: number): Promise<void> => {
-    const success: boolean = await deleteAList(listId);
-    if (success) {
-      setLists((prevLists) => prevLists.filter((list) => list.id !== listId));
-    }
-  };
-
-  /**
    * Function that handles the editing of a list name and attaches it to a button.
    *
    * If the button is clicked, it sets the edit list id state to the current list's
@@ -144,6 +126,24 @@ const ListsAccordion: React.FC<ContextType> = ({
     },
     [newListName]
   );
+
+  /**
+   * This function takes a list's id as its parameter and attempts to use the
+   * deleteAList method to delete the list.
+   *
+   * If the request is successful, the previous lists are mapped over and if the
+   * deleted list's id matches a list id in the previous lists, it is filtered out.
+   * Otherwise, the remaining lists are left.
+   *
+   * If the request is unsuccessful, nothing happens.
+   * @param listId
+   */
+  const handleListDelete = async (listId: number): Promise<void> => {
+    const success: boolean = await deleteAList(listId);
+    if (success) {
+      setLists((prevLists) => prevLists.filter((list) => list.id !== listId));
+    }
+  };
 
   // TODO: Figure out why accordion item keeps opening and closing when typing in
   // new list name

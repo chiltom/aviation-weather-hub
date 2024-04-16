@@ -1,11 +1,5 @@
-import { ReactElement, useEffect, useState } from "react";
-import {
-  NavigateFunction,
-  Outlet,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { ReactElement, useState } from "react";
+import { Outlet, useLoaderData } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import useLocalStorage from "use-local-storage";
@@ -35,37 +29,6 @@ function App(): ReactElement {
       ? (userData as User)
       : null
   );
-
-  // Hooks to grab navigate function and locatoin function
-  const navigate: NavigateFunction = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    // Should redirect to hompage if not logged in not visiting one of these urls,
-    // or if logged in and trying to visit one of these urls
-    const nullUserUrls: string[] = ["/login/", "/signup/", "/about/", "/"];
-    // Check if current url is one that can be visited while not logged in
-    const isNullAllowed: boolean = nullUserUrls.includes(location.pathname);
-    // Not logged in user tries to go anywhere BUT signup or login
-    // We redirect because the user needs to log in before they do anything else
-    if (!user && !isNullAllowed) {
-      navigate("/");
-    }
-    // Urls that a logged in user may visit
-    const userUrls: string[] = [
-      "/about/",
-      "/",
-      "/training/",
-      "/workflow/",
-      "/flights/",
-      "/userinfo/",
-    ];
-    // Redirect to homepage when logged in user tries to go to signup, etc.
-    const isSetAllowed: boolean = userUrls.includes(location.pathname);
-    if (user && !isSetAllowed) {
-      navigate("/");
-    }
-  }, [user, location.pathname]);
 
   return (
     <>

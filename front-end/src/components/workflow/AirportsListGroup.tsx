@@ -74,6 +74,50 @@ const AirportsListGroup: React.FC<ContextType> = ({
   }, [createAirportName, createAirportIcao]);
 
   /**
+   * Function that handles the editing of an airport's name and icaoCode and attaches it
+   * to a button.
+   *
+   * If the button is clicked, it sets the editAirportIcao state to the current airport's icao
+   * and sets the input boxes' value to the current airport's icaoCode and name. It then allows
+   * the user to edit the airport's icaoCode and name and submit a new set.
+   * @param icaoCode
+   * @param currIcaoCode
+   * @param currName
+   */
+  const handleEditAirportUpdate = (
+    icaoCode: string,
+    currIcaoCode: string,
+    currName: string
+  ): void => {
+    setEditAirportIcao(icaoCode);
+    setNewAirportIcao(currIcaoCode);
+    setNewAirportName(currName);
+  };
+
+  /**
+   * This function handles the submission of the editing of an airport.
+   *
+   * If the name is not empty and exists, as well as the icaoCode, the function then
+   * awaits the update of the attributes by the handleAirportUpdate method above and then
+   * sets the editAirportIcao value back to null so it is no longer editable again
+   * @param icaoCode
+   */
+  const handleSubmitAirportUpdate = useCallback(
+    async (icaoCode: string): Promise<void> => {
+      if (
+        newAirportIcao.trim() !== "" &&
+        newAirportName.trim() !== "" &&
+        newAirportIcao &&
+        newAirportName
+      ) {
+        await handleAirportUpdate(icaoCode, newAirportIcao, newAirportName);
+        setEditAirportIcao(null);
+      }
+    },
+    [newAirportIcao, newAirportName]
+  );
+
+  /**
    * This function takes an airport update event and attempts to use the updateAnAirport
    * method to update the airport.
    *
@@ -123,50 +167,6 @@ const AirportsListGroup: React.FC<ContextType> = ({
       );
     }
   };
-
-  /**
-   * Function that handles the editing of an airport's name and icaoCode and attaches it
-   * to a button.
-   *
-   * If the button is clicked, it sets the editAirportIcao state to the current airport's icao
-   * and sets the input boxes' value to the current airport's icaoCode and name. It then allows
-   * the user to edit the airport's icaoCode and name and submit a new set.
-   * @param icaoCode
-   * @param currIcaoCode
-   * @param currName
-   */
-  const handleEditAirportUpdate = (
-    icaoCode: string,
-    currIcaoCode: string,
-    currName: string
-  ): void => {
-    setEditAirportIcao(icaoCode);
-    setNewAirportIcao(currIcaoCode);
-    setNewAirportName(currName);
-  };
-
-  /**
-   * This function handles the submission of the editing of an airport.
-   *
-   * If the name is not empty and exists, as well as the icaoCode, the function then
-   * awaits the update of the attributes by the handleAirportUpdate method above and then
-   * sets the editAirportIcao value back to null so it is no longer editable again
-   * @param icaoCode
-   */
-  const handleSubmitAirportUpdate = useCallback(
-    async (icaoCode: string): Promise<void> => {
-      if (
-        newAirportIcao.trim() !== "" &&
-        newAirportName.trim() !== "" &&
-        newAirportIcao &&
-        newAirportName
-      ) {
-        await handleAirportUpdate(icaoCode, newAirportIcao, newAirportName);
-        setEditAirportIcao(null);
-      }
-    },
-    [newAirportIcao, newAirportName]
-  );
 
   return (
     <>
@@ -297,10 +297,7 @@ const AirportsListGroup: React.FC<ContextType> = ({
           </ListGroup.Item>
         ) : (
           <ListGroup.Item>
-            <Button
-              variant="outline-primary"
-              onClick={handleCreateAirportEdit}
-            >
+            <Button variant="outline-primary" onClick={handleCreateAirportEdit}>
               Add New Airport
             </Button>
           </ListGroup.Item>

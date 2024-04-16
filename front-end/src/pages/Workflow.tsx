@@ -19,7 +19,11 @@ const Workflow: React.FC = (): ReactElement => {
               <AirportsListGroup user={user} setUser={setUser} theme={theme} />
             </div>
             <div className="d-flex flex-column flex-grow-1 h-100 mx-1">
-              <NamedLocationsListGroup user={user} setUser={setUser} theme={theme} />
+              <NamedLocationsListGroup
+                user={user}
+                setUser={setUser}
+                theme={theme}
+              />
             </div>
           </div>
           <div>

@@ -117,6 +117,58 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
     }, [createNamedLocationCity, createNamedLocationCountry]);
 
   /**
+   * Function that handles the editing of a namedLocation's city and country and
+   * attaches it to a button.
+   *
+   * If the button is clicked, it sets the editNamedLocationCity state to the current
+   * namedLocation's city and sets the input boxes' value to the current namedLocation's
+   * city and country. It then allows the user to edit the namedLocation's city and country
+   * and submit a new set
+   * @param city
+   * @param currCity
+   * @param currCountry
+   */
+  const handleEditNamedLocationUpdate = (
+    city: string,
+    currCity: string,
+    currCountry: string
+  ): void => {
+    setEditNamedLocationCity(city);
+    setNewNamedLocationCity(currCity);
+    setNewNamedLocationCountry(currCountry);
+  };
+
+  /**
+   * This function handles the submission of the editing of a namedLocation.
+   *
+   * If the name is not empty and exists, as well as the country, the function
+   * then awaits the update of the attributes by the handleNamedLocationUpdate method
+   * above and then sets the editNamedLocationCity value back to null so it is no
+   * longer editable again.
+   * @param city
+   * @param country
+   */
+  const handleSubmitNamedLocationUpdate = useCallback(
+    async (city: string, country: string): Promise<void> => {
+      if (
+        newNamedLocationCity.trim() !== "" &&
+        newNamedLocationCity &&
+        newNamedLocationCountry.trim() !== "" &&
+        newNamedLocationCountry
+      ) {
+        await handleNamedLocationUpdate(
+          city,
+          country,
+          newNamedLocationCity,
+          newNamedLocationCountry
+        );
+        setEditNamedLocationCity(null);
+      }
+    },
+    [newNamedLocationCity, newNamedLocationCountry]
+  );
+
+  /**
    * This function takes a named location update event and attempts to use the updateANamedLocation
    * method to update the named location.
    *
@@ -173,58 +225,6 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
     }
   };
 
-  /**
-   * Function that handles the editing of a namedLocation's city and country and
-   * attaches it to a button.
-   *
-   * If the button is clicked, it sets the editNamedLocationCity state to the current
-   * namedLocation's city and sets the input boxes' value to the current namedLocation's
-   * city and country. It then allows the user to edit the namedLocation's city and country
-   * and submit a new set
-   * @param city
-   * @param currCity
-   * @param currCountry
-   */
-  const handleEditNamedLocationUpdate = (
-    city: string,
-    currCity: string,
-    currCountry: string
-  ): void => {
-    setEditNamedLocationCity(city);
-    setNewNamedLocationCity(currCity);
-    setNewNamedLocationCountry(currCountry);
-  };
-
-  /**
-   * This function handles the submission of the editing of a namedLocation.
-   *
-   * If the name is not empty and exists, as well as the country, the function
-   * then awaits the update of the attributes by the handleNamedLocationUpdate method
-   * above and then sets the editNamedLocationCity value back to null so it is no
-   * longer editable again.
-   * @param city
-   * @param country
-   */
-  const handleSubmitNamedLocationUpdate = useCallback(
-    async (city: string, country: string): Promise<void> => {
-      if (
-        newNamedLocationCity.trim() !== "" &&
-        newNamedLocationCity &&
-        newNamedLocationCountry.trim() !== "" &&
-        newNamedLocationCountry
-      ) {
-        await handleNamedLocationUpdate(
-          city,
-          country,
-          newNamedLocationCity,
-          newNamedLocationCountry
-        );
-        setEditNamedLocationCity(null);
-      }
-    },
-    [newNamedLocationCity, newNamedLocationCountry]
-  );
-
   return (
     <>
       <ListGroup className="h-100" data-bs-theme={theme}>
@@ -277,8 +277,10 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
             ) : (
               <>
                 <div>
-                  <strong className="named-location-city-name">{namedLocation.city}</strong> -{" "}
-                  {namedLocation.country}
+                  <strong className="named-location-city-name">
+                    {namedLocation.city}
+                  </strong>{" "}
+                  - {namedLocation.country}
                 </div>
                 <div className="d-flex flex-wrap">
                   <Button

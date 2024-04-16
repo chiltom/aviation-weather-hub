@@ -52,20 +52,6 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
   );
 
   /**
-   * Function that handles the editing of a task name and attaches it to a button.
-   *
-   * If the button is clicked, it sets the edit task id state tot he current task's id
-   * and sets the input box's value to the current task's name. It then allows the user
-   * to edit the task's name and submit a new one.
-   * @param taskId
-   * @param currentName
-   */
-  const handleEditTaskName = (taskId: number, currentName: string): void => {
-    setEditTaskId(taskId);
-    setNewTaskName(currentName);
-  };
-
-  /**
    * This function handles the submission of the editing of a task's name.
    *
    * If the name is not empty and exists, the function then awaits the update of the
@@ -83,6 +69,20 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
     },
     [newTaskName]
   );
+
+  /**
+   * Function that handles the editing of a task name and attaches it to a button.
+   *
+   * If the button is clicked, it sets the edit task id state tot he current task's id
+   * and sets the input box's value to the current task's name. It then allows the user
+   * to edit the task's name and submit a new one.
+   * @param taskId
+   * @param currentName
+   */
+  const handleEditTaskName = (taskId: number, currentName: string): void => {
+    setEditTaskId(taskId);
+    setNewTaskName(currentName);
+  };
 
   /**
    * This function takes a list's id, the specific task's id, and a new name
