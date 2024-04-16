@@ -4,25 +4,20 @@ import { Flight } from "../../types/flightTypes";
 // All flight crud utilities
 
 /**
- * This function takes all of the required data for a flight record and makes
- * a post request to the server endpoint to create a new flight entry for the user.
- * By default, there are no associated briefs with a flight.
+ * @description Creates a new Flight for a User. tailNumber, aircraftTypeModel, and takeoffTime must be unique
+ * together.
  *
- * If the arguments are valid and the flight is created in the database, the
- * server returns the data for the new flight and the function returns a
- * flight object.
+ * @param {number} tailNumber The tail number of the aircraft. It must be between 100 & 999.
+ * @param {string} callsign The callsign of the flight. It must be uppercase, start with letters, only end in 1-3 digits.
+ * @param {string} aircraftTypeModel The aircraft type and model. It must be uppercase and contain only letters, digit, and hyphens.
+ * @param {string} pilotResponsible The pilot responsible for receiving the brief for the flight, must be in title case.
+ * @param {string} origin The origin airport. Must be a valid ICAO code.
+ * @param {string} destination The destination airport. Must be a valid ICAO code.
+ * @param {number} flightLevel The aircraft's flight level during the flight.
+ * @param {string} takeoffTime The takeoff time for the flight. Must be in YYYY-MM-DDTHH:MM:SSZ
+ * @param {string} arrivalTime The arrival time for the flight. Musst be in YYYY-MM-DDTHH:MM:SSZ
  *
- * If the arguments are invalid, the error is printed to the console and null
- * is returned.
- * @param tailNumber
- * @param callsign
- * @param aircraftTypeModel
- * @param pilotResponsible
- * @param origin
- * @param destination
- * @param flightLevel
- * @param takeoffTime
- * @param arrivalTime
+ * @returns {Promise<Flight | null>} The new Flight or null after resolution of the request.
  */
 export const createFlight = async (
   tailNumber: number,
@@ -73,16 +68,9 @@ export const createFlight = async (
 };
 
 /**
- * This function makes a get request to the server endpoint to grab an array
- * of all of the user's current flights.
+ * @description Gets all of a User's stored flights.
  *
- * If an array of flights is returned from the server, the array is then iterated
- * over and each element is destructured into a Flight object.
- *
- * The destructured objects are all pushed to a Flight array that is returned.
- *
- * If the server returns an error, the error is printed to the console and
- * null is returned.
+ * @returns {Promise<Flight[] | null>} The array of Flights or null after resolution of the request.
  */
 export const getAllFlights = async (): Promise<Flight[] | null> => {
   const response: AxiosResponse = await api.get("flights/");
@@ -112,14 +100,11 @@ export const getAllFlights = async (): Promise<Flight[] | null> => {
 };
 
 /**
- * This function takes a flight's id as the parameter and makes a get request
- * to the server endpoint with the flight id attached to the url.
+ * @description Grabs a User's specific Flight.
  *
- * If the request is successful, the server returns the flight's info and the
- * function returns a Flight object.
+ * @param {number} flightId The Flight's id.
  *
- * If the request fails, the error is printed to the console and null is returned.
- * @param flightId
+ * @returns {Promise<Flight | null>} The Flight or null after resolution of the request.
  */
 export const getAFlight = async (flightId: number): Promise<Flight | null> => {
   const response: AxiosResponse = await api.get(`flights/${flightId}/`);
@@ -145,24 +130,20 @@ export const getAFlight = async (flightId: number): Promise<Flight | null> => {
 };
 
 /**
- * This function takes the current flight's id and the optional flight data
- * elements as parameters and sends a put request to the server endpoint to
- * update the flight with the new data.
+ * @description Updates a Flight's details
  *
- * If the update is successful, the updated Flight object is returned.
+ * @param {number} flightId The Flight's id
+ * @param {number} [newTailNumber] An optional new tail number. Must be between 100-999
+ * @param {string} [newCallsign] An optional new callsign. Must be uppercase and end with 1-3 digits.
+ * @param {string} [newAircraftTypeModel] An optional new aircraft type and model. Must by uppercase and can only contain letters, digits, and numbers.
+ * @param {string} [newPilotResponsible] An optional new pilot responsible. Must be title case.
+ * @param {string} [newOrigin] An optional new origin airport. Must be a valid ICAO code.
+ * @param {string} [newDestination] An optional new destination airport. Must be a valid ICAO code.
+ * @param {number} [newFlightLevel] An optional new flight level.
+ * @param {string} [newTakeoffTime] An optional new takeoff time. Must be in format YYYY-MM-DDTHH:MM:SSZ.
+ * @param {string} [newArrivalTime] An optional new arrival time. Must be in format YYYY-MM-DDTHH:MM:SSZ.
  *
- * If the update is unsuccessful, the error is printed to the console and null
- * is returned.
- * @param flightId
- * @param newTailNumber
- * @param newCallsign
- * @param newAircraftTypeModel
- * @param newPilotResponsible
- * @param newOrigin
- * @param newDestination
- * @param newFlightLevel
- * @param newTakeoffTime
- * @param newArrivalTime
+ * @returns {Promise<Flight | null>} The updated Flight or null after resolution of the request.
  */
 export const updateAFlight = async (
   flightId: number,
@@ -243,13 +224,11 @@ export const updateAFlight = async (
 };
 
 /**
- * This function takes a flight's id as its parameter and makes a delete request
- * to the server endpoint to delete the specified flight.
+ * @description Deletes a User's specified Flight.
  *
- * If the request is successful, the function returns true.
+ * @param {number} flightId The Flight's id.
  *
- * If the request was unsuccessful, the function returns false.
- * @param flightId
+ * @returns {Promise<boolean>} True or false depending on the resolution of the request.
  */
 export const deleteAFlight = async (flightId: number): Promise<boolean> => {
   const response: AxiosResponse = await api.delete(`flights/${flightId}/`);

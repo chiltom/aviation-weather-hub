@@ -70,9 +70,15 @@ class Brief(models.Model):
     altimeter_setting = models.CharField(
         max_length=5, validators=[validate_altimeter_setting])
     # YYYY-MM-DD[T]HH:MM:SS[Z] format
-    brief_time = models.DateTimeField(unique=True)
+    brief_time = models.DateTimeField()
     void_time = models.DateTimeField()
     # hazards = foreign key relationship from hazard model
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['flight', 'brief_time'], name="unique brief time per flight")
+        ]
 
     def __str__(self) -> str:
         return f'''Flight: {self.flight} {self.surface_winds} {self.flight_level_winds}
@@ -85,6 +91,12 @@ class Hazard(models.Model):
     type = models.CharField(max_length=30,
                             validators=[validate_hazard_type])
     information = models.TextField(default="unknown")
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['brief', 'type'], name="unique type per brief")
+        ]
 
     def __str__(self) -> str:
         return f'{self.type} - {self.information}'

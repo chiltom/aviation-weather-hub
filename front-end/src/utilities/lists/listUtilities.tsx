@@ -4,14 +4,11 @@ import { List } from "../../types/listTypes";
 // All list related utility functions
 
 /**
- * This function takes a list name as a parameter and sends a post request to
- * the server endpoint to create new list entry for the user. By default, this
- * list's tasks are empty and the completion status will be false.
+ * @description Creates a new List.
  *
- * If the arguments are valid and the list is created in the database, the
- * server returns the data for the new list and the function returns the
- * new List object
- * @param name
+ * @param {string} name The name of the list. Must be unique.
+ *
+ * @returns {Promise<List | null>} The new List or null after resolution of the request.
  */
 export const createList = async (name: string): Promise<List | null> => {
   try {
@@ -38,13 +35,9 @@ export const createList = async (name: string): Promise<List | null> => {
 };
 
 /**
- * This function makes a get request to the server endpoint to grab an array
- * of all the user's current lists.
+ * @description Gets all of a User's Lists.
  *
- * If an array of lists is returned from the server, the array is then iterated
- * over and each element is destructred into a List object.
- *
- * This object is then pushed to the array and the list array is finally returned.
+ * @returns {Promise<List[] | null>} The array of Lists or null after resolution of the request.
  */
 export const getAllLists = async (): Promise<List[] | null> => {
   const response: AxiosResponse = await api.get("lists/");
@@ -67,14 +60,11 @@ export const getAllLists = async (): Promise<List[] | null> => {
 };
 
 /**
- * This function takes a list's id as an argument and makes a get request to
- * the server endpoint with the parameter attached to the url.
+ * @description Gets a User's specified List.
  *
- * If the list exists for the user in the database, the server will return the
- * list's data and the function will return a List object.
+ * @param {number} listId The id of the List.
  *
- * If the list does not exist, the function returns null.
- * @param listId
+ * @returns {Promise<List | null>} The List or null after resolution of the request.
  */
 export const getAList = async (listId: number): Promise<List | null> => {
   const response: AxiosResponse = await api.get(`lists/${listId}/`);
@@ -93,24 +83,16 @@ export const getAList = async (listId: number): Promise<List | null> => {
 };
 
 /**
- * This function takes the current list's id and a new name as parameters and
- * sends a put request to the server endpoint to update the list with the
- * new data.
+ * @description Updates a List's name.
  *
- * If the update is successful, the updated list is returned.
+ * @param {number} listId The List's id.
+ * @param {string} newName The new name of the List.
  *
- * If the update is unsuccessful, the error is printed to the console and
- * null is returned.
- * @param listId
- * @param newName
+ * @returns {Promise<List | null>} The updated List or null after resolution of the request.
  */
 export const updateAList = async (
   listId: number,
   newName: string
-  /* If needed later on add a new method for list of tasks and completed,
-     but the function should work as is due to the nature of updating lists'
-    completion status on the updating of a task, and list re-render SHOULD
-    be implemented on task addition/deletion with a useEffect */
 ): Promise<List | null> => {
   try {
     const response: AxiosResponse = await api.put(`lists/${listId}/`, {
@@ -135,13 +117,11 @@ export const updateAList = async (
 };
 
 /**
- * This function takes a list's id as its parameter and makes a delete request
- * to the server endpoint to delete the specified list.
+ * @description Deletes the User's specified List.
  *
- * If the request is successful, the function returns true.
+ * @param {number} listId The List's id.
  *
- * If the request was unsuccessful, the function returns false.
- * @param listId
+ * @returns {Promise<boolean>} True or false depending on the resolution of the request.
  */
 export const deleteAList = async (listId: number): Promise<boolean> => {
   const response: AxiosResponse = await api.delete(`lists/${listId}/`);

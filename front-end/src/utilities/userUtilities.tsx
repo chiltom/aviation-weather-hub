@@ -1,27 +1,19 @@
 import { AxiosResponse } from "axios";
 import { api } from "./axiosConfig";
 import { User } from "../types/userTypes";
-
 // All user related utility functions
 // TODO: Implement cookie authentication for more secure auth method
 
 /**
- * This function sends a post request to the server to sign up a
- * user for the service.
+ * @description Signs a new user up for an account.
  *
- * If the arguments are valid, the user is created by the server
- * and returned along with a new token for the session. The token
- * is then added to localStorage and the appropriate Authorization
- * header with the token value is set. Finally, a User object is
- * returned from the function.
+ * @param {string} email The new user's email. Must be unique.
+ * @param {string} password The new user's password.
+ * @param {string} displayName The new user's display name.
+ * @param {string} firstName The new user's first name.
+ * @param {string} lastName The new user's last_name.
  *
- * If the arguments are invalid, a null value is returned.
- *
- * @param email - The new user's email
- * @param password - The new user's password
- * @param displayName - The new user's display name
- * @param firstName - The new user's first name
- * @param lastName - The new user's last_name
+ * @returns {Promise<User | null>} The User or null after resolution of the request.
  */
 export const signupUser = async (
   email: string,
@@ -52,28 +44,21 @@ export const signupUser = async (
       return user;
     } else {
       console.log(response.data);
-      return null; // Return undefined if signup fails
+      return null;
     }
   } catch (error) {
     console.log(error);
-    return null; // Return undefined if an error occurs
+    return null;
   }
 };
 
 /**
- * This function takes an existing user's email and password and
- * sends the credentials to the server for authentication.
+ * @description Logs in an existing user to their account.
  *
- * If the user is authenticated, their information is returned with
- * a token. The token is then added to the client's localStorage and
- * the proper Authorization header with the token value is set. Finally,
- * a User object is returned from the function.
+ * @param {string} email The user's email.
+ * @param {string} password The user's password.
  *
- * If the user is not authenticated, the server throws a bad response
- * and this function returns null.
- *
- * @param email
- * @param password
+ * @returns {Promise<User | null>} The User or null after resolution of the request.
  */
 export const userLogin = async (
   email: string,
@@ -98,27 +83,18 @@ export const userLogin = async (
       return user;
     } else {
       console.log(response.data);
-      return null; // Return undefined if login fails
+      return null;
     }
   } catch (error) {
     console.error(error);
-    return null; // Return undefined if an error occurs
+    return null;
   }
 };
 
 /**
- * No arguments are passed to this function, and instead a post
- * request is sent to the server and it is validated with the
- * user's token.
+ * @description Logs out a user and flushes their session.
  *
- * If the user's token is authenticated the server validates the
- * request and ends the current user's session. The 204 response
- * is sent back and this function deletes the user's token. This
- * ultimately returns a true value from this function upon deletion.
- *
- * If the user is not authenticated already, the token does not
- * exist and the server throws an error. The function then returns
- * a false value indicating that the logout request failed.
+ * @returns {Promise<boolean>} True or false depending on the resolution of the request.
  */
 export const userLogout = async (): Promise<boolean> => {
   try {
@@ -139,14 +115,9 @@ export const userLogout = async (): Promise<boolean> => {
 };
 
 /**
- * This function attempts to grab a user's token from local storage
- * and use its value. If the token exists, a get request is sent to
- * the server for the user.
+ * @description Confirms if a user is currently logged in or not.
  *
- * If the user is authenticated with the token the server returns
- * the users information and this function returns the User object.
- *
- * If the token does not exist, this function returns a null value.
+ * @returns {Promise<User | null>} The User or null after resolution of the request.
  */
 export const userConfirmation = async (): Promise<User | null> => {
   const token: string | null = localStorage.getItem("token");
@@ -167,19 +138,11 @@ export const userConfirmation = async (): Promise<User | null> => {
 };
 
 /**
- * This function takes the user's new display name as an argument
- * and sends a put request with the user's token to the server.
+ * @description Changes a user's display name.
  *
- * If the server authenticates the user and accepts the argument, it
- * then uses the userConfirmation function to ensure that the user's
- * updated data is grabbed from the server.
+ * @param {string} displayName The user's new display name.
  *
- * Finally, the function will return the User object that is returned
- * from the userConfirmation.
- *
- * If the server does not authenticate the user, the server returns an
- * error and this function returns a null value.
- * @param displayName
+ * @returns {Promise<User | null>} The User or null after resolution of the request.
  */
 export const changeUserInfo = async (
   displayName: string

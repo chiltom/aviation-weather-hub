@@ -3,24 +3,27 @@ import { api } from "../axiosConfig";
 import { Brief } from "../../types/flightTypes";
 
 /**
- * This function takes all of the required data for a brief record and makes
- * a post request to the server endpoint to create a new brief entry for the flight.
+ * @description Creates a new Brief within a parent Flight. The brief time and flight Id must be unqiue
+ * together.
  *
- * If the arguments are valid and the brief is created in the database, the
- * server returns the data for the new brief and the function returns a Brief
- * object.
+ * @param {number} flightId The parent Flight's id.
+ * @param {string} surfaceWinds The surface winds enroute. Must consist of wind direction, wind
+ * speed, gusts and speeds if applicable, and KT at the end, all uppercase, only letters and digits.
+ * Examples: VRB09KT, 27013KT, VRB08G15KT, 09017G25KT.
+ * @param {string} flightLevelWinds The winds at flight level altitude enroute. Must consist of wind
+ * direction, wind speed, gusts and speeds if applicable, and KT at the end, all uppercase, only letters
+ * and digits. Examples: VRB09KT, 27013KT, VRB08G15KT, 09017G25KT.
+ * @param {string} visibility The visibility enroute. Must be digits, spaces, or slashes, and end in SM.
+ * The highest possible number is 10, and the maximum length is 7, all letters uppercase. Examples: 1 1/4SM, 10SM.
+ * @param {string} skyCondition The sky condition enroute. If multiple values exist, must be broken up
+ * with spaces between the values. Must be a valid sky condition. Example: SCT016 BKN030 OVC050.
+ * @param {string} temperature The temperature enroute. Must be in Celsius and, if negative, insert an M
+ * prior to the number. Examples: 22, M01.
+ * @param {string} altimeterSetting The altimeter setting enroute. Must start with A. Example: A3018.
+ * @param {string} briefTime The time the brief will be conducted. Format is YYYY-MM-DDTHH:MM:SSZ.
+ * @param {string} voidTime The time the brief will be voided. Format is YYYY-MM-DDTHH:MM:SSZ.
  *
- * If the arguments are invalid, the error is printed to the console and null
- * is returned.
- * @param flightId
- * @param surfaceWinds
- * @param flightLevelWinds
- * @param visibility
- * @param skyCondition
- * @param temperature
- * @param altimeterSetting
- * @param briefTime
- * @param voidTime
+ * @returns {Promise<Brief | null>} The new Brief or null after resolution of the request.
  */
 export const createBrief = async (
   flightId: number,
@@ -73,18 +76,11 @@ export const createBrief = async (
 };
 
 /**
- * This function takes a flight's id as a parameter and makes a get request
- * to the server endpoint to grab an array of all of the briefs associated with
- * the flight.
+ * @description Gets all of the Briefs associated with a parent Flight.
  *
- * If an array of briefs is returned from the server, it is iterated over and
- * each element is destructured into a Brief object.
+ * @param {number} flightId The parent Flight's id.
  *
- * The destructured Brief objects are pushed to a separate array and the Brief
- * array is returned.
- *
- * If the request fails, the error is printed to the console and null is returned.
- * @param flightId
+ * @returns {Promise<Brief[] | null>} The array of Briefs or null after resolution of the request.
  */
 export const getAllBriefs = async (
   flightId: number
@@ -116,16 +112,12 @@ export const getAllBriefs = async (
 };
 
 /**
- * This function takes a brief's id and the parent flight's id as parameters
- * and makes a get request to the server endpoint with the brief id attached
- * to the url.
+ * @description Gets a specified Brief within its parent Flight
  *
- * If the request is successful, the server returns the brief's info and the
- * function returns a Brief object.
+ * @param {number} flightId The parent Flight's id.
+ * @param {number} briefId The Brief's id.
  *
- * If the request fails, the error is printed to the console and null is returned.
- * @param flightId
- * @param briefId
+ * @returns {Promise<Brief | null>} The Brief or null after resolution of the request.
  */
 export const getABrief = async (
   flightId: number,
@@ -156,24 +148,25 @@ export const getABrief = async (
 };
 
 /**
- * This function takes the current brief's id and parent flight id as well
- * as the optional brief data elements as parameters and sends a put request
- * to the server endpoint to update the brief with the new data.
+ * @description Updates a Brief within its parent Flight.
  *
- * If the update is successful, the updated Brief object is returned.
+ * @param {number} flightId The parent Flight's id.
+ * @param {number} briefId The Brief's id.
+ * @param {string} [newSurfaceWinds] Optional new surface winds enroute. Must consist of wind direction, wind
+ * speed, gusts and speeds if applicable, and KT at the end, all uppercase, only letters and digits.
+ * Examples: VRB09KT, 27013KT, VRB08G15KT, 09017G25KT.
+ * @param {string} [newFlightLevelWinds] Optional new winds at flight level altitude enroute. Must consist of wind
+ * direction, wind speed, gusts and speeds if applicable, and KT at the end, all uppercase, only letters
+ * and digits. Examples: VRB09KT, 27013KT, VRB08G15KT, 09017G25KT.
+ * @param {string} [newVisibility] Optional new visibility enroute. Must be digits, spaces, or slashes, and end in SM.
+ * The highest possible number is 10, and the maximum length is 7, all letters uppercase. Examples: 1 1/4SM, 10SM.
+ * @param {string} [newSkyCondition] Optional new sky condition enroute. If multiple values exist, must be broken up
+ * with spaces between the values. Must be a valid sky condition. Example: SCT016 BKN030 OVC050.
+ * @param {string} [newTemperature] Optional new temperature enroute. Must be in Celsius and, if negative, insert an M
+ * prior to the number. Examples: 22, M01.
+ * @param {string} [newAltimeterSetting] Optional new altimeter setting enroute. Must start with A. Example: A3018.
  *
- * If the updated is unsuccessful, the error is printed to the console and null
- * is returned.
- * @param flightId
- * @param briefId
- * @param newSurfaceWinds
- * @param newFlightLevelWinds
- * @param newVisibility
- * @param newSkyCondition
- * @param newTemperature
- * @param newAltimeterSetting
- * @param newBriefTime
- * @param newVoidTime
+ * @returns {Promise<Brief | null>} The updated Brief or null after resolution of the request.
  */
 export const updateABrief = async (
   flightId: number,
@@ -242,14 +235,12 @@ export const updateABrief = async (
 };
 
 /**
- * This function takes a brief's id and its parent flight's id as parameters
- * and makes a delete request to the server endpoint to delete the specified brief.
+ * @description Deletes a Brief from its parent Flight.
  *
- * If the request is successful, the function returns true.
+ * @param {number} flightId The parent Flight's id.
+ * @param {number} briefId The Brief's id.
  *
- * If the request was unsuccessful, the function returns false.
- * @param flightId
- * @param briefId
+ * @returns {Promise<boolean>} True or false depending on the resolution of the request.
  */
 export const deleteABrief = async (
   flightId: number,

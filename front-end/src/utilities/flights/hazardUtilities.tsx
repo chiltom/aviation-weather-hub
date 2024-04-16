@@ -3,19 +3,13 @@ import { api } from "../axiosConfig";
 import { Brief, Hazard } from "../../types/flightTypes";
 
 /**
- * This function takes all of the required data for a hazard record as well
- * as the parent Brief object as parameters and makes a post request
- * to the server endpoint to create a new hazard entry for the brief.
+ * @description Creates a new Hazard for a Brief.
  *
- * If the arguments are valid and the hazard is created in the database, the
- * server returns the data for the new hazard and the function returns a Hazard
- * object.
+ * @param {Brief} brief The Brief object the Hazard will be attached to.
+ * @param {string} type The type of the Hazard. Must be title case and unique to the brief.
+ * @param {string} information The Hazard's information. Must be title case.
  *
- * If the arguments are invalid, the error is printed to the console and null
- * is returned.
- * @param brief
- * @param type
- * @param information
+ * @returns {Promise<Hazard | null>} The new Hazard or null after resolution of the request.
  */
 export const createHazard = async (
   brief: Brief,
@@ -49,17 +43,11 @@ export const createHazard = async (
 };
 
 /**
- * This function makes a get request to the server endpoint to grab an array
- * of all of the brief's current hazards with the parent Brief object as its
- * parameter.
+ * @description Gets all of a Brief's Hazards.
  *
- * If an array of hazards is returned from the server, the array is then iterated
- * over and each element is destructured into a Hazard object. The destructured objects
- * are all pushed to a separate Hazard array that is returned.
+ * @param {Brief} brief The parent Brief object.
  *
- * If the server returns an error, the error is printed to the console and
- * null is returned.
- * @param brief
+ * @returns {Promise<Hazard[] | null>} The array of Hazards or null after resolution of the request.
  */
 export const getAllHazards = async (brief: Brief): Promise<Hazard[] | null> => {
   const response: AxiosResponse = await api.get(
@@ -84,16 +72,12 @@ export const getAllHazards = async (brief: Brief): Promise<Hazard[] | null> => {
 };
 
 /**
- * This function takes a brief object and a hazards id as its parameters and
- * makes a get request to the server endpoint with the parameters attached to
- * the url.
+ * @description Gets a specific Hazard within a Brief
  *
- * If the request is successful, the server returns the hazard's info and the
- * function returns a Hazard object.
+ * @param {Brief} brief The parent Brief object.
+ * @param {number} hazardId The Hazard's id.
  *
- * If the request fails, the error is printed to the console and null is returned.
- * @param brief
- * @param hazardId
+ * @returns {Promise<Hazard | null>} The Hazard or null after resolution of the request.
  */
 export const getAHazard = async (
   brief: Brief,
@@ -117,18 +101,14 @@ export const getAHazard = async (
 };
 
 /**
- * This function takes the current hazard's id and a Brief object as necessary
- * parameters, and takes option hazard data elements as parameters and sends a
- * put request to the server endpoint to update the hazard with the new data.
+ * @description Updates a Hazard within its parent Brief.
  *
- * If the update is successful, the updated Hazard object is returned.
+ * @param {Brief} brief The parent Brief object.
+ * @param {number} hazardId The Hazard's id.
+ * @param {string} [type] An optional new type of the Hazard. Must be title case and unique to the brief.
+ * @param {string} [information] An optional new information for the Hazard. Must be title case.
  *
- * If the update i unsuccessful, the error is printed to the console and null
- * is returned.
- * @param brief
- * @param hazardId
- * @param type
- * @param information
+ * @returns {Promise<Hazard | null>} The updated Hazard or null after resolution of the request.
  */
 export const updateAHazard = async (
   brief: Brief,
@@ -168,14 +148,12 @@ export const updateAHazard = async (
 };
 
 /**
- * This function takes a hazard's id and a brief object as its parameters and
- * makes a delete request to the server endpoint to delete the specified hazard.
+ * @description Deletes a Hazard from its parent Brief.
  *
- * If the request is successful, the function returns true.
+ * @param {Brief} brief The parent Brief object.
+ * @param {number} hazardId The Hazard's id.
  *
- * If the request was unsuccessful, the function returns false.
- * @param brief
- * @param hazardId
+ * @returns {Promise<boolean>} True or false depending on the resolution of the request.
  */
 export const deleteAHazard = async (
   brief: Brief,

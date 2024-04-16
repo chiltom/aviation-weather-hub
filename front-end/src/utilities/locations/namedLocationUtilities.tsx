@@ -4,24 +4,14 @@ import { NamedLocation } from "../../types/locationTypes";
 // All named location related utility functions
 
 /**
- * This function takes a city name and country abbreviation and creates
- * a new named location for the user.
+ * @description Creates a new NamedLocation for a User. NamedLocation must be unique per User, meaning
+ * that one set of coordinates can be stored can only be stored once per User.
+ * The coordinates are provided by the Geocoding API from OpenWeather.
  *
- * The function first takes the two parameters and makes a get request to
- * the server endpoint to get the latitude and longitude of the location.
- * NOTE: The server gets this data using the Geocoding API provided by OpenWeather.
- * If the city name and country abbreviation are valid, the API returns the
- * latitude and longitude.
+ * @param {string} city The city name.
+ * @param {string} country The two-letter country abbreviation.
  *
- * The information, if valid, is then used to make a post request to the server
- * endpoint to create the named location for the user in the database.
- *
- * If the parameters are a valid location and the location is created for the
- * user, the NamedLocation object is returned.
- *
- * If the information is invalid, null is returned.
- * @param city
- * @param country
+ * @returns {Promise<NamedLocation | null>} The new NamedLocation or null after resolution of the request.
  */
 export const createNamedLocation = async (
   city: string,
@@ -59,12 +49,9 @@ export const createNamedLocation = async (
 };
 
 /**
- * This function takes no parameters and grabs all of the user's
- * named locations from storage. The array returned from the server is
- * then iterated over and each element is destructured into a NamedLocation
- * object.
+ * @description Gets all of a User's stored NamedLocations.
  *
- * Finally, the array of NamedLocation objects is returned.
+ * @returns {Promise<NamedLocation[] | null>} The array of NamedLocations or null after resolution of the request.
  */
 export const getAllNamedLocations = async (): Promise<
   NamedLocation[] | null
@@ -89,15 +76,11 @@ export const getAllNamedLocations = async (): Promise<
 };
 
 /**
- * This function takes a city's name as the parameter and makes a get request to
- * the server endpoint with the parameter attached to the url.
+ * @description Gets a User's specified NamedLocation.
  *
- * If the named location exists for the user in the database, the server will
- * return the named location's data and the function will return a NamedLocation
- * object.
+ * @param {string} city The city name.
  *
- * If the named location does not exist, the function returns null.
- * @param city
+ * @returns {Promise<NamedLocation | null>} The NamedLocation or null after resolution of the request.
  */
 export const getANamedLocation = async (
   city: string
@@ -118,27 +101,14 @@ export const getANamedLocation = async (
 };
 
 /**
- * This function takes a current location's name and country as parameters and
- * also takes a new city name and new country abbreviation as optional parameters.
- * It then filters through the parameters and grabs the optional parameters if they
- * are inlcuded.
+ * @description Updates a NamedLocations city name and country abbreviation. Coordinates must be unique to User.
  *
- * After grabbing all of the parameters, it makes a request to the server endpoint
- * to grab a new latitude and longitude from the Geocoding API.
- * - If this is successful, a new NamedLocation object is created.
- * - If this is unsuccessful, it returns null and prints the information grab error
- *  to the console.
+ * @param {string} currCity The current city name.
+ * @param {string} currCountry The current two-letter country abbreviation.
+ * @param {string} [newCity] An optional new city name.
+ * @param {string} [newCountry] An optional new country abbreviation.
  *
- * If the new NamedLocation object is created, it is sent to the proper server
- * endpoint with a put request and attempts to update the database's stored record
- * of the named location.
- * - If this is successful, the NamedLocation object is returned.
- * - If this is unsuccessful, the update error is printed to the console and null
- * is returned.
- * @param currCity
- * @param currCountry
- * @param newCity
- * @param newCountry
+ * @returns {Promise<NamedLocation | null>} The updated NamedLocation or null after resolution of the request.
  */
 export const updateANamedLocation = async (
   currCity: string,
@@ -185,13 +155,11 @@ export const updateANamedLocation = async (
 };
 
 /**
- * This function takes a location's city name as its parameter and makes a
- * delete request to the server endpoint to delete the specified airport.
+ * @description Deletes a User's NamedLocation.
  *
- * If the request was successful, the function returns true.
+ * @param {string} city The city name.
  *
- * If the request was unsuccessful, the function returns false.
- * @param city
+ * @returns {Promise<boolean>} True or false depending on the resolution of the request.
  */
 export const deleteANamedLocation = async (city: string): Promise<boolean> => {
   const response: AxiosResponse = await api.delete(`named-locations/${city}/`);

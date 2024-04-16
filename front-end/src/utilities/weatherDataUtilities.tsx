@@ -3,28 +3,22 @@ import { AxiosResponse } from "axios";
 // All weather data related utility functions
 
 /**
- * This function takes an icao code string as its parameter and makes a get
- * request to the server endpoint to grab the METARs for those airports. The
- * METARs are provided by the CheckWX API.
+ * @description Grabs the latest METAR for the specified airport.
  *
- * If the request is successful, the response provided by the server is returned.
+ * @param {string} icaoCode ICAO code of the airport.
  *
- * If the request is unsuccessful, the error is printed to the console and
- * null is returned.
- * @param icaoCodes String of icao codes separated by commas with no spaces in between
+ * @returns {Promise<string | null>} The METAR or null after resolution of the request.
  */
 export const getAirportMetars = async (
-  icaoCodes: string
+  icaoCode: string
 ): Promise<string | null> => {
   try {
-    const formattedCodes: string = icaoCodes.replace(/ /g, "");
+    const formattedCode: string = icaoCode.replace(/ /g, "");
     const response: AxiosResponse = await api.get(
-      `metars/airports/${formattedCodes}/`
+      `metars/airports/${formattedCode}/`
     );
     if (response.status === 200) {
-      // Use for (const [key, value] of Object.entries(response)) to grab
-      // metars from this returned object and display them in the component
-      return response.data[icaoCodes];
+      return response.data[icaoCode];
     } else {
       console.log("Get request failed: ", response.data);
       return null;
@@ -36,16 +30,12 @@ export const getAirportMetars = async (
 };
 
 /**
- * This function takes a named location's latitude and longitude and makes a
- * get request to the server endpoint to grab the METAR from the closest radar
- * to that location. The METAR is provided by the CheckWX API.
+ * @description Grabs the latest METAR for the closest station to a named location.
  *
- * If the request is successful, the response from the server is returned.
+ * @param {string} latitude The latitude of the location.
+ * @param {string} longitude The longitude of the location.
  *
- * If the request is unsuccessful, the error is printed to the console and null
- * is returned.
- * @param latitude
- * @param longitude
+ * @returns {Promise<string | null>} The METAR or null after resolution of the request.
  */
 export const getNamedLocationMetar = async (
   latitude: string,
@@ -68,28 +58,22 @@ export const getNamedLocationMetar = async (
 };
 
 /**
- * This function takes a string of icao codes separated by commas with no spaces
- * as its parameter and makes a get request to the server endpoint to return all
- * air station TAFs. The TAFs are provided by the CheckWX API.
+ * @description Grabs the latest TAF for the specified airport.
  *
- * If the request is successful, the response from the server is returned.
+ * @param {string} icaoCode - ICAO code of the airport.
  *
- * If the request is unsuccessful, the error is printed to the console and null
- * is returned.
- * @param icaoCodes
+ * @returns {Promise<string | null>} The TAF or null after resolution of the request.
  */
 export const getAirportTafs = async (
-  icaoCodes: string
+  icaoCode: string
 ): Promise<string | null> => {
-  const formattedCodes: string = icaoCodes.replace(/ /g, "");
+  const formattedCode: string = icaoCode.replace(/ /g, "");
   try {
     const response: AxiosResponse = await api.get(
-      `tafs/airports/${formattedCodes}/`
+      `tafs/airports/${formattedCode}/`
     );
     if (response.status === 200) {
-      // Use for (const [key, value] of Object.entries(response)) to grab
-      // metars from this returned object and display them in the component
-      return response.data[icaoCodes];
+      return response.data[icaoCode];
     } else {
       console.log("Get request failed: ", response.data);
       return null;
@@ -100,16 +84,12 @@ export const getAirportTafs = async (
 };
 
 /**
- * This function takes a named location's latitude and longitude and makes a
- * get request to the server endpoint to grab the TAF from the closest radar
- * to that location. The TAF is provided by the CheckWX API.
+ * @description Grabs the latest TAF from the closest station to a named location.
  *
- * If the request is successful, the response from the server is returned.
+ * @param {string} latitude The latitude of the location.
+ * @param {string} longitude The longitude of the location.
  *
- * If the request is unsuccessful, the error is printed to the console and null
- * is returned.
- * @param latitude
- * @param longitude
+ * @returns {Promise<string | null>} The TAF or null after resolution of the request.
  */
 export const getNamedLocationTaf = async (
   latitude: string,

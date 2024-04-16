@@ -4,16 +4,13 @@ import { Airport } from "../../types/locationTypes";
 // All airport related utility functions
 
 /**
- * This function takes an icao_code and name for an airport as arguments
- * and sends a post request to the all_airports view with this data to the
- * api to create a new airport entry for a user.
+ * @description Creates a new Airport in a User's list. The airport must be unique per user, meaning
+ * an ICAO code can only be stored once per User.
  *
- * If the arguments are valid and the airport is created in the database,
- * the server returns the data for the new airport and the function
- * returns the new Airport object.
+ * @param {string} icaoCode The ICAO code of the Airport. Must be 4 uppercase letters.
+ * @param {string} name The name of the Airport. Must be title case.
  *
- * @param icaoCode
- * @param name
+ * @returns {Promise<Airport | null>} The new Airport or null after resolution of the request.
  */
 export const createAirport = async (
   icaoCode: string,
@@ -41,14 +38,9 @@ export const createAirport = async (
 };
 
 /**
- * This function makes a get request to the all_airports view to grab
- * an array of all of the user's current airports.
+ * @description Gets all of a User's stored Airports.
  *
- * If an array of airports is returned from the server, the array is then
- * iterated over and each element is destructured into a an Airport variable
- *
- * This variable is then pushed to the array and the airport array is finally
- * returned
+ * @returns {Promise<Airport[] | null>} The Airport array or null after resolution of the request.
  */
 export const getAllAirports = async (): Promise<Airport[] | null> => {
   const response: AxiosResponse = await api.get("airports/");
@@ -69,14 +61,11 @@ export const getAllAirports = async (): Promise<Airport[] | null> => {
 };
 
 /**
- * This function takes an icao code argument and makes a get request to
- * the a_airport view with the parameter attached to the url.
+ * @description Gets a User's specific stored Airport. 
  *
- * If the airport exists for the user in the database, the server will
- * return the airport's data and the function will return an Airport object.
+ * @param {string} icaoCode The ICAO code of the Airport.
  *
- * If the airport does not exist, the function returns null.
- * @param icaoCode
+ * @returns {Promise<Airport | null>} The Airport or null after resolution of the request.
  */
 export const getAnAirport = async (
   icaoCode: string
@@ -95,18 +84,14 @@ export const getAnAirport = async (
 };
 
 /**
- * This function takes the current airport's icao code, an optional
- * new icao code, and an optional new name as parameters.
+ * @description Updates an Airport's ICAO code and name. Airport must be unique to the User, meaning
+ * one ICAO code can only be stored once per User.
  *
- * If the parameters exist, a put request is made to the server to update
- * the information included in the body of the response
+ * @param {string} currIcaoCode The Airport's current ICAO code.
+ * @param {string} [newIcaoCode] An optional new ICAO code. Must be 4 uppercase letters.
+ * @param {string} [newName] An optional new name.
  *
- * If the update is successful, the updated airport is returned.
- *
- * If the update is unsuccessful, null is returned
- * @param currIcaoCode
- * @param newIcaoCode
- * @param newName
+ * @returns {Promise<Airport | null>} The updated Airport or null after resolution of the request.
  */
 export const updateAnAirport = async (
   currIcaoCode: string,
@@ -140,14 +125,11 @@ export const updateAnAirport = async (
 };
 
 /**
- * This function takes an airport icao code as its parameter and makes
- * a delete method call to the server to delete the specified airport.
+ * @description Deletes an Airport from a User's stored Airports.
  *
- * If the request was successful, the function returns true.
+ * @param {string} icaoCode The ICAO code of the Airport.
  *
- * If the request was unsuccessful, the function returns false.
- *
- * @param icaoCode
+ * @returns {Promise<boolean>} True or false depending on the resolution of the request.
  */
 export const deleteAnAirport = async (icaoCode: string): Promise<boolean> => {
   const response: AxiosResponse = await api.delete(`airports/${icaoCode}/`);

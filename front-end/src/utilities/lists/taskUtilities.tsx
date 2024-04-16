@@ -4,11 +4,12 @@ import { Task } from "../../types/listTypes";
 // All task related utility functions
 
 /**
- * This function takes a listId and name for a task as arguments and sends a
- * post request to the server endpoint with this data to create a new task
- * entry for the user.
- * @param listId
- * @param name
+ * @description Creates a new Task inside of the specified parent List.
+ *
+ * @param {number} listId The parent list's id.
+ * @param {string} name The name of the task.
+ *
+ * @returns {Promise<Task | null>} The new Task or null after resolution of the request.
  */
 export const createTask = async (
   listId: number,
@@ -37,18 +38,11 @@ export const createTask = async (
 };
 
 /**
- * This function takes a list's id as a parameter and makes a get request to the
- * proper server endpoint to grab all tasks associated with that list.
+ * @description Gets all of the Tasks in the specified List.
  *
- * If the request is successful, an array of tasks is returned in the response,
- * which is then iterated over and each element is destructured into a Task
- * object. The task object is then pushed to an array of Tasks.
+ * @param {number} listId The parent List id.
  *
- * Finally, with the successful response, an array of Tasks is returned.
- *
- * If the request is unsuccessful, the error is logged to the console and null
- * is returned.
- * @param listId
+ * @returns {Promise<Task[] | null>} The array of Tasks or null after resolution of the request.
  */
 export const getAllTasks = async (listId: number): Promise<Task[] | null> => {
   const response: AxiosResponse = await api.get(`lists/${listId}/tasks/`);
@@ -71,15 +65,12 @@ export const getAllTasks = async (listId: number): Promise<Task[] | null> => {
 };
 
 /**
- * This function takes a list's id and a task's id as parameters and makes a get
- * request to the server endpoint with these parameters attached to the url.
+ * @description Gets a specified Task within the parent List.
  *
- * If the task exists within the list, the server will return the task's data and
- * the function will return a Task object.
+ * @param {number} listId The parent List id.
+ * @param {number} taskId The Task id.
  *
- * If the task does not exist, the function returns null.
- * @param listId
- * @param taskId
+ * @returns {Promise<Task | null>} The Task or null after resolution of the request.
  */
 export const getATask = async (
   listId: number,
@@ -103,18 +94,13 @@ export const getATask = async (
 };
 
 /**
- * This function takes a task's id and its parent list's id, as well as a new
- * name, as parameters and sends a put request to the server endpoint to update
- * the task in the database.
+ * @description Updates a Task's name.
  *
- * If the new name is valid, the task is updated and the new task object is
- * returned.
+ * @param {number} listId The parent List's id.
+ * @param {number} taskId The Task's id.
+ * @param {string} newName The new name of the Task.
  *
- * If the new name is invalid or the update fails, the error is printed to
- * the console and null is returned
- * @param listId
- * @param taskId
- * @param newName
+ * @return {Promise<Task | null>} The updated Task or null after resolution of the request.
  */
 export const updateTaskName = async (
   listId: number,
@@ -147,17 +133,13 @@ export const updateTaskName = async (
 };
 
 /**
- * This function takes a task's id and its parent list's id and a new completion
- * status as parameters and sends a put request to the server endpoint to
- * update the task in the database.
+ * @description Updates a Task's completion status
  *
- * If the update is sucessfully processed, the updated task is returned.
+ * @param {number} listId The parent List's id.
+ * @param {number} taskId The Task's id.
+ * @param {boolean} newCompleted The completion status of the Task.
  *
- * If the update is not processed, the error is printed to the console and
- * null is returned.
- * @param listId
- * @param taskId
- * @param newCompleted
+ * @returns {Promise<Task | null>} The updated Task or null after resolution of the request.
  */
 export const updateTaskCompleted = async (
   listId: number,
@@ -190,14 +172,12 @@ export const updateTaskCompleted = async (
 };
 
 /**
- * This function takes a task's id and its parent list's id and sends a delete
- * request to the server to delete the specified task.
+ * @description Deletes a Task from its parent List.
  *
- * If the request was successful, the function returns true.
+ * @param {number} listId The parent List's id.
+ * @param {number} taskId The Task's id.
  *
- * If the request was unsuccessful, the function returns false.
- * @param listId
- * @param taskId
+ * @returns {Promise<boolean>} True or false depending on the resolution of the request.
  */
 export const deleteATask = async (
   listId: number,
