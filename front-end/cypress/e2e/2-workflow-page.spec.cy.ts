@@ -29,7 +29,7 @@ describe("Tests create capabilities on workflow page", () => {
     cy.get("input").eq(0).type("Charleston");
     cy.get("input").eq(1).type("US");
     cy.get(".input-group>button").contains("Create").click();
-    cy.get("strong").contains("Charleston");
+    cy.get("div").contains("Charleston");
     cy.get(".named-location-delete").eq(1).click();
   });
 
