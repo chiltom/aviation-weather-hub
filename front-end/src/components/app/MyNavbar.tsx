@@ -39,14 +39,6 @@ const MyNavbar: React.FC<ContextType> = ({
         />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link
-              as={Link}
-              to={"/about/"}
-              onClick={() => setExpanded(false)}
-              className="hover:drop-shadow"
-            >
-              About
-            </Nav.Link>
             {user ? (
               <Nav.Link
                 as={Link}

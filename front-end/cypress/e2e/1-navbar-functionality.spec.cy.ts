@@ -8,10 +8,6 @@ describe("Tests the navbar w/o user signed in", (): void => {
     cy.get(".navbar-brand").should("have.text", "Weather Hub");
     cy.get(".navbar-nav")
       .eq(0)
-      .contains("About")
-      .should("have.attr", "href", "/about/");
-    cy.get(".navbar-nav")
-      .eq(0)
       .contains("Training")
       .should("have.attr", "href", "/training/");
     cy.get(".navbar-nav")
@@ -28,8 +24,6 @@ describe("Tests the navbar w/o user signed in", (): void => {
 
   it("Accesses the anonymous user allowed pages", (): void => {
     cy.visit("/");
-    cy.get(".navbar-nav").eq(0).contains("About").click();
-    cy.get("h1").contains("About");
     cy.get(".navbar-nav").eq(1).contains("Sign Up").click();
     cy.get(".modal-title").should("have.text", "Sign Up");
     cy.get(".btn-close").click();

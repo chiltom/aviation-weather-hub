@@ -9,7 +9,7 @@ import PurposeStatement from "../components/home-page/PurposeStatement";
 import ElevatorPitch from "../components/home-page/ElevatorPitch";
 
 const HomePage: React.FC = (): ReactElement => {
-  const { theme, user, setUser }: ContextType = useOutletContext<ContextType>();
+  const { theme }: ContextType = useOutletContext<ContextType>();
 
   return (
     <Container className="d-flex flex-column" fluid>
