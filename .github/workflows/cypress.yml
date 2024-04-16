@@ -50,19 +50,19 @@ jobs:
           python ./back-end/manage.py migrate
       - name: Load fixtures
         run: |
+          python ./back-end/manage.py loaddata ./back-end/user_app/fixtures/users.json
+          python ./back-end/manage.py loaddata ./back-end/airport_app/fixtures/airports.json
+          python ./back-end/manage.py loaddata ./back-end/named_locations_app/fixtures/named_locations.json
           python ./back-end/manage.py loaddata ./back-end/flight_app/fixtures/flights.json
           python ./back-end/manage.py loaddata ./back-end/flight_app/fixtures/briefs.json
           python ./back-end/manage.py loaddata ./back-end/flight_app/fixtures/hazards.json
-          python ./back-end/manage.py loaddata ./back-end/airport_app/fixtures/airports.json
-          python ./back-end/manage.py loaddata ./back-end/named_locations_app/fixtures/named_locations.json
-          python ./back-end/manage.py loaddata ./back-end/user_app/fixtures/users.json
           python ./back-end/manage.py loaddata ./back-end/list_app/fixtures/lists.json
           python ./back-end/manage.py loaddata ./back-end/list_app/fixtures/tasks.json
       - name: Install build dependencies
         run: |
           cd ./front-end
           npm install
-      -name: Run Django server
+      - name: Run Django server
         run: python ./back-end/manage.py runserver &
       - name: Cypress e2e tests
         uses: cypress-io/github-action@v6
