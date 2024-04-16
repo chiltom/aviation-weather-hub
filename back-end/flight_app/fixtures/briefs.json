@@ -1,0 +1,62 @@
+[
+{
+  "model": "flight_app.brief",
+  "pk": 1,
+  "fields": {
+    "flight": 2,
+    "surface_winds": "VRB09KT",
+    "flight_level_winds": "09009G15KT",
+    "visibility": "2SM",
+    "sky_condition": "BKN016 OVC038",
+    "temperature": "M23",
+    "altimeter_setting": "A3018",
+    "brief_time": "2024-04-08T09:00:00Z",
+    "void_time": "2024-04-08T10:30:00Z"
+  }
+},
+{
+  "model": "flight_app.brief",
+  "pk": 2,
+  "fields": {
+    "flight": 2,
+    "surface_winds": "VRB09KT",
+    "flight_level_winds": "27009G15KT",
+    "visibility": "1 1/4SM",
+    "sky_condition": "BKN016 OVC038",
+    "temperature": "22",
+    "altimeter_setting": "A3018",
+    "brief_time": "2024-04-08T10:00:00Z",
+    "void_time": "2024-04-08T11:30:00Z"
+  }
+},
+{
+  "model": "flight_app.brief",
+  "pk": 5,
+  "fields": {
+    "flight": 1,
+    "surface_winds": "VRB09KT",
+    "flight_level_winds": "VRB09KT",
+    "visibility": "1SM",
+    "sky_condition": "OVC001",
+    "temperature": "22",
+    "altimeter_setting": "A3018",
+    "brief_time": "2024-04-15T10:00:00Z",
+    "void_time": "2024-04-15T11:30:00Z"
+  }
+},
+{
+  "model": "flight_app.brief",
+  "pk": 6,
+  "fields": {
+    "flight": 6,
+    "surface_winds": "VRB09KT",
+    "flight_level_winds": "VRB09KT",
+    "visibility": "10SM",
+    "sky_condition": "CLR",
+    "temperature": "20",
+    "altimeter_setting": "A3018",
+    "brief_time": "2024-04-15T19:00:00Z",
+    "void_time": "2024-04-15T20:30:00Z"
+  }
+}
+]

@@ -31,7 +31,7 @@ const MyNavbar: React.FC<ContextType> = ({
         data-bs-theme={theme}
       >
         <Navbar.Brand as={Link} to={"/"}>
-          Weather Hub
+          <h3>Weather Hub</h3>
         </Navbar.Brand>
         <Navbar.Toggle
           aria-controls="basic-navbar-nav"
@@ -47,30 +47,66 @@ const MyNavbar: React.FC<ContextType> = ({
             >
               About
             </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to={"/training/"}
-              onClick={() => setExpanded(false)}
-              className="hover:drop-shadow"
-            >
-              Training
-            </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to={"/workflow/"}
-              onClick={() => setExpanded(false)}
-              className="hover:drop-shadow"
-            >
-              Workflow
-            </Nav.Link>
-            <Nav.Link
-              as={Link}
-              to={"/flights/"}
-              onClick={() => setExpanded(false)}
-              className="hover:drop-shadow"
-            >
-              Flights
-            </Nav.Link>
+            {user ? (
+              <Nav.Link
+                as={Link}
+                to={"/training/"}
+                onClick={() => setExpanded(false)}
+                className="hover:drop-shadow"
+              >
+                Training
+              </Nav.Link>
+            ) : (
+              <Nav.Link
+                as={Link}
+                to={"/training/"}
+                onClick={() => setExpanded(false)}
+                className="hover:drop-shadow"
+                disabled
+              >
+                Training
+              </Nav.Link>
+            )}
+            {user ? (
+              <Nav.Link
+                as={Link}
+                to={"/workflow/"}
+                onClick={() => setExpanded(false)}
+                className="hover:drop-shadow"
+              >
+                Workflow
+              </Nav.Link>
+            ) : (
+              <Nav.Link
+                as={Link}
+                to={"/workflow/"}
+                onClick={() => setExpanded(false)}
+                className="hover:drop-shadow"
+                disabled
+              >
+                Workflow
+              </Nav.Link>
+            )}
+            {user ? (
+              <Nav.Link
+                as={Link}
+                to={"/flights/"}
+                onClick={() => setExpanded(false)}
+                className="hover:drop-shadow"
+              >
+                Flights
+              </Nav.Link>
+            ) : (
+              <Nav.Link
+                as={Link}
+                to={"/flights/"}
+                onClick={() => setExpanded(false)}
+                className="hover:drop-shadow"
+                disabled
+              >
+                Flights
+              </Nav.Link>
+            )}
           </Nav>
           {user ? null : (
             <Nav>

@@ -10,15 +10,6 @@
 },
 {
   "model": "airport_app.airport",
-  "pk": 2,
-  "fields": {
-    "user": 1,
-    "icao_code": "EVGA",
-    "name": "Lielvarde, LV"
-  }
-},
-{
-  "model": "airport_app.airport",
   "pk": 3,
   "fields": {
     "user": 3,
@@ -33,6 +24,33 @@
     "user": 3,
     "icao_code": "KCHS",
     "name": "Charleston, SC"
+  }
+},
+{
+  "model": "airport_app.airport",
+  "pk": 5,
+  "fields": {
+    "user": 1,
+    "icao_code": "EVGA",
+    "name": "Lielvarde, LV"
+  }
+},
+{
+  "model": "airport_app.airport",
+  "pk": 9,
+  "fields": {
+    "user": 1,
+    "icao_code": "ETIK",
+    "name": "Illesheim AHP"
+  }
+},
+{
+  "model": "airport_app.airport",
+  "pk": 10,
+  "fields": {
+    "user": 5,
+    "icao_code": "KSVN",
+    "name": "Savannah"
   }
 }
 ]

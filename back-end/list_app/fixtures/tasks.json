@@ -1,24 +1,6 @@
 [
 {
   "model": "list_app.task",
-  "pk": 1,
-  "fields": {
-    "list": 5,
-    "name": "Make this task",
-    "completed": false
-  }
-},
-{
-  "model": "list_app.task",
-  "pk": 2,
-  "fields": {
-    "list": 2,
-    "name": "My first list",
-    "completed": false
-  }
-},
-{
-  "model": "list_app.task",
   "pk": 3,
   "fields": {
     "list": 3,
@@ -59,6 +41,33 @@
   "fields": {
     "list": 3,
     "name": "Write all the views",
+    "completed": false
+  }
+},
+{
+  "model": "list_app.task",
+  "pk": 55,
+  "fields": {
+    "list": 7,
+    "name": "Newest Task",
+    "completed": false
+  }
+},
+{
+  "model": "list_app.task",
+  "pk": 57,
+  "fields": {
+    "list": 5,
+    "name": "What?!?!?!",
+    "completed": true
+  }
+},
+{
+  "model": "list_app.task",
+  "pk": 60,
+  "fields": {
+    "list": 10,
+    "name": "New Task",
     "completed": false
   }
 }

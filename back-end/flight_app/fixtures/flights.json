@@ -1,0 +1,50 @@
+[
+{
+  "model": "flight_app.flight",
+  "pk": 1,
+  "fields": {
+    "user": 1,
+    "tail_number": 459,
+    "callsign": "EASY29",
+    "aircraft_type_model": "CH-47F",
+    "pilot_responsible": "CW2 Chump Nerd",
+    "origin": "KSVN",
+    "destination": "KCHS",
+    "flight_level": 3000,
+    "takeoff_time": "2024-04-08T10:00:00Z",
+    "arrival_time": "2024-04-08T13:00:00Z"
+  }
+},
+{
+  "model": "flight_app.flight",
+  "pk": 2,
+  "fields": {
+    "user": 1,
+    "tail_number": 356,
+    "callsign": "DUSTOFF15",
+    "aircraft_type_model": "HH-60M",
+    "pilot_responsible": "CW3 Save Your Butt",
+    "origin": "KSVN",
+    "destination": "EVGA",
+    "flight_level": 3000,
+    "takeoff_time": "2024-04-14T10:00:00Z",
+    "arrival_time": "2024-04-14T13:00:00Z"
+  }
+},
+{
+  "model": "flight_app.flight",
+  "pk": 6,
+  "fields": {
+    "user": 5,
+    "tail_number": 444,
+    "callsign": "CYPRESS202",
+    "aircraft_type_model": "CY-40T",
+    "pilot_responsible": "CPT Cypress Testing",
+    "origin": "KSVN",
+    "destination": "KSVN",
+    "flight_level": 3000,
+    "takeoff_time": "2024-04-15T20:00:00Z",
+    "arrival_time": "2024-04-15T22:00:00Z"
+  }
+}
+]

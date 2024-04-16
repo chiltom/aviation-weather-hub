@@ -1,0 +1,38 @@
+[
+{
+  "model": "flight_app.hazard",
+  "pk": 1,
+  "fields": {
+    "brief": 1,
+    "type": "SHRA",
+    "information": "unknown"
+  }
+},
+{
+  "model": "flight_app.hazard",
+  "pk": 2,
+  "fields": {
+    "brief": 1,
+    "type": "HAIL",
+    "information": "Lots and lots of hail"
+  }
+},
+{
+  "model": "flight_app.hazard",
+  "pk": 5,
+  "fields": {
+    "brief": 5,
+    "type": "SHRA",
+    "information": "Lots of rain"
+  }
+},
+{
+  "model": "flight_app.hazard",
+  "pk": 6,
+  "fields": {
+    "brief": 6,
+    "type": "TSRA",
+    "information": "Thunderstorms"
+  }
+}
+]

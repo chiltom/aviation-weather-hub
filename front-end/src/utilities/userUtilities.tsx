@@ -55,7 +55,7 @@ export const signupUser = async (
       return null; // Return undefined if signup fails
     }
   } catch (error) {
-    console.error(error);
+    console.log(error);
     return null; // Return undefined if an error occurs
   }
 };

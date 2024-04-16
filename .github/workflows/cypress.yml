@@ -11,7 +11,8 @@ permissions:
   contents: read
 
 jobs:
-  cypress-run:
+  build:
+    name: Autotesting
     runs-on: ubuntu-latest
 
     steps:
@@ -23,10 +24,46 @@ jobs:
           node-version: 18
           cache-dependency-path: "front-end/package-lock.json"
           cache: "npm"
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - name: Install back-end dependencies
+        run: pip install -r ./back-end/requirements.txt
+      - name: Set up PostgreSQL
+        run: |
+          sudo apt-get update
+          sudo apt-get install postgresql -y
+          sudo apt-get install postgresql-contrib -y
+          sudo apt-get install postgresql-client -y
+          echo waiting...
+          sleep 6
+          sudo service postgresql start
+          sudo su - postgres -c "psql --echo-all -U postgres -d postgres --command \"CREATE USER runner WITH SUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD '';\""
+          sudo su - postgres -c "psql --echo-all -U postgres -d postgres --command \"create database weather_db;\""
+          echo finished pg commands...
+          sudo service postgresql restart
+      - name: Make migrations
+        run: |
+          python ./back-end/manage.py makemigrations
+          python ./back-end/manage.py migrate
+      - name: Load fixtures
+        run: |
+          python ./back-end/manage.py loaddata ./back-end/flight_app/fixtures/flights.json
+          python ./back-end/manage.py loaddata ./back-end/flight_app/fixtures/briefs.json
+          python ./back-end/manage.py loaddata ./back-end/flight_app/fixtures/hazards.json
+          python ./back-end/manage.py loaddata ./back-end/airport_app/fixtures/airports.json
+          python ./back-end/manage.py loaddata ./back-end/named_locations_app/fixtures/named_locations.json
+          python ./back-end/manage.py loaddata ./back-end/user_app/fixtures/users.json
+          python ./back-end/manage.py loaddata ./back-end/list_app/fixtures/lists.json
+          python ./back-end/manage.py loaddata ./back-end/list_app/fixtures/tasks.json
       - name: Install build dependencies
         run: |
           cd ./front-end
           npm install
+      -name: Run Django server
+        run: python ./back-end/manage.py runserver &
       - name: Cypress e2e tests
         uses: cypress-io/github-action@v6
         with:

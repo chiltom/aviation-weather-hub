@@ -12,7 +12,6 @@ const Workflow: React.FC = (): ReactElement => {
 
   return (
     <>
-      <h1>Weather Page</h1>
       <WeatherProvider>
         <div className="d-flex flex-column">
           <div className="d-flex flex-grow-1 align-items-center my-3">

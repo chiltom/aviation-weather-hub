@@ -1,24 +1,46 @@
 [
 {
   "model": "named_locations_app.named_location",
-  "pk": 1,
-  "fields": {
-    "user": 1,
-    "city": "Savannah",
-    "state": "GA",
-    "latitude": "-81.0883710",
-    "longitude": "32.0761760"
-  }
-},
-{
-  "model": "named_locations_app.named_location",
   "pk": 2,
   "fields": {
     "user": 3,
     "city": "Lielvarde",
-    "state": "LV",
-    "latitude": "56.7179000",
-    "longitude": "24.8140000"
+    "country": "LV",
+    "latitude": "56.7179",
+    "longitude": "24.8140"
+  }
+},
+{
+  "model": "named_locations_app.named_location",
+  "pk": 8,
+  "fields": {
+    "user": 1,
+    "city": "Savannah",
+    "country": "US",
+    "latitude": "32.0835",
+    "longitude": "-81.0998"
+  }
+},
+{
+  "model": "named_locations_app.named_location",
+  "pk": 9,
+  "fields": {
+    "user": 1,
+    "city": "Charleston",
+    "country": "US",
+    "latitude": "32.7766",
+    "longitude": "-79.9309"
+  }
+},
+{
+  "model": "named_locations_app.named_location",
+  "pk": 10,
+  "fields": {
+    "user": 5,
+    "city": "Brunswick",
+    "country": "US",
+    "latitude": "41.2381",
+    "longitude": "-81.8418"
   }
 }
 ]

@@ -1,15 +1,6 @@
 [
 {
   "model": "list_app.list",
-  "pk": 2,
-  "fields": {
-    "user": 1,
-    "name": "My List",
-    "completed": false
-  }
-},
-{
-  "model": "list_app.list",
   "pk": 3,
   "fields": {
     "user": 2,
@@ -31,7 +22,25 @@
   "pk": 5,
   "fields": {
     "user": 1,
-    "name": "Make Entries",
+    "name": "My First List",
+    "completed": true
+  }
+},
+{
+  "model": "list_app.list",
+  "pk": 7,
+  "fields": {
+    "user": 1,
+    "name": "New List Name",
+    "completed": false
+  }
+},
+{
+  "model": "list_app.list",
+  "pk": 10,
+  "fields": {
+    "user": 5,
+    "name": "This List",
     "completed": false
   }
 }
