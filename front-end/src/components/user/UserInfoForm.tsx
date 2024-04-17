@@ -6,7 +6,6 @@ import { changeUserInfo } from "../../utilities/userUtilities";
 import { ContextType, User } from "../../types/userTypes";
 
 const UserInfoForm: React.FC<ContextType> = ({
-  user,
   setUser,
   theme,
 }: ContextType): ReactElement => {
@@ -25,7 +24,7 @@ const UserInfoForm: React.FC<ContextType> = ({
    * is returned.
    * @param e
    */
-  const handleUserChangeRequest: FormEventHandler<HTMLButtonElement> = async (
+  const handleUserChangeRequest: FormEventHandler<HTMLFormElement> = async (
     e
   ): Promise<void> => {
     e.preventDefault();

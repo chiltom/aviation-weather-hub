@@ -8,7 +8,6 @@ import { signupUser } from "../../utilities/userUtilities";
 import { ContextType } from "../../types/userTypes";
 
 const SignUpForm: React.FC<ContextType> = ({
-  user,
   setUser,
   theme,
 }: ContextType): ReactElement => {

@@ -12,7 +12,7 @@ function App(): ReactElement {
   const defaultDark: boolean = window.matchMedia(
     "(prefers-color-scheme:dark)"
   ).matches;
-  const [theme, setTheme] = useLocalStorage<string>(
+  const [theme] = useLocalStorage<string>(
     "theme",
     defaultDark ? "dark" : "light"
   );

@@ -1,16 +1,17 @@
 /**
- * The Brief interface defines the properties of a brief, which consist of:
- * - Brief id
- * - Parent flight id
- * - Surface winds
- * - Flight level winds
- * - Visibility
- * - Sky condition
- * - Temperature
- * - Altimeter setting
- * - Brief time
- * - Void time
- * - An array of hazards associated with the brief
+ * @description The Brief interface defines the properties of a brief.
+ *
+ * @property {number} id - Brief's id.
+ * @property {number} flight - Parent Flight's id.
+ * @property {string} surfaceWinds - Winds at surface level.
+ * @property {string} flightLevelWinds - Winds at Flight level.
+ * @property {string} visibility - Visibility at surface.
+ * @property {string} skyCondition - Sky condition
+ * @property {string} temperature - Temperature in Celsius
+ * @property {string} altimeterSetting - Altimeter setting of aircraft.
+ * @property {string} briefTime - Brief time in YYYY-MM-DDTHH:MM:SSZ format.
+ * @property {string} voidTime - Void time in YYYY-MM-DDTHH:MM:SSZ format.
+ * @property {Hazard[]} hazards -  An array of hazards associated with the brief.
  */
 export interface Brief {
   id: number;
@@ -27,21 +28,19 @@ export interface Brief {
 }
 
 /**
- * The Flight interface defines the properties of a flight, which consists
- * of:
- * - Flight id
- * - Aircraft tail number
- * - Callsign
- * - Aircraft type and model
- * - Pilot responsible for the flight and receiving weather briefs
- * - Origin airport's icao code
- * - Destination airport's icao code
- *  - Both of which must be in the user's stored airports or there will be
- *    an error trying to post the flight
- * - The flight level of the flight
- * - The takeoff time
- * - The arrival time
- * - An array of briefs associated with the flight.
+ * @description The Flight interface defines the properties of a flight.
+ *
+ * @property {number} id - Flight's id.
+ * @property {number} tailNumber - Aircraft tail number.
+ * @property {string} callsign - Aircraft callsign.
+ * @property {string} aircraftTypeModel - Aircraft type and model.
+ * @property {string} pilotResponsible - Pilot responsible for the flight and receiving weather briefs.
+ * @property {string} origin - Origin Airport's ICAO code. Must be stored in the User's Airport[].
+ * @property {string} destination - Destination Airport's ICAO code. Must be stored in the User's Airport[].
+ * @property {number} flightLevel - The flight level of the aircraft.
+ * @property {string} takeoffTime - The takeoff time of the flight in YYYY-MM-DDTHH:MM:SSZ format.
+ * @property {string} arrivalTime - The arrival time of the flight in YYYY-MM-DDTHH:MM:SSZ format.
+ * @property {Brief[]} briefs - An array of briefs associated with the flight.
  */
 export interface Flight {
   id: number;
@@ -58,11 +57,12 @@ export interface Flight {
 }
 
 /**
- * The Hazard interface defines the properties of a hazard, which consist of:
- * - Hazard id
- * - Parent brief's id
- * - The type of hazard
- * - The information pertaining to the hazard
+ * @description The Hazard interface defines the properties of a hazard.
+ *
+ * @property {number} id - Hazard's id.
+ * @property {number} brief - Parent brief's id.
+ * @property {string} type - The type of hazard.
+ * @property {string} information - The information pertaining to the hazard.
  */
 export interface Hazard {
   id: number;

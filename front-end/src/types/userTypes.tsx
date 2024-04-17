@@ -1,7 +1,10 @@
 /**
- * The User interface consists of an email, display name, first name,
- * and last name, effectively holding all relevant user information
- * stored in the server
+ * @description The User interface defines all of the properties of a User.
+ *
+ * @property {string} email - The User's email.
+ * @property {string} displayName - The User's display name.
+ * @property {string} firstName - The User's first name.
+ * @property {string} lastName - The User's last name.
  */
 export interface User {
   email: string;
@@ -11,12 +14,12 @@ export interface User {
 }
 
 /**
- * ContextType provides a type for the context that will be inserted
+ * @description ContextType provides a type for the context that will be inserted
  * into and loaded from outlet context throughout the router provider.
  *
- * It consists of the user and setUser pair that may contain a User object
- * or null value, the setUser setter for user, and the theme of the client's
- * OS.
+ * @prop {User | null} user - The user state
+ * @prop {React.Dispatch<React.SetStateAction<User | null>>} setUser - The user state setter
+ * @prop {string} theme - The client OS's preferred theme.
  */
 export type ContextType = {
   user: User | null;

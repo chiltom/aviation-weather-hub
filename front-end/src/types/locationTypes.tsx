@@ -1,7 +1,8 @@
 /**
- * The Airport interface defines the properties of an Airport,
- * which consist of an icaoCode and name, effectively holding
- * all relevant Airport information from the server
+ * @description The Airport interface defines the properties of an Airport.
+ *
+ * @property {string} icaoCode - The Airport's ICAO code.
+ * @property {string} name - The name of the Airport.
  */
 export interface Airport {
   icaoCode: string;
@@ -9,13 +10,12 @@ export interface Airport {
 }
 
 /**
- * The NamedLocation interface defines the properties of a named location,
- * which consist of the city's name, the two-letter country abbreviation,
- * and the latitude and longitude of the location which make up its
- * coordinates.
+ * @description The NamedLocation interface defines the properties of a named location.
  *
- * A NamedLocation object will hold all relevant information for the
- * location
+ * @property {string} city - The city name.
+ * @property {string} country - The two-letter country abbreviation.
+ * @property {string} latitude - The latitude of the location.
+ * @property {string} longitude - The longitude of the location.
  */
 export interface NamedLocation {
   city: string;

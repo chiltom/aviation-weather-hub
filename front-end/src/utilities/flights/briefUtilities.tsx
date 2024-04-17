@@ -13,9 +13,9 @@ import { Brief } from "../../types/flightTypes";
  * @param {string} flightLevelWinds The winds at flight level altitude enroute. Must consist of wind
  * direction, wind speed, gusts and speeds if applicable, and KT at the end, all uppercase, only letters
  * and digits. Examples: VRB09KT, 27013KT, VRB08G15KT, 09017G25KT.
- * @param {string} visibility The visibility enroute. Must be digits, spaces, or slashes, and end in SM.
+ * @param {string} visibility The visibility at surface. Must be digits, spaces, or slashes, and end in SM.
  * The highest possible number is 10, and the maximum length is 7, all letters uppercase. Examples: 1 1/4SM, 10SM.
- * @param {string} skyCondition The sky condition enroute. If multiple values exist, must be broken up
+ * @param {string} skyCondition The sky condition at surface. If multiple values exist, must be broken up
  * with spaces between the values. Must be a valid sky condition. Example: SCT016 BKN030 OVC050.
  * @param {string} temperature The temperature enroute. Must be in Celsius and, if negative, insert an M
  * prior to the number. Examples: 22, M01.
@@ -158,9 +158,9 @@ export const getABrief = async (
  * @param {string} [newFlightLevelWinds] Optional new winds at flight level altitude enroute. Must consist of wind
  * direction, wind speed, gusts and speeds if applicable, and KT at the end, all uppercase, only letters
  * and digits. Examples: VRB09KT, 27013KT, VRB08G15KT, 09017G25KT.
- * @param {string} [newVisibility] Optional new visibility enroute. Must be digits, spaces, or slashes, and end in SM.
+ * @param {string} [newVisibility] Optional new visibility at surface. Must be digits, spaces, or slashes, and end in SM.
  * The highest possible number is 10, and the maximum length is 7, all letters uppercase. Examples: 1 1/4SM, 10SM.
- * @param {string} [newSkyCondition] Optional new sky condition enroute. If multiple values exist, must be broken up
+ * @param {string} [newSkyCondition] Optional new sky condition at surface. If multiple values exist, must be broken up
  * with spaces between the values. Must be a valid sky condition. Example: SCT016 BKN030 OVC050.
  * @param {string} [newTemperature] Optional new temperature enroute. Must be in Celsius and, if negative, insert an M
  * prior to the number. Examples: 22, M01.

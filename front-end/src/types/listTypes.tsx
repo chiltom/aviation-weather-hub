@@ -1,22 +1,25 @@
 /**
- * The List interface defines the properties of a List,
- * which consist of a name, an array of tasks, and completion
- * status, effectively holding all relevant information from
- * the server.
+ * @description The List interface defines the properties of a List.
+ *
+ * @property {number} id - List's id.
+ * @property {string} name - List's name.
+ * @property {boolean} completed - List's completion status.
+ * @property {Task[]} tasks - The array of Tasks associated with the List.
  */
 export interface List {
   id: number;
   name: string;
-  tasks: Task[];
   completed: boolean;
+  tasks: Task[];
 }
 
 /**
- * The Task interface defines the properties of a Task, which
- * consist of a name and completion status. The task is then attached
- * to a parent list, with a reinforced relationship in the server and
- * database using a foreign key relationship. The task holds all relevant
- * information from the server.
+ * @description The Task interface defines the properties of a Task.
+ *
+ * @property {number} id - Task's id.
+ * @property {number} list - Parent List's id.
+ * @property {string} name - Task's name.
+ * @property {boolean} completed - Task's completion status.
  */
 export interface Task {
   id: number;
@@ -26,8 +29,11 @@ export interface Task {
 }
 
 /**
- * Interface for passing down props from parent list component to child
- * tasks component
+ * @description Interface for passing down props from parent ListAccordion
+ * component to child TasksLists component
+ *
+ * @prop {List} list - The List that the Tasks belong to.
+ * @prop {React.Dispatch<React.SetStateAction<List[]>>} setLists - Setter for lists state.
  */
 export interface TasksProps {
   list: List;
