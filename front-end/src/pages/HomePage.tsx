@@ -8,6 +8,17 @@ import HomeCarousel from "../components/home-page/HomeCarousel";
 import PurposeStatement from "../components/home-page/PurposeStatement";
 import ElevatorPitch from "../components/home-page/ElevatorPitch";
 
+/**
+ * @description The landing page for the site that all visitors will see.
+ * 
+ * Anonymous users will only have access to this page and the log in and 
+ * sign up modals/forms.
+ * 
+ * This page houses the HomeCarousel, PurposeStatement, and ElevatorPitch
+ * components.
+ * 
+ * @returns {ReactElement} Home Page.
+ */
 const HomePage: React.FC = (): ReactElement => {
   const { theme }: ContextType = useOutletContext<ContextType>();
 

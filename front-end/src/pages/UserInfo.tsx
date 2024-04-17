@@ -6,9 +6,24 @@ import ListGroup from "react-bootstrap/ListGroup";
 import UserInfoForm from "../components/user/UserInfoForm";
 import { ContextType, User } from "../types/userTypes";
 
+/**
+ * @description A page that displays the currently logged in User's
+ * information and allows updates to their display name using the
+ * UserInfoForm component.
+ *
+ * @returns {ReactElement} UserInfo Page.
+ */
 const UserInfo: React.FC = (): ReactElement => {
   const { user, setUser, theme } = useOutletContext<ContextType>();
 
+  /**
+   * @description Displays the current User's information in a ListGroup.
+   *
+   * @param {User} user The User that is currently logged in.
+   *
+   * @returns {ReactElement} The ListGroup that holds the current User's
+   * information.
+   */
   const renderUserInfo = (user: User): ReactElement => {
     return (
       <ListGroup className="mb-4 w-50">

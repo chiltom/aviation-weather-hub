@@ -40,7 +40,7 @@ export const useWeather = (): WeatherContextType => {
  * @description The provider component that will provide WeatherContext and all
  * of its associated state and setters to child components within its scope.
  *
- * @returns {ReactElement} WeatherContext.Provider to wrap children elements with.
+ * @returns {ReactElement} WeatherProvider to wrap children elements with.
  */
 export const WeatherProvider: React.FC<{ children: ReactNode }> = ({
   children,

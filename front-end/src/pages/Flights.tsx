@@ -3,7 +3,13 @@ import { useOutletContext } from "react-router-dom";
 import { ContextType } from "../types/userTypes";
 import FlightCards from "../components/flights/FlightCards";
 
-// TODO: Think about using accordion under each flight to show all data
+/**
+ * @description This page houses the FlightCards component and provides
+ * users with a means to track all of their Flights and relevant data 
+ * associated with them.
+ * 
+ * @returns {ReactElement} Flights Page.
+ */
 const Flights: React.FC = (): ReactElement => {
   const { theme, user, setUser }: ContextType = useOutletContext();
 

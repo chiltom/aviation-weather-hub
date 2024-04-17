@@ -1,5 +1,11 @@
 import { ReactElement } from "react";
 
+/**
+ * @description A page that provides training to new weather 
+ * forecasters and observers.
+ * 
+ * @returns {ReactElement} Training Page.
+ */
 const Training: React.FC = (): ReactElement => {
   return (
     <>

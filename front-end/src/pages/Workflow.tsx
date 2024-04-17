@@ -7,6 +7,15 @@ import { WeatherProvider } from "../providers/WeatherContextProvider";
 import WeatherDisplay from "../components/workflow/weather-display/WeatherDisplay";
 import AirportsListGroup from "../components/workflow/AirportsListGroup";
 
+/**
+ * @description A Workflow page that will wrap its components in the WeatherProvider 
+ * to allow access to the useWeather() hook and all of its associated state.
+ * 
+ * This page houses the AirportsListGroup, NamedLocationsListGroup, WeatherDisplay,
+ * and ListsAccordion components.
+ * 
+ * @returns {ReactElement} Workflow Page.
+ */
 const Workflow: React.FC = (): ReactElement => {
   const { user, setUser, theme } = useOutletContext<ContextType>();
 
