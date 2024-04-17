@@ -30,23 +30,22 @@ SECRET_KEY = env.get("SECRET_KEY", "top-secret-key")
 DEBUG = env.get("DEBUG")
 
 ALLOWED_HOSTS = [
-    # "127.0.0.1"
-    "*"
+    "https://avnwxhub.duckdns.org"
 ]
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:5173"
-# ]
+CSRF_TRUSTED_ORIGIN = [
+    "https://avnwxhub.duckdns.org"
+]
 
+CORS_ALLOWED_ORIGINS = [
+    "https://avnwxhub.duckdns.org"
+]
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
 
-# CORS_ALLOW_CREDENTIALS = True
-
-# TODO: Uncomment when site is hosted on HTTPS
-# SESSION_COOKIE_SECURE = True
-
-# SESSION_COOKIE_HTTPONLY = True
+CORS_ALLOW_CREDENTIALS = True
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
 
 
 # Application definition

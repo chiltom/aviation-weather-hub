@@ -37,10 +37,6 @@ export const signupUser = async (
         firstName: response.data["first_name"],
         lastName: response.data["last_name"],
       };
-      localStorage.setItem("token", response.data["token"]);
-      api.defaults.headers.common[
-        "Authorization"
-      ] = `Token ${response.data["token"]}`;
       return user;
     } else {
       console.log(response.data);
@@ -76,10 +72,6 @@ export const userLogin = async (
         firstName: response.data["first_name"],
         lastName: response.data["last_name"],
       };
-      localStorage.setItem("token", response.data["token"]);
-      api.defaults.headers.common[
-        "Authorization"
-      ] = `Token ${response.data["token"]}`;
       return user;
     } else {
       console.log(response.data);
@@ -100,9 +92,6 @@ export const userLogout = async (): Promise<boolean> => {
   try {
     const response: AxiosResponse = await api.post("users/logout/");
     if (response.status === 204) {
-      localStorage.removeItem("token");
-      delete api.defaults.headers.common["Authorization"];
-      console.log("user logged out");
       return true;
     } else {
       console.log(response.data);
@@ -120,9 +109,6 @@ export const userLogout = async (): Promise<boolean> => {
  * @returns {Promise<User | null>} The User or null after resolution of the request.
  */
 export const userConfirmation = async (): Promise<User | null> => {
-  const token: string | null = localStorage.getItem("token");
-  if (token) {
-    api.defaults.headers.common["Authorization"] = `Token ${token}`;
     const response: AxiosResponse = await api.get("users/");
     if (response.status === 200) {
       const user: User = {
@@ -133,8 +119,7 @@ export const userConfirmation = async (): Promise<User | null> => {
       };
       return user;
     }
-  }
-  return null;
+    return null;
 };
 
 /**
@@ -153,7 +138,6 @@ export const changeUserInfo = async (
     });
     if (response.status === 200) {
       const updatedUser: User | null = await userConfirmation();
-      console.log(updatedUser);
       return updatedUser;
     } else {
       console.log(response.status, response.data);
