@@ -109,6 +109,7 @@ export const userLogout = async (): Promise<boolean> => {
  * @returns {Promise<User | null>} The User or null after resolution of the request.
  */
 export const userConfirmation = async (): Promise<User | null> => {
+  try {
     const response: AxiosResponse = await api.get("users/");
     if (response.status === 200) {
       const user: User = {
@@ -120,6 +121,9 @@ export const userConfirmation = async (): Promise<User | null> => {
       return user;
     }
     return null;
+  } catch (error) {
+    return null;
+  }
 };
 
 /**
