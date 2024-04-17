@@ -1,10 +1,20 @@
-import { FormEventHandler, ReactElement, useState } from "react";
+import { FormEvent, FormEventHandler, ReactElement, useState } from "react";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import { changeUserInfo } from "../../utilities/userUtilities";
 import { ContextType, User } from "../../types/userTypes";
 
+/**
+ * @description A component that serves as a Form to submit an update to a User's
+ * display name.
+ * 
+ * @prop {React.Dispatch<React.SetStateAction<User | null>>} setUser The setter 
+ * for the user state.
+ * @prop {string} theme The theme of the User's OS.
+ * 
+ * @returns {ReactElement} The UserInfoForm component.
+ */
 const UserInfoForm: React.FC<ContextType> = ({
   setUser,
   theme,
@@ -12,20 +22,12 @@ const UserInfoForm: React.FC<ContextType> = ({
   const [newDisplayNameInput, setNewDisplayNameInput] = useState<string>("");
 
   /**
-   * Function that handles the submission of a display name change
-   * from the user.
-   *
-   * Once the request is submitted, the function is called and it awaits
-   * the return value of the promise from the api request in changeUserInfo.
-   *
-   * If a user is returned from the call it sets the user state in App.tsx.
-   *
-   * If null is returned, an alert saying the display name is already taken
-   * is returned.
-   * @param e
+   * @description Handles the request to change a User's display name.
+   * 
+   * @param {FormEvent} e The form event.
    */
   const handleUserChangeRequest: FormEventHandler<HTMLFormElement> = async (
-    e
+    e: FormEvent
   ): Promise<void> => {
     e.preventDefault();
     const user: User | null = await changeUserInfo(newDisplayNameInput);

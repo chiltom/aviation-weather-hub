@@ -11,6 +11,13 @@ import "../../../styles/workflow.css";
 import MetarDisplay from "./MetarDisplay";
 import TafDisplay from "./TafDisplay";
 
+/**
+ * @description Maps out the current METAR or TAF to a console display that
+ * presents the information in a normalized format.
+ *
+ * @returns {ReactElement} Console that displays METAR and TAF data for the
+ * specified Airport or NamedLocation.
+ */
 const WeatherDisplay: React.FC = (): ReactElement => {
   const {
     metarIcaoCode,
@@ -30,9 +37,10 @@ const WeatherDisplay: React.FC = (): ReactElement => {
   const [taf, setTaf] = useState<string | null>(null);
 
   /**
-   * Handler that will get called in useEffect when named location METAR is set in context.
-   * @param latitude
-   * @param longitude
+   * @description Handler that fetches a NamedLocation's METAR when set in context.
+   *
+   * @param {string} latitude The latitude of the NamedLocation.
+   * @param {string} longitude The longitude of the NamedLocation.
    */
   const handleMetarLocationUpdate = async (
     latitude: string,
@@ -50,7 +58,8 @@ const WeatherDisplay: React.FC = (): ReactElement => {
   };
 
   /**
-   * useEffect to grab METAR for a named location upon context update.
+   * Calls the handleMetarLocationUpdate function when the metarLatitude and
+   * metarLongitude states change.
    */
   useEffect(() => {
     if (metarLatitude && metarLongitude) {
@@ -61,8 +70,9 @@ const WeatherDisplay: React.FC = (): ReactElement => {
   }, [metarLatitude, metarLongitude]);
 
   /**
-   * Handler that will get called in useEffect when airport METAR is set in context
-   * @param icaoCode
+   * @description Handler that fetches an Airport's METAR when set in context.
+   *
+   * @param {string} icaoCode The Airport's ICAO code.
    */
   const handleMetarAirportUpdate = async (icaoCode: string): Promise<void> => {
     const newMetar: string | null = await getAirportMetars(icaoCode);
@@ -72,7 +82,7 @@ const WeatherDisplay: React.FC = (): ReactElement => {
   };
 
   /**
-   * useEffect that will call handler for airport METAR upon context update.
+   * Calls the handleMetarAirportUpdate function when the metarIcaoCode state changes.
    */
   useEffect(() => {
     if (metarIcaoCode) {
@@ -82,10 +92,10 @@ const WeatherDisplay: React.FC = (): ReactElement => {
   }, [metarIcaoCode]);
 
   /**
-   * Handler that is called in useEffect when context changes for named location taf
-   * updates.
-   * @param latitude
-   * @param longitude
+   * @description Handler that fetches a NamedLocation's TAF when set in context.
+   *
+   * @param {string} latitude The latitude of the NamedLocation.
+   * @param {string} longitude The longitude of the NamedLocation.
    */
   const handleTafNamedLocationUpdate = async (
     latitude: string,
@@ -103,8 +113,8 @@ const WeatherDisplay: React.FC = (): ReactElement => {
   };
 
   /**
-   * useEffect that calls respective handler function when tafLatitude and tafLongitude
-   * are set in context.
+   * Calls the handleTafNamedLocationUpdate function when the tafLatitude and
+   * tafLongitude states change.
    */
   useEffect(() => {
     if (tafLatitude && tafLongitude) {
@@ -115,8 +125,9 @@ const WeatherDisplay: React.FC = (): ReactElement => {
   }, [tafLatitude, tafLongitude]);
 
   /**
-   * Handler that is called in useEffect when tafIcaoCode state is updated.
-   * @param icaoCode
+   * @description Handler that fetches an Airport's TAF when set in context.
+   *
+   * @param {string} icaoCode The Airport's ICAO code.
    */
   const handleTafAirportUpdate = async (icaoCode: string): Promise<void> => {
     const newTaf: string | null = await getAirportTafs(icaoCode);
@@ -126,8 +137,7 @@ const WeatherDisplay: React.FC = (): ReactElement => {
   };
 
   /**
-   * useEffect that calls respective handler function when tafLatitude and tafLongitude
-   * are set in context.
+   * Calls the handleTafAirportUpdate function when the tafIcaoCode state changes.
    */
   useEffect(() => {
     if (tafIcaoCode) {

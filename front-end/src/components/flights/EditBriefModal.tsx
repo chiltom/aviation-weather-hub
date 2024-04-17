@@ -1,4 +1,4 @@
-import { useState, useEffect, ReactElement, FormEventHandler } from "react";
+import { useState, useEffect, ReactElement, FormEventHandler, FormEvent } from "react";
 import { Brief } from "../../types/flightTypes";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -9,6 +9,16 @@ import {
   updateABrief,
 } from "../../utilities/flights/briefUtilities";
 
+/**
+ * @description Defines the props that are passed down into the EditBriefModal
+ * component.
+ *
+ * @property {string} theme The User's OS theme.
+ * @property {React.Dispatch<React.SetStateAction<Brief[]>>} setBriefs The
+ * setter for the briefs state.
+ * @property {number} briefId The Brief's id.
+ * @property {number} flightId The parent Flight's id.
+ */
 interface EditBriefModalProps {
   theme: string;
   setBriefs: React.Dispatch<React.SetStateAction<Brief[]>>;
@@ -16,6 +26,18 @@ interface EditBriefModalProps {
   flightId: number;
 }
 
+/**
+ * @description A component that contains a Form within a Modal to submit an
+ * update for a Brief.
+ *
+ * @prop {string} theme The User's OS theme.
+ * @prop {React.Dispatch<React.SetStateAction<Brief[]>>} setBriefs The setter
+ * for the briefs state.
+ * @prop {number} briefId The Brief's id.
+ * @prop {number} flightId The parent Flight's id.
+ *
+ * @returns {ReactElement} The EditBriefModal holding an update Form.
+ */
 const EditBriefModal: React.FC<EditBriefModalProps> = ({
   theme,
   setBriefs,
@@ -30,6 +52,10 @@ const EditBriefModal: React.FC<EditBriefModalProps> = ({
   const [newTemperature, setNewTemperature] = useState<string>("");
   const [newAltimeterSetting, setNewAltimeterSetting] = useState<string>("");
 
+  /**
+   * Fetches the Brief's current data and sets the new state values to the current 
+   * data when the Brief's id and parent Flight's id are passed down to the Modal.
+   */
   useEffect(() => {
     const fetchBrief = async (
       briefId: number,
@@ -51,7 +77,14 @@ const EditBriefModal: React.FC<EditBriefModalProps> = ({
   const handleShow = (): void => setShow(true);
   const handleClose = (): void => setShow(false);
 
-  const handleUpdate: FormEventHandler<HTMLFormElement> = async (e) => {
+  /**
+   * @description Handles the update of a Brief.
+   * 
+   * @param {FormEvent} e The form event.
+   */
+  const handleUpdate: FormEventHandler<HTMLFormElement> = async (
+    e: FormEvent
+  ): Promise<void> => {
     e.preventDefault();
     const updatedBrief: Brief | null = await updateABrief(
       flightId,

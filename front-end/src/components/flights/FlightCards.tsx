@@ -15,6 +15,15 @@ import EditFlightModal from "./EditFlightModal";
 import CreateFlightModal from "./CreateFlightModal";
 import "../../styles/flights.css";
 
+/**
+ * @description A component that holds a User's Flights in a bootstrap grid
+ * setup with each flight being represented by a Card. This component also
+ * contains handlers for CRUD capability on the Flights.
+ *
+ * @prop {string} theme The User's OS theme.
+ *
+ * @returns {ReactElement} FlightCards in a grid structure.
+ */
 const FlightCards: React.FC<ContextType> = ({ theme }): ReactElement => {
   const [flights, setFlights] = useState<Flight[]>([]);
 
@@ -27,14 +36,9 @@ const FlightCards: React.FC<ContextType> = ({ theme }): ReactElement => {
   }, []);
 
   /**
-   * Handles the deletion of a specified flight by passing in the flight id as
-   * a parameter.
+   * @description Handles the deletion of a Flight.
    *
-   * If the request is successful, the flights are mapped over and the flight
-   * matching the parameter is filtered out.
-   *
-   * If the request is unsuccessful, nothing happens.
-   * @param flightId
+   * @param {number} flightId The Flight's id.
    */
   const handleDelete = async (flightId: number): Promise<void> => {
     const success: boolean = await deleteAFlight(flightId);

@@ -1,4 +1,10 @@
-import { useState, useEffect, ReactElement, FormEventHandler } from "react";
+import {
+  useState,
+  useEffect,
+  ReactElement,
+  FormEventHandler,
+  FormEvent,
+} from "react";
 import { Flight } from "../../types/flightTypes";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -9,12 +15,32 @@ import {
   updateAFlight,
 } from "../../utilities/flights/flightUtilities";
 
+/**
+ * @description Defines the props that are passed down into the EditFlightModal
+ * component.
+ *
+ * @property {string} theme The User's OS theme.
+ * @property {React.Dispatch<React.SetStateAction<Flight[]>>} setFlights The
+ * setter for the flights state.
+ * @property {number} id The Flight's id.
+ */
 interface EditFlightModalProps {
   theme: string;
   setFlights: React.Dispatch<React.SetStateAction<Flight[]>>;
   id: number;
 }
 
+/**
+ * @description A component that contains a Form within a Modal to submit an
+ * update for a Flight.
+ *
+ * @prop {string} theme The User's OS theme.
+ * @prop {React.Dispatch<React.SetStateAction<Flight[]>>} setFlights The setter
+ * for the flights state.
+ * @prop {number} id The Flight's id.
+ *
+ * @returns {ReactElement} The EditFlightModal holding an update Form.
+ */
 const EditFlightModal: React.FC<EditFlightModalProps> = ({
   theme,
   setFlights,
@@ -31,6 +57,10 @@ const EditFlightModal: React.FC<EditFlightModalProps> = ({
   const [newTakeoffTime, setNewTakeoffTime] = useState<string>("");
   const [newArrivalTime, setNewArrivalTime] = useState<string>("");
 
+  /**
+   * Fetches the Flight's current data and sets the new state values to the
+   * current data when the Flight's id is passed down to the Modal.
+   */
   useEffect(() => {
     const fetchFlight = async (flightId: number): Promise<void> => {
       const fetchedFlight: Flight | null = await getAFlight(flightId);
@@ -52,7 +82,14 @@ const EditFlightModal: React.FC<EditFlightModalProps> = ({
   const handleClose = (): void => setShow(false);
   const handleShow = (): void => setShow(true);
 
-  const handleUpdate: FormEventHandler<HTMLFormElement> = async (e) => {
+  /**
+   * @description Handles the update of a Flight.
+   *
+   * @param {FormEvent} e The form event.
+   */
+  const handleUpdate: FormEventHandler<HTMLFormElement> = async (
+    e: FormEvent
+  ): Promise<void> => {
     e.preventDefault();
     const updatedFlight: Flight | null = await updateAFlight(
       id,

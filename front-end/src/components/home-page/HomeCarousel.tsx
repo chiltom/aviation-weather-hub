@@ -1,10 +1,16 @@
 import { ReactElement } from "react";
 import Carousel from "react-bootstrap/Carousel";
-import jetClouds from '../../assets/dall-e-underbelly-jet-clouds.webp';
-import cargoPlane from '../../assets/dall-e-cargo-plane.webp';
-import weatherEquipment from '../../assets/dall-e-weather-equipment.webp';
-import '../../styles/carousel.css';
+import jetClouds from "../../assets/dall-e-underbelly-jet-clouds.webp";
+import cargoPlane from "../../assets/dall-e-cargo-plane.webp";
+import weatherEquipment from "../../assets/dall-e-weather-equipment.webp";
+import "../../styles/carousel.css";
 
+/**
+ * @description The component that holds the Carousel with weather/aviation
+ * related images and hook captions for the HomePage.
+ *
+ * @returns {ReactElement} The HomePage Carousel.
+ */
 const HomeCarousel: React.FC = (): ReactElement => {
   return (
     <Carousel>
@@ -18,7 +24,9 @@ const HomeCarousel: React.FC = (): ReactElement => {
         <div className="carousel-gradient-overlay"></div>
         <Carousel.Caption>
           <h3 className="carousel-caption-text">Adaptability</h3>
-          <p className="carousel-caption-text">Quickly react to ever-changing environments.</p>
+          <p className="carousel-caption-text">
+            Quickly react to ever-changing environments.
+          </p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
@@ -31,7 +39,9 @@ const HomeCarousel: React.FC = (): ReactElement => {
         <div className="carousel-gradient-overlay"></div>
         <Carousel.Caption>
           <h3 className="carousel-caption-text">Capabilities</h3>
-          <p className="carousel-caption-text">Serve a broad range of aircraft and missions.</p>
+          <p className="carousel-caption-text">
+            Serve a broad range of aircraft and missions.
+          </p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>

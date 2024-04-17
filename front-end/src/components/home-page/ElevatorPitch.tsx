@@ -1,16 +1,22 @@
 import { ReactElement } from "react";
 
+/**
+ * @description The component that holds the elevator pitch for people
+ * to sign up and use this service.
+ *
+ * @returns {ReactElement} The Elevator Pitch for the site.
+ */
 const ElevatorPitch: React.FC = (): ReactElement => {
   return (
     <>
       <h3 className="text-center">What We Provide</h3>
       <p>
-        The Aviation Weather Hub was created and poised to solve this issue. 
+        The Aviation Weather Hub was created and poised to solve this issue.
       </p>
       <p>
-        Many businesses and organizations find themselves using organizational tools 
-        to help track tasks and data as well as automative software to help improve
-        efficiency.
+        Many businesses and organizations find themselves using organizational
+        tools to help track tasks and data as well as automative software to
+        help improve efficiency.
       </p>
       <p>
         By providing a place to track flight data and create custom briefs and

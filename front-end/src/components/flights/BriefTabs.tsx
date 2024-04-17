@@ -19,11 +19,27 @@ import {
 import EditBriefModal from "./EditBriefModal";
 import CreateBriefModal from "./CreateBriefModal";
 
+/**
+ * @description Defines the props that are passed down into the BriefTabs component.
+ *
+ * @property {number} flightId The parent Flight's id.
+ * @property {string} theme The User's OS theme.
+ */
 interface BriefProps {
   flightId: number;
   theme: string;
 }
 
+/**
+ * @description A component that holds a Flight's Briefs in a bootstrap Tabs component
+ * structure and contains a ListGroup container of associated Hazards. The component
+ * contains handlers for CRUD capabilities on the Briefs and Hazards.
+ *
+ * @prop {number} flightId The parent flight's id
+ * @prop {string} theme The User's OS theme
+ *
+ * @returns {ReactElement} The Tabs holding a Flight's Briefs and Hazards.
+ */
 const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
   const [componentBriefs, setComponentBriefs] = useState<Brief[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -37,33 +53,27 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
   const [newHazardType, setNewHazardType] = useState<string>("");
   const [newHazardInformation, setNewHazardInformation] = useState<string>("");
 
-  /**
-   * Event handler that handles the deletion request of a brief. If the request to the server
-   * is successful and the brief is deleted, the previous briefs state is filtered through and
-   * the brief with the id matching the briefId parameter is left out of the returned briefs.
-   * @param flightId
-   * @param briefId
-   */
-  const handleDelete = async (
-    flightId: number,
-    briefId: number
-  ): Promise<void> => {
-    const success: boolean = await deleteABrief(flightId, briefId);
-    success
-      ? setComponentBriefs((prevBriefs) =>
-          prevBriefs.filter((brief) => brief.id !== briefId)
-        )
-      : alert("Deletion unsuccessful");
-  };
+  useEffect(() => {
+    const fetchBriefs = async (flightId: number): Promise<void> => {
+      const fetchedBriefs: Brief[] | null = await getAllBriefs(flightId);
+      if (fetchedBriefs) {
+        setComponentBriefs(fetchedBriefs);
+      }
+    };
+    fetchBriefs(flightId);
+  }, [flightId]);
+
+  useEffect(() => {
+    setLoading(false);
+  }, [componentBriefs]);
 
   /**
-   * This function handles the creation of a new hazard by submitting the new hazard
-   * type and information into the createBrief function along with the parent brief.
+   * @description Handles the submission to create a new Hazard.
    *
-   * If then awaits the completion of creating a new hazard and sets the newHazardType
-   * and newHazardInformation state back to empty strings, as well as the createHazardBrief
-   * value back to null
-   * @param {Brief} brief The brief the hazard will fall under
+   * This function is wrapped by the useCallback hook to cache it until the
+   * dependencies have changed.
+   *
+   * @param {Brief} brief The parent Brief of the hazard.
    */
   const handleCreateHazardSubmit = useCallback(
     async (brief: Brief): Promise<void> => {
@@ -102,15 +112,12 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
   );
 
   /**
-   * Function that handles the editing of a hazard type and information and attaches
-   * it to a button.
+   * @description Handles the event of request to edit a Hazard.
    *
-   * If the button is clicked, the input boxes' values are set to to the current type
-   * and information. It then allows the user to edit the type and information and submit
-   * submit an update request.
-   * @param brief
-   * @param currentType
-   * @param currentInformation
+   * @param {Brief} brief The parent Brief.
+   * @param {string} currentType The current type value of the Hazard.
+   * @param {string} currentInformation The current information value of the
+   * Hazard.
    */
   const handleEditHazard = (
     hazardId: number,
@@ -123,13 +130,14 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
   };
 
   /**
-   * This function handles the submission of the editing of a hazard.
+   * @description Handles the submission of the update of a Hazard to the handleHazardUpdate
+   * function.
    *
-   * If the type and information are both not empty and exist, the function
-   * then awaits the update of the hazard by the handleHazardUpdate method and then
-   * sets the edit hazard id back to null so no hazard is editable again.
-   * @param brief
-   * @param hazardId
+   * This function is wrapped by the useCallback hook to cache it until the
+   * dependencies have changed.
+   *
+   * @param {Brief} brief The parent Brief.
+   * @param {number} hazardId The Hazard's id.
    */
   const handleSubmitHazardUpdate = useCallback(
     async (brief: Brief, hazardId: number): Promise<void> => {
@@ -152,20 +160,12 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
   );
 
   /**
-   * This function takes a parent brief, a hazard's id, and new information and type
-   * for the hazard and calls the updateAHazard method to update the hazard.
+   * @description Handles the submission of a Hazard update.
    *
-   * If the request is successful, it updates the briefs stste by mapping over the
-   * previous briefs and checking which brief matches the parent brief parameter's id.
-   *
-   * Once it finds the correct brief id, it returns a new brief object with the updated
-   * hazard inside. For other briefs, they are left alone.
-   *
-   * If the request is unsuccessful, nothing happens.
-   * @param brief
-   * @param hazardId
-   * @param newType
-   * @param newInformation
+   * @param {Brief} brief The parent Brief.
+   * @param {number} hazardId The Hazard's id.
+   * @param {string} newType The new type value of the Hazard.
+   * @param {string} newInformation The new information value of the Hazard.
    */
   const handleHazardUpdate = async (
     brief: Brief,
@@ -196,14 +196,10 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
   };
 
   /**
-   * This function takes a parent brief and a hazard's id as parameters and uses
-   * the deleteAHazard method to delete a hazard.
+   * @description Handles the deletion of a Hazard.
    *
-   * If this is successful, the updated Brief is grabbed from the server using the
-   * getABrief method and the updatedBrief replaces its old value in the componentBriefs
-   * array.
-   * @param brief
-   * @param hazardId
+   * @param {Brief} brief The parent Brief.
+   * @param {number} hazardId The Hazard's id.
    */
   const handleHazardDelete = async (
     brief: Brief,
@@ -225,19 +221,23 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
     }
   };
 
-  useEffect(() => {
-    const fetchBriefs = async (flightId: number): Promise<void> => {
-      const fetchedBriefs: Brief[] | null = await getAllBriefs(flightId);
-      if (fetchedBriefs) {
-        setComponentBriefs(fetchedBriefs);
-      }
-    };
-    fetchBriefs(flightId);
-  }, [flightId]);
-
-  useEffect(() => {
-    setLoading(false);
-  }, [componentBriefs]);
+  /**
+   * @description Handles the deletion of a Brief.
+   *
+   * @param {number} flightId The parent Flight's id.
+   * @param {number} briefId The Brief's id.
+   */
+  const handleBriefDelete = async (
+    flightId: number,
+    briefId: number
+  ): Promise<void> => {
+    const success: boolean = await deleteABrief(flightId, briefId);
+    success
+      ? setComponentBriefs((prevBriefs) =>
+          prevBriefs.filter((brief) => brief.id !== briefId)
+        )
+      : alert("Deletion unsuccessful");
+  };
 
   return (
     <>
@@ -408,7 +408,7 @@ const BriefTabs: React.FC<BriefProps> = ({ flightId, theme }): ReactElement => {
                   />
                   <Button
                     variant="outline-danger"
-                    onClick={() => handleDelete(flightId, brief.id)}
+                    onClick={() => handleBriefDelete(flightId, brief.id)}
                   >
                     Delete
                   </Button>

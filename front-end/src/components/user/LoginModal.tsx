@@ -1,4 +1,4 @@
-import { FormEventHandler, ReactElement, useState } from "react";
+import { FormEventHandler, ReactElement, useState, FormEvent } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -7,6 +7,16 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { userLogin } from "../../utilities/userUtilities";
 import { ContextType } from "../../types/userTypes";
 
+/**
+ * @description A component that serves as a Form in a Modal structure to submit 
+ * a request for an existing User to log in to their account.
+ * 
+ * @prop {React.Dispatch<React.SetStateAction<User | null>>} setUser The setter 
+ * for the user state.
+ * @prop {string} theme The User's OS theme.
+ * 
+ * @returns {ReactElement} LoginForm component within a Modal.
+ */
 const LoginForm: React.FC<ContextType> = ({
   setUser,
   theme,
@@ -18,7 +28,12 @@ const LoginForm: React.FC<ContextType> = ({
   const handleClose = (): void => setShow(false);
   const handleShow = (): void => setShow(true);
 
-  const handleLogin: FormEventHandler<HTMLFormElement> = async (e) => {
+  /**
+   * @description Handles the request for a User to log in to their account.
+   * 
+   * @param {FormEvent} e The form event.
+   */
+  const handleLogin: FormEventHandler<HTMLFormElement> = async (e: FormEvent) => {
     e.preventDefault();
     const user = await userLogin(emailInput, passwordInput);
     if (user !== null) {

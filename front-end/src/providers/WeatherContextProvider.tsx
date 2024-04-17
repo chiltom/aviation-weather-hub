@@ -19,14 +19,14 @@ const WeatherContext: React.Context<WeatherContextType | undefined> =
   createContext<WeatherContextType | undefined>(undefined);
 
 /**
- * @description Creates a custom hook to use the context within the provider,
+ * @description Creates a custom hook to use the context within the WeatherProvider,
  * allowing any component within the weather provider to use the useWeather
  * hook with all associated state and setters.
  *
- * Any component that does not fall within the WeatherContext.Provider below
+ * Any component that does not fall within the WeatherProvider below
  * that tries to access this hook will throw the error below.
  *
- * @returns {WeatherContextType | undefined} WeatherContext
+ * @returns {WeatherContextType | undefined} WeatherContext.
  */
 export const useWeather = (): WeatherContextType => {
   const context: WeatherContextType | undefined = useContext(WeatherContext);

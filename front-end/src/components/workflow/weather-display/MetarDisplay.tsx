@@ -2,6 +2,12 @@ import { ReactElement } from "react";
 import Button from "react-bootstrap/Button";
 import { MetarDisplayProps } from "../../../types/weatherTypes";
 
+/**
+ * @prop {string} metar The current METAR.
+ * @prop {function} clearMetar A function that clears the current METAR.
+ * 
+ * @returns {ReactElement} METAR portion of WeatherDisplay.
+ */
 const MetarDisplay: React.FC<MetarDisplayProps> = ({
   metar,
   clearMetar,

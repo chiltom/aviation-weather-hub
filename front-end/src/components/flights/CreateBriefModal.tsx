@@ -1,4 +1,4 @@
-import { useState, ReactElement, FormEventHandler } from "react";
+import { useState, ReactElement, FormEventHandler, FormEvent } from "react";
 import { Brief } from "../../types/flightTypes";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -6,12 +6,32 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { createBrief } from "../../utilities/flights/briefUtilities";
 
+/**
+ * @description Defines the props that are passed down into the CreateBriefModal
+ * component.
+ *
+ * @property {string} theme The User's OS theme.
+ * @property {React.Dispatch<React.SetStateAction<Brief[]>>} setBriefs The setter
+ * for the briefs state.
+ * @property {number} flightId The parent Flight's id.
+ */
 interface EditBriefModalProps {
   theme: string;
   setBriefs: React.Dispatch<React.SetStateAction<Brief[]>>;
   flightId: number;
 }
 
+/**
+ * @description A component that contains a Form within a Modal to submit the creation
+ * of a new Brief.
+ *
+ * @prop {string} theme The User's OS theme.
+ * @prop {React.Dispatch<React.SetStateAction<Briefs[]>>} setBriefs The setter
+ * for the briefs state.
+ * @prop {number} flightId The parent Flight's id.
+ *
+ * @returns {ReactElement} The CreateBriefModal holding a creation Form.
+ */
 const CreateBriefModal: React.FC<EditBriefModalProps> = ({
   theme,
   setBriefs,
@@ -29,6 +49,10 @@ const CreateBriefModal: React.FC<EditBriefModalProps> = ({
 
   const handleShow = (): void => setShow(true);
   const handleClose = (): void => setShow(false);
+
+  /**
+   * Clears the input fields of the Form after successful submission.
+   */
   const handleSuccessClear = (): void => {
     setNewSurfaceWinds("");
     setNewFlightLevelWinds("");
@@ -40,7 +64,14 @@ const CreateBriefModal: React.FC<EditBriefModalProps> = ({
     setNewVoidTime("");
   };
 
-  const handleCreate: FormEventHandler<HTMLFormElement> = async (e) => {
+  /**
+   * @description Handles the creation of a Brief.
+   * 
+   * @param {FormEvent} e The form event.
+   */
+  const handleCreate: FormEventHandler<HTMLFormElement> = async (
+    e: FormEvent
+  ): Promise<void> => {
     e.preventDefault();
     const newBrief: Brief | null = await createBrief(
       flightId,
@@ -67,7 +98,9 @@ const CreateBriefModal: React.FC<EditBriefModalProps> = ({
       </Button>
       <Modal show={show} onHide={handleClose} data-bs-theme={theme}>
         <Modal.Header closeButton>
-          <Modal.Title className="text-white bg-slate">Create Brief</Modal.Title>
+          <Modal.Title className="text-white bg-slate">
+            Create Brief
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleCreate}>

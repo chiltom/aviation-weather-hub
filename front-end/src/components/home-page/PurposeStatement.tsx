@@ -1,5 +1,11 @@
 import { ReactElement } from "react";
 
+/**
+ * @description The component that holds the user story/persona mockup 
+ * for the end user of this service.
+ * 
+ * @returns {ReactElement} The Purpose Statement for the site.
+ */
 const PurposeStatement: React.FC = (): ReactElement => {
   return (
     <>

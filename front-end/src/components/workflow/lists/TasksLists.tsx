@@ -10,6 +10,16 @@ import {
 } from "../../../utilities/lists/taskUtilities";
 import { List, Task, TasksProps } from "../../../types/listTypes";
 
+/**
+ * @description A component that holds the Tasks within each parent ListAccordion
+ * item and contains handlers for CRUD capability on the Tasks.
+ *
+ * @prop {List} list The parent List of the Tasks.
+ * @prop {React.Dispatch<React.SetStateAction<List[]>>} setLists The setter function
+ * for the lists state.
+ *
+ * @returns {ReactElement} Unordered list of Tasks.
+ */
 const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
   const [editTaskId, setEditTaskId] = useState<number | null>(null);
   const [newTaskName, setNewTaskName] = useState<string>("");
@@ -17,29 +27,31 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
   const [createTaskName, setCreateTaskName] = useState<string>("");
 
   /**
-   * This function handles the creation of a new task by submitting the new task
-   * name into the createTask function.
+   * @description Handles the event of clicking the button to create a new Task.
    *
-   * It then awaits the completion of creating a new task and sets the
-   * createTaskName state back to an empty string, as well as setting the create
-   * task list id back to null.
-   * @param listId
+   * @param {number} listId The parent List's id.
+   */
+  const handleCreateTaskEdit = (listId: number): void => {
+    setCreateTaskListId(listId);
+  };
+
+  /**
+   * @description Handles the submission to create a new Task.
+   *
+   * This function is wrapped by the useCallback hook to cache it until the
+   * dependencies have changed.
+   *
+   * @param {number} listId The parent List's id.
    */
   const handleCreateTaskSubmit = useCallback(
     async (listId: number): Promise<void> => {
       if (createTaskName.trim() !== "" && createTaskName) {
         const newTask: Task | null = await createTask(listId, createTaskName);
         if (newTask) {
-          // If task updates successfully, get updated list for completion update
           const updatedList: List | null = await getAList(listId);
           if (updatedList) {
-            // Don't hardcode this in the end, the back-end is updating this list to
-            // false as of new task creation, figure out why this is not registering
-            // while getting the updated list after task creation in the front-end
             updatedList.completed = false;
             setLists((prevLists) =>
-              // Map over lists and find correct list, then set to updatedList,
-              // if not proper list keep original values
               prevLists.map((list) => (list.id === listId ? updatedList : list))
             );
           }
@@ -52,13 +64,25 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
   );
 
   /**
-   * This function handles the submission of the editing of a task's name.
+   * @description Handles the event of request to edit a Task.
    *
-   * If the name is not empty and exists, the function then awaits the update of the
-   * task's name by the handleTaskUpdate method below and then sets the edit task value
-   * to null so no task is editable again.
-   * @param listId
-   * @param taskId
+   * @param {number} taskId The Task's id.
+   * @param {string} currentName The current name of the Task.
+   */
+  const handleEditTaskName = (taskId: number, currentName: string): void => {
+    setEditTaskId(taskId);
+    setNewTaskName(currentName);
+  };
+
+  /**
+   * @description Handles the submission of the update of a Task to the handleTaskUpdate
+   * function.
+   *
+   * This function is wrapped by the useCallback hook to cache it until the
+   * dependencies have changed.
+   *
+   * @param {number} listId The parent List's id.
+   * @param {number} taskId The Task's id.
    */
   const handleSubmitTaskName = useCallback(
     async (listId: number, taskId: number): Promise<void> => {
@@ -71,33 +95,11 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
   );
 
   /**
-   * Function that handles the editing of a task name and attaches it to a button.
+   * @description Handles the submission of a Task name update.
    *
-   * If the button is clicked, it sets the edit task id state tot he current task's id
-   * and sets the input box's value to the current task's name. It then allows the user
-   * to edit the task's name and submit a new one.
-   * @param taskId
-   * @param currentName
-   */
-  const handleEditTaskName = (taskId: number, currentName: string): void => {
-    setEditTaskId(taskId);
-    setNewTaskName(currentName);
-  };
-
-  /**
-   * This function takes a list's id, the specific task's id, and a new name
-   * for the task and calls the updateTaskName method to update the task's name.
-   *
-   * If the request is successful, it updates the lists state by mapping over the
-   * previous lists and checking which list's id matches the list id parameter.
-   *
-   * Once it finds the correct list id, it returns a new list object with the updated
-   * task inside. For other lists, they are left alone.
-   *
-   * If the request is unsuccessful, nothing happens.
-   * @param listId
-   * @param taskId
-   * @param newName
+   * @param {number} listId The parent List's id.
+   * @param {number} taskId The Task's id.
+   * @param {string} newName The new name of the Task.
    */
   const handleTaskUpdate = async (
     listId: number,
@@ -130,28 +132,11 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
   };
 
   /**
-   * Event handler for the add new task button
-   * @param listId
-   */
-  const handleCreateTaskEdit = (listId: number): void => {
-    setCreateTaskListId(listId);
-  };
-
-  /**
-   * This function takes a list's id, the specific task's id, and a new name
-   * for the task and calls the updateTaskCompleted method to update the task's
-   * completion status.
+   * @description Handles the update of a Task's completion status.
    *
-   * If the request is successful, it updates the lists state by mapping over the
-   * previous lists and checking which list's id matches the list id parameter.
-   *
-   * Once it finds the correct list id, it returns a new list object with the updated
-   * task inside. For other lists, they are left alone.
-   *
-   * If the request is unsuccessful, nothing happens.
-   * @param listId
-   * @param taskId
-   * @param newCompleted
+   * @param {number} listId The parent List's id.
+   * @param {number} taskId The Task's id.
+   * @param {boolean} newCompleted The Task's new completion status.
    */
   const handleTaskCompletion = async (
     listId: number,
@@ -177,14 +162,10 @@ const TasksLists: React.FC<TasksProps> = ({ list, setLists }): ReactElement => {
   };
 
   /**
-   * This function takes a list's id and a task's id as parameters and uses
-   * the deleteATask method to delete a task.
+   * @description Handles the deletion of a Task.
    *
-   * If this is successful, the updated list is grabbed from the server
-   * using the getAList method and the updatedList replaces its old value
-   * in the List array.
-   * @param listId
-   * @param taskId
+   * @param {number} listId The parent List's id.
+   * @param {number} taskId The Task's id.
    */
   const handleTaskDelete = async (
     listId: number,

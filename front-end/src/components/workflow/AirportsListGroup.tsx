@@ -13,6 +13,14 @@ import { ContextType } from "../../types/userTypes";
 import { useWeather } from "../../providers/WeatherContextProvider";
 import { WeatherContextType } from "../../types/weatherTypes";
 
+/**
+ * @description Maps out the User's Airports in a bootstrap ListGroup and contains
+ * handlers for CRUD capability on the Airports.
+ *
+ * @param {string} theme The theme set in localStorage to style the page accordingly.
+ *
+ * @returns  {ReactElement} ListGroup containing the User's Airports.
+ */
 const AirportsListGroup: React.FC<ContextType> = ({
   theme,
 }: ContextType): ReactElement => {
@@ -27,7 +35,7 @@ const AirportsListGroup: React.FC<ContextType> = ({
   const { setMetarIcaoCode, setTafIcaoCode }: WeatherContextType = useWeather();
 
   /**
-   * useEffect hook to fetch all airports upon initial render of the component
+   * Fetches all of the User's Airports on mount.
    */
   useEffect(() => {
     const fetchAirports = async (): Promise<void> => {
@@ -40,18 +48,17 @@ const AirportsListGroup: React.FC<ContextType> = ({
   }, []);
 
   /**
-   * Handler for create new airport button
+   * @description Handles the event of clicking the button to create a new Airport.
    */
   const handleCreateAirportEdit = (): void => {
     setCreateAirportStatus(true);
   };
 
   /**
-   * This function handles the creation of a new aiport by submitting the new airport
-   * name and icao code into the createAirport function.
+   * @description Handles the submission to create a new Airport.
    *
-   * It then awaits the completion of creating a new list and sets the createAirportName
-   * and createAirportIcao state back to null.
+   * This function is wrapped by the useCallback hook to cache it until the
+   * dependencies have changed.
    */
   const handleCreateAirportSubmit = useCallback(async (): Promise<void> => {
     if (
@@ -74,15 +81,11 @@ const AirportsListGroup: React.FC<ContextType> = ({
   }, [createAirportName, createAirportIcao]);
 
   /**
-   * Function that handles the editing of an airport's name and icaoCode and attaches it
-   * to a button.
+   * @description Handles the event of request to edit an Airport.
    *
-   * If the button is clicked, it sets the editAirportIcao state to the current airport's icao
-   * and sets the input boxes' value to the current airport's icaoCode and name. It then allows
-   * the user to edit the airport's icaoCode and name and submit a new set.
-   * @param icaoCode
-   * @param currIcaoCode
-   * @param currName
+   * @param {string} icaoCode The ICAO code of the Airport.
+   * @param {string} currIcaoCode The current ICAO code value of the Airport.
+   * @param {string} currName The current name value of the Airport.
    */
   const handleEditAirportUpdate = (
     icaoCode: string,
@@ -95,12 +98,13 @@ const AirportsListGroup: React.FC<ContextType> = ({
   };
 
   /**
-   * This function handles the submission of the editing of an airport.
+   * @description Handles the submission of the update of an Airport to the
+   * handleAirportUpdate function.
    *
-   * If the name is not empty and exists, as well as the icaoCode, the function then
-   * awaits the update of the attributes by the handleAirportUpdate method above and then
-   * sets the editAirportIcao value back to null so it is no longer editable again
-   * @param icaoCode
+   * This function is wrapped by the useCallback hook to cache it until the
+   * dependencies have changed.
+   *
+   * @param {string} icaoCode The ICAO code of the Airport.
    */
   const handleSubmitAirportUpdate = useCallback(
     async (icaoCode: string): Promise<void> => {
@@ -118,16 +122,11 @@ const AirportsListGroup: React.FC<ContextType> = ({
   );
 
   /**
-   * This function takes an airport update event and attempts to use the updateAnAirport
-   * method to update the airport.
-   *
-   * If the request is successful, the airports are mapped over and if a previous airport's
-   * icaoCode matches the updated airport's icaoCode, it is replaced with the updated Airport object.
-   *
-   * If the request is unsuccessful, nothing happens.
-   * @param icaoCode
-   * @param newIcaoCode
-   * @param newAirportName
+   * @description Handles the submission of an Airport update.
+   * 
+   * @param {string} icaoCode The current ICAO code of the Airport.
+   * @param {string} newIcaoCode The new ICAO code of the Airport.
+   * @param {string} newAirportName The new name of the Airport.
    */
   const handleAirportUpdate = async (
     icaoCode: string,
@@ -149,15 +148,9 @@ const AirportsListGroup: React.FC<ContextType> = ({
   };
 
   /**
-   * This function takes an airport's icao code as its parameter and attempts to use the
-   * deleteAnAirport method to delete the airport.
-   *
-   * If the request is successful, the previous airports are mapped over and if the deleted
-   * airport's icaoCode matches an airport icaoCode in the previous airports, it is filtered
-   * out. Otherwise, the remaining lists are left.
-   *
-   * If the request is unsuccessful, nothing happens.
-   * @param icaoCode
+   * @description Handles the deletion of an Airport.
+   * 
+   * @param {string} icaoCode The current ICAO code of the Airport.
    */
   const handleAirportDelete = async (icaoCode: string): Promise<void> => {
     const success: boolean = await deleteAnAirport(icaoCode);

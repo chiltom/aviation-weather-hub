@@ -13,6 +13,14 @@ import { List } from "../../../types/listTypes";
 import { ContextType } from "../../../types/userTypes";
 import TasksLists from "./TasksLists";
 
+/**
+ * @description A component that holds a User's Lists in a bootstrap Accordion
+ * structure and contains handlers for CRUD capability on the Lists.
+ *
+ * @prop {string} theme The User's OS theme.
+ *
+ * @returns {ReactElement} The ListsAccordion holding a User's Lists.
+ */
 const ListsAccordion: React.FC<ContextType> = ({
   theme,
 }: ContextType): ReactElement => {
@@ -34,29 +42,28 @@ const ListsAccordion: React.FC<ContextType> = ({
   }, []);
 
   /**
-   * This function handles the selection of an accordion item, setting the active
-   * key as the accordion selected. If the current accordion matches the activeKey,
-   * however, the active key is set to null and the accordion is closed.
-   * @param key
+   * @description Handles the selection of an accordion item and, if not the current
+   * key, sets the activeKey to null. Otherwise, the active key is set to the clicked
+   * item.
+   *
+   * @param {AccordionEventKey} key The key of the Accordion Item.
    */
   const handleSelect = (key: AccordionEventKey): void => {
     key !== null && key ? setActiveKey(key.toString()) : setActiveKey(null);
   };
 
   /**
-   * Handler for create new list button, causes conditional rendering to occur and
-   * the text box and save button for a new list input to show.
+   * @description Handles the event of clicking the button to create a new List.
    */
   const handleCreateListEdit = (): void => {
     setCreateListStatus(true);
   };
 
   /**
-   * This function handles the creation of a new list by submitting the new list
-   * name into the createList function.
+   * @description Handles the submission to create a new List.
    *
-   * It then awaits the completion of creating a new list and sets the
-   * createListName state back to null.
+   * This function is wrapped by the useCallback hook to cache it until the
+   * dependencies have changed.
    */
   const handleCreateListSubmit = useCallback(async (): Promise<void> => {
     if (createListName.trim() !== "" && createListName) {
@@ -70,16 +77,40 @@ const ListsAccordion: React.FC<ContextType> = ({
   }, [createListName]);
 
   /**
-   * This function takes a list update event and attempts to use the updateAList
-   * method to update the list.
+   * @description Handles the event of request to edit a List.
    *
-   * If the request is successful, the lists are mapped over and if a previous
-   * list's id matches the updated list's id, it is replaced with the updated List object.
-   * All others are replaced with their original List object.
+   * @param {number} listId The List's id.
+   * @param {string} currentName The current name of the List.
+   */
+  const handleEditListName = (listId: number, currentName: string): void => {
+    setEditListId(listId);
+    setNewListName(currentName);
+  };
+
+  /**
+   * @description Handles the submission of the update of a List to the handleListUpdate
+   * function.
    *
-   * If the request is unsuccessful, nothing happens.
-   * @param listId
-   * @param newName
+   * This function is wrapped by the useCallback hook to cache it until the
+   * dependencies have changed.
+   *
+   * @param {number} listId The List's id.
+   */
+  const handleSubmitListName = useCallback(
+    async (listId: number): Promise<void> => {
+      if (newListName.trim() !== "" && newListName) {
+        await handleListUpdate(listId, newListName);
+        setEditListId(null);
+      }
+    },
+    [newListName]
+  );
+
+  /**
+   * @description Handles the submission of a List name update.
+   *
+   * @param {number} listId The List's id.
+   * @param {number} newName The new name of the List.
    */
   const handleListUpdate = async (
     listId: number,
@@ -96,47 +127,9 @@ const ListsAccordion: React.FC<ContextType> = ({
   };
 
   /**
-   * Function that handles the editing of a list name and attaches it to a button.
+   * @description Handles the deletion of a List.
    *
-   * If the button is clicked, it sets the edit list id state to the current list's
-   * id and sets the input box's value to the current list's name. It then allows
-   * the user to edit the list's name and submit a new one.
-   * @param listId
-   * @param currentName
-   */
-  const handleEditListName = (listId: number, currentName: string): void => {
-    setEditListId(listId);
-    setNewListName(currentName);
-  };
-
-  /**
-   * This function handles the submission of the editing of a list's name.
-   *
-   * If the name is not empty and exists, the function then awaits the update of
-   * the list's name by the handleListUpdate method above and then sets the edit
-   * list id value to null so no list is editable again.
-   * @param listId
-   */
-  const handleSubmitListName = useCallback(
-    async (listId: number): Promise<void> => {
-      if (newListName.trim() !== "" && newListName) {
-        await handleListUpdate(listId, newListName);
-        setEditListId(null);
-      }
-    },
-    [newListName]
-  );
-
-  /**
-   * This function takes a list's id as its parameter and attempts to use the
-   * deleteAList method to delete the list.
-   *
-   * If the request is successful, the previous lists are mapped over and if the
-   * deleted list's id matches a list id in the previous lists, it is filtered out.
-   * Otherwise, the remaining lists are left.
-   *
-   * If the request is unsuccessful, nothing happens.
-   * @param listId
+   * @param {number} listId The List's id.
    */
   const handleListDelete = async (listId: number): Promise<void> => {
     const success: boolean = await deleteAList(listId);
@@ -145,8 +138,6 @@ const ListsAccordion: React.FC<ContextType> = ({
     }
   };
 
-  // TODO: Figure out why accordion item keeps opening and closing when typing in
-  // new list name
   return (
     <>
       <h2 className="text-3xl font-bold my-2 text-center">Lists</h2>

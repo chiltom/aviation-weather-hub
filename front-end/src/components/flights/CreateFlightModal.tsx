@@ -1,4 +1,4 @@
-import { useState, ReactElement, FormEventHandler } from "react";
+import { useState, ReactElement, FormEventHandler, FormEvent } from "react";
 import { Flight } from "../../types/flightTypes";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -6,11 +6,29 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { createFlight } from "../../utilities/flights/flightUtilities";
 
+/**
+ * @description Defines the props that are passed down into the CreateFlightModal
+ * component.
+ *
+ * @property {string} theme The User's OS theme.
+ * @property {React.Dispatch<React.SetStateAction<Flight[]>>} setFlights The setter
+ * for the flights state.
+ */
 interface CreateFlightModalProps {
   theme: string;
   setFlights: React.Dispatch<React.SetStateAction<Flight[]>>;
 }
 
+/**
+ * @description A component that contains a Form within a Modal to submit a creation
+ * of a new Flight.
+ *
+ * @prop {string} theme The User's OS theme.
+ * @prop {React.Dispatch<React.SetStateAction<Flight[]>>} setFlights The setter
+ * for the flights state.
+ *
+ * @returns {ReactElement} The CreateFlightModal holding the creation form.
+ */
 const CreateFlightModal: React.FC<CreateFlightModalProps> = ({
   theme,
   setFlights,
@@ -28,6 +46,10 @@ const CreateFlightModal: React.FC<CreateFlightModalProps> = ({
 
   const handleClose = (): void => setShow(false);
   const handleShow = (): void => setShow(true);
+
+  /**
+   * @description Clears the Modal's input fields after successful creation.
+   */
   const handleSuccessClear = (): void => {
     setNewTailNumber(100);
     setNewCallsign("");
@@ -38,9 +60,16 @@ const CreateFlightModal: React.FC<CreateFlightModalProps> = ({
     setNewFlightLevel(1000);
     setNewTakeoffTime("");
     setNewArrivalTime("");
-  }
+  };
 
-  const handleCreate: FormEventHandler<HTMLFormElement> = async (e) => {
+  /**
+   * @description Handles the creation of a Flight.
+   * 
+   * @param {FormEvent} e The form event.
+   */
+  const handleCreate: FormEventHandler<HTMLFormElement> = async (
+    e: FormEvent
+  ): Promise<void> => {
     e.preventDefault();
     const newFlight: Flight | null = await createFlight(
       newTailNumber,
@@ -54,11 +83,11 @@ const CreateFlightModal: React.FC<CreateFlightModalProps> = ({
       newArrivalTime
     );
     if (newFlight) {
-        setFlights((prevFlights) => prevFlights.concat(newFlight));
-        handleSuccessClear();
+      setFlights((prevFlights) => prevFlights.concat(newFlight));
+      handleSuccessClear();
     } else {
-        alert("Unsuccessful creation");
-    } 
+      alert("Unsuccessful creation");
+    }
     handleClose();
   };
 

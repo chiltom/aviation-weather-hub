@@ -13,6 +13,15 @@ import { ContextType } from "../../types/userTypes";
 import { useWeather } from "../../providers/WeatherContextProvider";
 import { WeatherContextType } from "../../types/weatherTypes";
 
+/**
+ * @description Maps out the User's NamedLocations in a bootstrap ListGroup
+ * and contains handlers for CRUD capability on the NamedLocations.
+ *
+ * @param {string} theme The theme set in localStorage to style the page
+ * accordingly.
+ *
+ * @returns {ReactElement} ListGroup containing the User's NamedLocations.
+ */
 const NamedLocationsListGroup: React.FC<ContextType> = ({
   theme,
 }: ContextType): ReactElement => {
@@ -37,35 +46,7 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
   }: WeatherContextType = useWeather();
 
   /**
-   * Handles the selection of a named location and passes it up to the weather provider
-   * to gather METAR data.
-   * @param latitude
-   * @param longitude
-   */
-  const handleSelectMetarLocation = (
-    latitude: string,
-    longitude: string
-  ): void => {
-    setMetarLatitude(() => latitude);
-    setMetarLongitude(() => longitude);
-  };
-
-  /**
-   * Handles the selectino of a named location and passes it up to the weather provider
-   * to gather TAF data.
-   * @param latitude
-   * @param longitude
-   */
-  const handleSelectTafLocation = (
-    latitude: string,
-    longitude: string
-  ): void => {
-    setTafLatitude(() => latitude);
-    setTafLongitude(() => longitude);
-  };
-
-  /**
-   * useEffect hook to fetch all named locations upon initial render of the component
+   * Fetches all of the User's named locations on mount.
    */
   useEffect(() => {
     const fetchNamedLocations = async (): Promise<void> => {
@@ -79,18 +60,48 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
   }, []);
 
   /**
-   * Handler for the create new named location button
+   * @description Handles the selection of a NamedLocation and passes it
+   * up to the WeatherProvider to gather METAR data.
+   *
+   * @param {string} latitude - The latitude of the NamedLocation.
+   * @param {string} longitude - The longitude of the NamedLocation.
+   */
+  const handleSelectMetarLocation = (
+    latitude: string,
+    longitude: string
+  ): void => {
+    setMetarLatitude(() => latitude);
+    setMetarLongitude(() => longitude);
+  };
+
+  /**
+   * @description Handles the selection of a NamedLocation and passes it
+   * up to the WeatherProvider to gather TAF data.
+   *
+   * @param {string} latitude - The latitude of the NamedLocation.
+   * @param {string} longitude - The longitude of the NamedLocation.
+   */
+  const handleSelectTafLocation = (
+    latitude: string,
+    longitude: string
+  ): void => {
+    setTafLatitude(() => latitude);
+    setTafLongitude(() => longitude);
+  };
+
+  /**
+   * @description Handles the event of clicking the button to create a new
+   * NamedLocation.
    */
   const handleCreateNamedLocationEdit = (): void => {
     setCreateNamedLocationStatus(true);
   };
 
   /**
-   * This function handles the creation of a new named location by submitting
-   * the named location city and country into the createNamedLocation function.
+   * @description Handles the submission to create a new NamedLocation.
    *
-   * It then awaits the completion of creating a new named location and sets the
-   * createNamedLocationCity and createNamedLocationCountry back to null.
+   * This function is wrapped by the useCallback hook to cache it until
+   * the dependencies have changed.
    */
   const handleCreateNamedLocationSubmit =
     useCallback(async (): Promise<void> => {
@@ -117,16 +128,11 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
     }, [createNamedLocationCity, createNamedLocationCountry]);
 
   /**
-   * Function that handles the editing of a namedLocation's city and country and
-   * attaches it to a button.
+   * @description Handles the event of requesting to edit a NamedLocation.
    *
-   * If the button is clicked, it sets the editNamedLocationCity state to the current
-   * namedLocation's city and sets the input boxes' value to the current namedLocation's
-   * city and country. It then allows the user to edit the namedLocation's city and country
-   * and submit a new set
-   * @param city
-   * @param currCity
-   * @param currCountry
+   * @param {string} city The city of the NamedLocation.
+   * @param {string} currCity The current city value of the NamedLocation.
+   * @param {string} currCountry The current country value of the NamedLocation.
    */
   const handleEditNamedLocationUpdate = (
     city: string,
@@ -139,14 +145,14 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
   };
 
   /**
-   * This function handles the submission of the editing of a namedLocation.
+   * @description Handles the submission of the update of a NamedLocation to
+   * the handleNamedLocationUpdate function.
    *
-   * If the name is not empty and exists, as well as the country, the function
-   * then awaits the update of the attributes by the handleNamedLocationUpdate method
-   * above and then sets the editNamedLocationCity value back to null so it is no
-   * longer editable again.
-   * @param city
-   * @param country
+   * This function is wrapped by the useCallback hook to cache it until
+   * the dependencies have changed.
+   *
+   * @param {string} city The city of the NamedLocation.
+   * @param {string} country The country of the NamedLocation.
    */
   const handleSubmitNamedLocationUpdate = useCallback(
     async (city: string, country: string): Promise<void> => {
@@ -169,19 +175,12 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
   );
 
   /**
-   * This function takes a named location update event and attempts to use the updateANamedLocation
-   * method to update the named location.
+   * @description Handles the submission of a NamedLocation update.
    *
-   * If the request is successful, the namedLocations are mapped over and if a previous
-   * namedLocation's city name matches the updated namedLocation's city name, and
-   * the namedLocation's country code matches the updated namedLocation's country code
-   * it is replaced with the update namedLocation object.
-   *
-   * If the request is unsuccessful, nothing happens.
-   * @param city
-   * @param country
-   * @param newCity
-   * @param newCountry
+   * @param {string} city The current city of the NamedLocation.
+   * @param {string} country The current country of the NamedLocation.
+   * @param {string} newCity The new city of the NamedLocation.
+   * @param {string} newCountry The new country of the NamedLocation.
    */
   const handleNamedLocationUpdate = async (
     city: string,
@@ -203,16 +202,9 @@ const NamedLocationsListGroup: React.FC<ContextType> = ({
   };
 
   /**
-   * This function takes a named location's city name as its parameter and attempts to
-   * use the deleteANamedLocation method to delete the namedLocation.
+   * @description Handles the deletion of a NamedLocation.
    *
-   * If the request is successful, the previous namedLocations are mapped over and
-   * if the deleted namedLocation's city name matches a namedLocation's city name in the
-   * previous namedLocations, it is filtered out. Otherwise, the remaining namedLocations
-   * are left.
-   *
-   * If the request is unsuccessful, nothing happens.
-   * @param city
+   * @param {string} city The current city of the NamedLocation.
    */
   const handleNamedLocationDelete = async (city: string): Promise<void> => {
     const success: boolean = await deleteANamedLocation(city);

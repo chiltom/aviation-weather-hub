@@ -1,4 +1,4 @@
-import { FormEventHandler, ReactElement, useState } from "react";
+import { FormEvent, FormEventHandler, ReactElement, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -7,6 +7,16 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { signupUser } from "../../utilities/userUtilities";
 import { ContextType } from "../../types/userTypes";
 
+/**
+ * @description A component that serves as a Form in a Modal structure to submit 
+ * a request for a User to create an account.
+ * 
+ * @prop {React.Dispatch<React.SetStateAction<User | null>>} setUser The setter 
+ * for the user state.
+ * @prop {string} theme The User's OS theme.
+ * 
+ * @returns {ReactElement} SignUpForm component within a Modal.
+ */
 const SignUpForm: React.FC<ContextType> = ({
   setUser,
   theme,
@@ -22,11 +32,11 @@ const SignUpForm: React.FC<ContextType> = ({
   const handleShow = (): void => setShow(true);
 
   /**
-   * Handles the submission of a user sign up. If successful, the user is set at
-   * the state set in application. If unsuccessful, alerts that the user's signup
-   * failed.
+   * @description Handles the request for a User to sign up for an account.
+   * 
+   * @param {FormEvent} e The form event.
    */
-  const handleSignup: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSignup: FormEventHandler<HTMLFormElement> = async (e: FormEvent) => {
     e.preventDefault();
     const user = await signupUser(
       emailInput,
