@@ -24,7 +24,7 @@ def create_http_only_cookie_from_response(_response, token):
         value=token.key,
         httponly=True,
         secure=True,
-        samesite="None",
+        samesite="Lax",
         expires=format_life_time
     )
     return _response
