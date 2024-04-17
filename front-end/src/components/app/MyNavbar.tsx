@@ -1,5 +1,5 @@
 import { ReactElement, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavigateFunction } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Button from "react-bootstrap/Button";
@@ -7,16 +7,17 @@ import SignUpForm from "../user/SignUpModal";
 import { userLogout } from "../../utilities/userUtilities";
 import { ContextType } from "../../types/userTypes";
 import LoginForm from "../user/LoginModal";
+import { useNavigate } from "react-router-dom";
 
 /**
- * @description The NavBar for the application with navigation links and links 
- * to the SignUpForm and LoginForm components as well as the UserInfo page and 
+ * @description The NavBar for the application with navigation links and links
+ * to the SignUpForm and LoginForm components as well as the UserInfo page and
  * Log Out button.
- * 
+ *
  * @prop {User | null} user The existing user or null
  * @prop {React.Dispatch<React.SetStateAction<User | null>>}
- * 
- * @returns 
+ *
+ * @returns
  */
 const MyNavbar: React.FC<ContextType> = ({
   user,
@@ -24,10 +25,13 @@ const MyNavbar: React.FC<ContextType> = ({
   theme,
 }: ContextType): ReactElement => {
   const [expanded, setExpanded] = useState<boolean>(false);
+  const navigate: NavigateFunction = useNavigate();
+
   const handleUserLogout = async (): Promise<void> => {
     const loggedOut = await userLogout();
     if (loggedOut) {
       setUser(null);
+      navigate("/");
     }
   };
 
