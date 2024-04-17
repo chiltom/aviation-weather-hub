@@ -48,7 +48,7 @@ const MyNavbar: React.FC<ContextType> = ({
         />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            {user ? (
+            {/* {user ? (
               <Nav.Link
                 as={Link}
                 to={"/training/"}
@@ -67,7 +67,7 @@ const MyNavbar: React.FC<ContextType> = ({
               >
                 Training
               </Nav.Link>
-            )}
+            )} */}
             {user ? (
               <Nav.Link
                 as={Link}
