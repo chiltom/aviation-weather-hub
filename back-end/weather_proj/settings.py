@@ -30,7 +30,7 @@ SECRET_KEY = env.get("SECRET_KEY", "top-secret-key")
 DEBUG = env.get("DEBUG")
 
 ALLOWED_HOSTS = [
-    "https://avnwxhub.duckdns.org"
+    "0.0.0.0"
 ]
 
 CSRF_TRUSTED_ORIGIN = [
