@@ -16,9 +16,7 @@ class Test_flight_crud(APITestCase):
             content_type="application/json"
         )
         response_body = json.loads(sign_up_response.content)
-        # self.client.cookies = sign_up_response.client.cookies
-        self.client.credentials(HTTP_AUTHORIZATION=f"Token {
-                                response_body['token']}")
+        self.client.cookies = sign_up_response.client.cookies
         airport_one_post_response = self.client.post(
             reverse("all_airports"),
             data=json.dumps({
@@ -244,9 +242,7 @@ class Test_g_brief_crud(APITestCase):
             content_type="application/json"
         )
         response_body = json.loads(sign_up_response.content)
-        # self.client.cookies = sign_up_response.client.cookies
-        self.client.credentials(HTTP_AUTHORIZATION=f"Token {
-                                response_body['token']}")
+        self.client.cookies = sign_up_response.client.cookies
         airport_one_post_response = self.client.post(
             reverse("all_airports"),
             data=json.dumps({
@@ -462,9 +458,7 @@ class Test_h_hazard_crud(APITestCase):
             content_type="application/json"
         )
         response_body = json.loads(sign_up_response.content)
-        # self.client.cookies = sign_up_response.client.cookies
-        self.client.credentials(HTTP_AUTHORIZATION=f"Token {
-                                response_body['token']}")
+        self.client.cookies = sign_up_response.client.cookies
         airport_one_post_response = self.client.post(
             reverse("all_airports"),
             data=json.dumps({

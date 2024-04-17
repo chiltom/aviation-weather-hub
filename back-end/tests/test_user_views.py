@@ -53,8 +53,7 @@ class Test_user_crud(APITestCase):
             content_type="application/json"
         )
         response_body = json.loads(sign_up_response.content)
-        # self.client.cookies = sign_up_response.client.cookies
-        self.client.credentials(HTTP_AUTHORIZATION=f"Token {response_body['token']}")
+        self.client.cookies = sign_up_response.client.cookies
         response = self.client.get(reverse("info"))
         with self.subTest():
             self.assertEqual(response.status_code, 200)
@@ -71,8 +70,7 @@ class Test_user_crud(APITestCase):
             content_type="application/json"
         )
         response_body = json.loads(sign_up_response.content)
-        # self.client.cookies = sign_up_response.client.cookies
-        self.client.credentials(HTTP_AUTHORIZATION=f"Token {response_body['token']}")
+        self.client.cookies = sign_up_response.client.cookies
         response = self.client.post(reverse("logout"))
         with self.subTest():
             tokens = Token.objects.all()
