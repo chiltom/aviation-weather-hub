@@ -8,7 +8,7 @@ import {
 import { WeatherContextType } from "../types/weatherTypes";
 
 /**
- * A variable that holds the context with the initial value being undefined
+ * @description A variable that holds the context with the initial value being undefined
  * but asserts the type that the incoming hook must be.
  *
  * This means that if the context falls outside of the WeatherContext.Provider
@@ -19,12 +19,14 @@ const WeatherContext: React.Context<WeatherContextType | undefined> =
   createContext<WeatherContextType | undefined>(undefined);
 
 /**
- * Creates a custom hook to use the context within the provider, allowing any
- * component within the weather provider to use the useWeather hook with all
- * associated state and setters.
+ * @description Creates a custom hook to use the context within the provider,
+ * allowing any component within the weather provider to use the useWeather
+ * hook with all associated state and setters.
  *
  * Any component that does not fall within the WeatherContext.Provider below
  * that tries to access this hook will throw the error below.
+ *
+ * @returns {WeatherContextType | undefined} WeatherContext
  */
 export const useWeather = (): WeatherContextType => {
   const context: WeatherContextType | undefined = useContext(WeatherContext);
@@ -35,8 +37,10 @@ export const useWeather = (): WeatherContextType => {
 };
 
 /**
- * The provider component that will provide WeatherContext and all of its
- * associated state and setters to child components within its scope.
+ * @description The provider component that will provide WeatherContext and all
+ * of its associated state and setters to child components within its scope.
+ *
+ * @returns {ReactElement} WeatherContext.Provider to wrap children elements with.
  */
 export const WeatherProvider: React.FC<{ children: ReactNode }> = ({
   children,
