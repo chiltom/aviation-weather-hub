@@ -2,7 +2,7 @@
 
 - This serves as the front-end/client side of the application with the purpose of providing an enhanced user experience with each interaction.
   - The format is designed to provide meaningful data and observations to both skilled and junior forecasters.
-  - The UI is also built as a safe space for any forecaster to store their daily tasks/workflow for ease-of-use and quick reference.
+  - The UI is also built as a safe space for any forecaster to store their daily tasks/workflow for ease-of-use and a quick reference.
 
 ## Build
 
