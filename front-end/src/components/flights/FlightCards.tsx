@@ -36,6 +36,15 @@ const FlightCards: React.FC<ContextType> = ({ theme }): ReactElement => {
   }, []);
 
   /**
+   * @description Manual refresh function to be called by EditFlightModal after
+   * the update of a flight.
+   */
+  const refreshFlights = async (): Promise<void> => {
+    const fetchedFlights: Flight[] | null = await getAllFlights();
+    fetchedFlights ? setFlights(fetchedFlights) : null;
+  };
+
+  /**
    * @description Handles the deletion of a Flight.
    *
    * @param {number} flightId The Flight's id.
@@ -74,13 +83,13 @@ const FlightCards: React.FC<ContextType> = ({ theme }): ReactElement => {
                     </Card.Text>
                     <Card.Text>POC: {flight.pilotResponsible}</Card.Text>
                     <Card.Text>Origin: {flight.origin}</Card.Text>
-                    <Card.Text>Destination {flight.destination}</Card.Text>
+                    <Card.Text>Destination: {flight.destination}</Card.Text>
                     <Card.Text>Flight Level: {flight.flightLevel}</Card.Text>
                     <Card.Text>Takeoff: {flight.takeoffTime}</Card.Text>
                     <Card.Text>Arrival: {flight.arrivalTime}</Card.Text>
                     <div className="d-flex flex-row justify-content-end align-items-center">
                       <EditFlightModal
-                        setFlights={setFlights}
+                        refreshFlights={refreshFlights}
                         id={flight.id}
                         theme={theme}
                       />

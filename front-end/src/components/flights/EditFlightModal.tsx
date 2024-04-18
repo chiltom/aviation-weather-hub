@@ -20,13 +20,13 @@ import {
  * component.
  *
  * @property {string} theme The User's OS theme.
- * @property {React.Dispatch<React.SetStateAction<Flight[]>>} setFlights The
- * setter for the flights state.
+ * @property {Function} refreshFlights A function to refresh flight data after
+ * a successful update.
  * @property {number} id The Flight's id.
  */
 interface EditFlightModalProps {
   theme: string;
-  setFlights: React.Dispatch<React.SetStateAction<Flight[]>>;
+  refreshFlights: () => void;
   id: number;
 }
 
@@ -35,15 +35,15 @@ interface EditFlightModalProps {
  * update for a Flight.
  *
  * @prop {string} theme The User's OS theme.
- * @prop {React.Dispatch<React.SetStateAction<Flight[]>>} setFlights The setter
- * for the flights state.
+ * @prop {Function} refreshFlights A function to refresh flight data after
+ * a successful update.
  * @prop {number} id The Flight's id.
  *
  * @returns {ReactElement} The EditFlightModal holding an update Form.
  */
 const EditFlightModal: React.FC<EditFlightModalProps> = ({
   theme,
-  setFlights,
+  refreshFlights,
   id,
 }: EditFlightModalProps): ReactElement => {
   const [show, setShow] = useState<boolean>(false);
@@ -103,13 +103,11 @@ const EditFlightModal: React.FC<EditFlightModalProps> = ({
       newTakeoffTime,
       newArrivalTime
     );
-    updatedFlight
-      ? setFlights((prevFlights) =>
-          prevFlights.map((flight) =>
-            flight.id === id ? updatedFlight : flight
-          )
-        )
-      : alert("Unsuccessful update");
+    if (updatedFlight) {
+      refreshFlights();
+    } else {
+      alert("Update unsuccessful");
+    }
     handleClose();
   };
 
