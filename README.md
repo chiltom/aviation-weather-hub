@@ -26,3 +26,7 @@ If you would like to read more and see a storyboard of the architecture, read he
 
 If there are any bugs or defects that can be fixed, please feel free to contact me about it and I would love to work through it!
 Additionally, if you have any feedback or features that you would like to see in the application please reach out, I would love to talk about it.
+
+## Disclaimer
+
+This application and all source code belongs to Tom Childress, 2024.
