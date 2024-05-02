@@ -18,10 +18,10 @@ The use of TypeScript made this application significantly easier to build and sc
 
 The goal was to create as much reusable, scalable code as possible, so I separated as many concerns as possible while still being able to access data as quickly as possible.
 
-- A part of this invovled creating my own provider, the WeatherProvider, and a hook to grab context from within, which was a challenge to learn but I was able to implement seamlessly within my application.
-- Another part of this was using the useCallback hook to cache function creation until certain dependencies changed. This allowed my components to re-render more efficiently and pages to load faster.
+- A part of this involved creating a custom provider, the WeatherProvider, and a hook to grab context from within, which was a challenge to learn but led to seamless implementation within the application.
+- Another part of this was using the useCallback hook to cache function creation until certain dependencies changed. This allowed components to re-render more efficiently and pages to load faster.
 
-In the future, I would like to implement page animations and transition effects to make conditional rendering more smooth on each page change/re-render to make the UI more user-friendly.
+In the future, page animations and transition effects will be implemented to make conditional rendering more smooth on each page change/re-render to make the UI more user-friendly.
 
 ## Back-End
 
