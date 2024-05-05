@@ -1,0 +1,20 @@
+name: python-linter
+on:
+  push:
+    branches: '**'
+  pull_request:
+    branches: '**'
+jobs:
+  pylint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: |
+          python -m pip install --upgrade pip
+          pip install -r ./back-end/requirements.txt
+      - run: |
+          cd ./back-end && shopt -s globstar && pylint --load-plugins pylint_django --django-settings-module=weather_proj.settings **/*.py
