@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND
+from django.http import HttpRequest
 from dotenv import load_dotenv
 import requests
 import os
@@ -9,9 +10,23 @@ from user_app.views import TokenReq
 
 
 class A_airport_taf(TokenReq):
-    # TODO: Make sure to include on front end that multiple stations can be checked
-    # by input of multiple icao_codes with comma delimiter
-    def get(self, request, icao):
+    """The view that holds the method to get TAF data for an Airport.
+
+    Args:
+        TokenReq (class): The class that enables the view with proper authentication and permissions.
+    """
+
+    def get(self, request: HttpRequest, icao: str) -> Response:
+        """Gets the lastest TAF for an Airport.
+
+        Args:
+            request (HttpRequest): The request from the frontend with data and proper authentication.
+            icao (str): The Airport's ICAO code.
+
+        Returns:
+            Response: The TAF and proper HTTP status code.
+        """
+
         load_dotenv()
         endpoint = f"https://api.checkwx.com/taf/{icao}"
         response = requests.get(
@@ -33,7 +48,24 @@ class A_airport_taf(TokenReq):
 
 
 class A_coordinate_taf(TokenReq):
-    def get(self, request, lat, lon):
+    """The view that holds the method to get TAF data for a Named Location.
+
+    Args:
+        TokenReq (class): The class that enables the view with proper authentication.
+    """
+
+    def get(self, request: HttpRequest, lat: str, lon: str) -> Response:
+        """Gets the latest TAF for a Named Location.
+
+        Args:
+            request (HttpRequest): The request from the frontend with data and proper authentication.
+            lat (str): The latitude of the Named Location.
+            lon (str): The longitude of the Named Location.
+
+        Returns:
+            Response: The TAF and proper HTTP status code.
+        """
+
         load_dotenv()
         request_lat = str(round(Decimal(lat), 2))
         request_lon = str(round(Decimal(lon), 2))

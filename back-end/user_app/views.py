@@ -1,3 +1,18 @@
+"""User views that allow for all CRUD functionality on User accounts.
+
+Classes:
+    TokenReq
+    Info
+    SignUp
+    LogIn
+    LogOut
+    MasterSignUp
+
+Methods:
+    create_http_only_cookie_from_response(_response, token) -> Response
+"""
+
+from datetime import datetime, timedelta
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
@@ -12,7 +27,6 @@ from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpRequest
-from datetime import datetime, timedelta
 from .models import User
 from .utilities import HttpOnlyTokenAuthentication
 
@@ -44,10 +58,15 @@ def create_http_only_cookie_from_response(_response: Response, token: Token) -> 
 class TokenReq(APIView):
     """The class that sets the permission and authentication classes for all views that inherit it.
 
-    Inherits from the APIView class to ensure that all view functionality and attributes are present.
+    Inherits from the APIView class to ensure that all view functionality and attributes 
+    are present.
 
-    Args:
+    Extends:
         APIView (class): The rest_framework APIView class.
+    
+    Attributes:
+        authentication_classes
+        permission_classes
     """
 
     authentication_classes = [HttpOnlyTokenAuthentication]
@@ -57,8 +76,13 @@ class TokenReq(APIView):
 class Info(TokenReq):
     """The view that holds the methods to get or update a User's information.
 
-    Args:
-        TokenReq (class): The class that enables the view with proper authentication and permissions.
+    Extends:
+        TokenReq (class): The class that enables the view with proper authentication
+        and permissions.
+    
+    Methods:
+        get(request) -> Response
+        put(request) -> Response
     """
 
     def get(self, request: HttpRequest) -> Response:
@@ -79,7 +103,8 @@ class Info(TokenReq):
         """Updates a User's information.
 
         Args:
-            request (HttpRequest): The request from the frontend with data and proper authentication.
+            request (HttpRequest): The request from the frontend with data and 
+            proper authentication.
 
         Returns:
             Response: The User's updated information and proper HTTP status code.
@@ -99,11 +124,14 @@ class Info(TokenReq):
             return Response(e.message_dict, status=HTTP_400_BAD_REQUEST)
 
 
-class Sign_up(APIView):
+class SignUp(APIView):
     """The view that holds the method for a User to create an account.
 
-    Args:
+    Extends:
         APIView (class): The class that enables the view.
+    
+    Methods:
+        post(request) -> Response
     """
 
     def post(self, request: HttpRequest) -> Response:
@@ -113,7 +141,8 @@ class Sign_up(APIView):
             request (HttpRequest): The request from the frontend with proper data.
 
         Returns:
-            Response: The new User's information with an authentication cookie and proper HTTP status code.
+            Response: The new User's information with an authentication cookie and
+            proper HTTP status code.
         """
 
         data = request.data.copy()
@@ -137,11 +166,14 @@ class Sign_up(APIView):
             return Response(e.message_dict, status=HTTP_400_BAD_REQUEST)
 
 
-class Log_in(APIView):
+class LogIn(APIView):
     """The view that holds the method for a User to login to their account.
 
-    Args:
+    Extends:
         APIView (class): The class that enables the view.
+    
+    Methods:
+        post(request) -> Response
     """
 
     def post(self, request: HttpRequest) -> Response:
@@ -151,7 +183,8 @@ class Log_in(APIView):
             request (HttpRequest): The request from the frontend with the User's credentials.
 
         Returns:
-            Response: The User's information with an authentication cookie and proper HTTP status code.
+            Response: The User's information with an authentication cookie and proper
+            HTTP status code.
         """
 
         data = request.data.copy()
@@ -172,11 +205,15 @@ class Log_in(APIView):
         return Response("No user matching these credentials", status=HTTP_404_NOT_FOUND)
 
 
-class Log_out(TokenReq):
+class LogOut(TokenReq):
     """The view that holds the method for a User to log out of their session.
 
-    Args:
-        TokenReq (class): The class that enables the view with proper authentication and permissions.
+    Extends:
+        TokenReq (class): The class that enables the view with proper authentication
+        and permissions.
+    
+    Methods:
+        post(request) -> Response
     """
 
     def post(self, request: HttpRequest) -> Response:
@@ -196,21 +233,26 @@ class Log_out(TokenReq):
         return _response
 
 
-class Master_Sign_Up(APIView):
+class MasterSignUp(APIView):
     """The view that holds the method to create a superuser account.
 
-    Args:
+    Extends:
         APIView (class): The class that enables the view.
+    
+    Methods:
+        post(request) -> Response
     """
 
     def post(self, request: HttpRequest) -> Response:
         """Creates a new superuser account.
 
         Args:
-            request (HttpRequest): The request from the frontend with the new superuser's information.
+            request (HttpRequest): The request from the frontend with the
+            new superuser's information.
 
         Returns:
-            Response: The new superuser's data with an authentication cookie and proper HTTP status code.
+            Response: The new superuser's data with an authentication cookie 
+            and proper HTTP status code.
         """
 
         data = request.data.copy()

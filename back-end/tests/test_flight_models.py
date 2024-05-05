@@ -1,3 +1,12 @@
+"""Module that tests creation of Flight, Brief, and Hazard objects.
+
+Classes:
+    TestFlight
+    TestBrief
+    TestHazard
+    TestSerializers
+"""
+
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from user_app.models import User
@@ -5,9 +14,20 @@ from flight_app.models import Flight, Brief, Hazard
 from flight_app.serializers import FlightSerializer, BriefSerializer, HazardSerializer
 
 
-# Test flight creation
-class Test_flight(TestCase):
-    def setUp(self):
+class TestFlight(TestCase):
+    """Tests creation and validation of Flight objects using the model.
+
+    Extends:
+        TestCase (class): The django TestCase class.
+
+    Methods:
+        setUp() -> None
+        test_001_flight_with_proper_data() -> None
+        test_002_flight_with_default_data() -> None
+        test_003_flight_with_invalid_data() -> None
+    """
+
+    def setUp(self) -> None:
         self.user = User.objects.create_user(
             username="tom@tom.com",
             password="thomas",
@@ -17,7 +37,8 @@ class Test_flight(TestCase):
             last_name="Childress"
         )
 
-    def test_001_flight_with_proper_data(self):
+    def test_001_flight_with_proper_data(self) -> None:
+        """Tests the creation of a new Flight with valid data."""
         new_flight = Flight.objects.create(
             user=self.user,
             tail_number=459,
@@ -33,7 +54,8 @@ class Test_flight(TestCase):
         new_flight.full_clean()
         self.assertIsNotNone(new_flight)
 
-    def test_002_flight_with_default_data(self):
+    def test_002_flight_with_default_data(self) -> None:
+        """Tests the creation of a new Flight with default data."""
         new_flight = Flight.objects.create(
             user=self.user,
             tail_number=459,
@@ -47,7 +69,8 @@ class Test_flight(TestCase):
         new_flight.full_clean()
         self.assertIsNotNone(new_flight)
 
-    def test_003_flight_with_invalid_data(self):
+    def test_003_flight_with_invalid_data(self) -> None:
+        """Tests the ValidationError raised when submitting invalid data for a new Flight."""
         try:
             new_flight = Flight.objects.create(
                 user=self.user,
@@ -67,11 +90,20 @@ class Test_flight(TestCase):
                 and 'pilot_responsible' in e.message_dict and 'origin' in e.message_dict
             )
 
-# Test brief creation
 
+class TestBrief(TestCase):
+    """Tests the creation of Brief objects using the model.
 
-class Test_brief(TestCase):
-    def setUp(self):
+    Extends:
+        TestCase (class): The django TestCase class.
+
+    Methods:
+        setUp() -> None
+        test_004_brief_with_proper_data() -> None
+        test_005_brief_with_invalid_data() -> None
+    """
+
+    def setUp(self) -> None:
         self.user = User.objects.create_user(
             username="tom@tom.com",
             password="thomas",
@@ -91,7 +123,8 @@ class Test_brief(TestCase):
             arrival_time='2024-04-08T01:00:00Z'
         )])
 
-    def test_004_brief_with_proper_data(self):
+    def test_004_brief_with_proper_data(self) -> None:
+        """Tests the creation of a new Brief with valid data."""
         new_brief = Brief.objects.create(
             flight=self.user.flights.get(id=1),
             surface_winds="VRB09KT",
@@ -106,8 +139,8 @@ class Test_brief(TestCase):
         new_brief.full_clean()
         self.assertIsNotNone(new_brief)
 
-    # TODO: Fix sky_condition validator and add to assertion statement when complete
-    def test_005_brief_with_invalid_data(self):
+    def test_005_brief_with_invalid_data(self) -> None:
+        """Tests the ValidationError raised when submitting invalid data for a new Brief."""
         try:
             new_brief = Brief.objects.create(
                 flight=self.user.flights.get(id=2),
@@ -129,11 +162,20 @@ class Test_brief(TestCase):
                 and 'sky_condition' in e.message_dict
             )
 
-# Test hazard creation
 
+class TestHazard(TestCase):
+    """Tests the creation of Hazard objects using the model.
 
-class Test_hazard(TestCase):
-    def setUp(self):
+    Extends:
+        TestCase (class): The django TestCase class.
+
+    Methods:
+        setUp() -> None
+        test_006_hazard_with_proper_data() -> None
+        test_007_hazard_with_invalid_data() -> None
+    """
+
+    def setUp(self) -> None:
         self.user = User.objects.create_user(
             username="tom@tom.com",
             password="thomas",
@@ -153,7 +195,8 @@ class Test_hazard(TestCase):
             arrival_time='2024-04-08T01:00:00Z'
         )])
 
-    def test_006_hazard_with_proper_data(self):
+    def test_006_hazard_with_proper_data(self) -> None:
+        """Tests the creation of a new Hazard with valid data."""
         self.user.flights.get(id=6).briefs.set([Brief.objects.create(
             flight=self.user.flights.get(id=6),
             surface_winds="VRB09KT",
@@ -173,7 +216,8 @@ class Test_hazard(TestCase):
         new_hazard.full_clean()
         self.assertIsNotNone(new_hazard)
 
-    def test_007_hazard_with_invalid_data(self):
+    def test_007_hazard_with_invalid_data(self) -> None:
+        """Tests the ValidationError raised when submitting invalid data for a new Hazard."""
         self.user.flights.get(id=7).briefs.set([Brief.objects.create(
             flight=self.user.flights.get(id=7),
             surface_winds="VRB09KT",
@@ -199,9 +243,22 @@ class Test_hazard(TestCase):
             )
 
 
-# Test flight serializer
-class Test_serializers(TestCase):
-    def setUp(self):
+class TestSerializers(TestCase):
+    """Tests the creation of all Flight, Brief, and Hazard objects using Serializers.
+
+    Extends:
+        TestCase (class): The django TestCase class.
+
+    Methods:
+        test_008_flight_serializer_with_proper_data() -> None
+        test_009_flight_serializer_with_proper_response() -> None
+        test_010_brief_serializer_with_proper_data() -> None
+        test_011_brief_serializer_with_proper_response() -> None
+        test_012_hazard_serializer_with_proper_data() -> None
+        test_013_hazard_serializer_with_proper_response() -> None
+    """
+
+    def setUp(self) -> None:
         self.user = User.objects.create_user(
             username="tom@tom.com",
             password="thomas",
@@ -211,7 +268,8 @@ class Test_serializers(TestCase):
             last_name="Childress"
         )
 
-    def test_008_flight_serializer_with_proper_data(self):
+    def test_008_flight_serializer_with_proper_data(self) -> None:
+        """Tests the creation of a new Flight with valid data through the Serializer."""
         try:
             data = {
                 "user": self.user.id,
@@ -227,11 +285,12 @@ class Test_serializers(TestCase):
             }
             ser_flight = FlightSerializer(data=data)
             self.assertTrue(ser_flight.is_valid())
-        except Exception as e:
+        except Exception:
             print(ser_flight.errors)
             self.fail()
 
-    def test_009_flight_serializer_with_proper_response(self):
+    def test_009_flight_serializer_with_proper_response(self) -> None:
+        """Tests the response data of a new Flight created with the Serializer."""
         try:
             data = {
                 "user": self.user.id,
@@ -262,11 +321,12 @@ class Test_serializers(TestCase):
                     "arrival_time": "2024-04-08T01:00:00Z"
                 }
             )
-        except Exception as e:
+        except Exception:
             print(ser_flight.errors)
             self.fail()
 
-    def test_010_brief_serializer_with_proper_data(self):
+    def test_010_brief_serializer_with_proper_data(self) -> None:
+        """Tests the creation of a new Brief with valid data through the Serializer."""
         flight = Flight.objects.create(
             user=self.user,
             tail_number=459,
@@ -293,10 +353,11 @@ class Test_serializers(TestCase):
             }
             ser_brief = BriefSerializer(data=data)
             self.assertTrue(ser_brief.is_valid())
-        except Exception as e:
+        except Exception:
             print(ser_brief.errors)
 
-    def test_011_brief_serializer_with_proper_response(self):
+    def test_011_brief_serializer_with_proper_response(self) -> None:
+        """Tests the response data from creating a new Brief with the Serializer."""
         flight = Flight.objects.create(
             user=self.user,
             tail_number=459,
@@ -337,11 +398,12 @@ class Test_serializers(TestCase):
                     "void_time": "2024-04-08T01:00:00Z"
                 }
             )
-        except Exception as e:
+        except Exception:
             print(ser_brief.errors)
             self.fail()
 
-    def test_012_hazard_serializer_with_proper_data(self):
+    def test_012_hazard_serializer_with_proper_data(self) -> None:
+        """Tests the creation of a new Hazard with valid data through the Serializer."""
         flight = Flight.objects.create(
             user=self.user,
             tail_number=459,
@@ -373,11 +435,12 @@ class Test_serializers(TestCase):
             }
             ser_hazard = HazardSerializer(data=data)
             self.assertTrue(ser_hazard.is_valid())
-        except Exception as e:
+        except Exception:
             print(ser_hazard.errors)
             self.fail()
 
-    def test_013_hazard_serializer_with_proper_response(self):
+    def test_013_hazard_serializer_with_proper_response(self) -> None:
+        """Tests the response data from creation a new Hazard with the Serializer."""
         flight = Flight.objects.create(
             user=self.user,
             tail_number=459,
@@ -417,6 +480,6 @@ class Test_serializers(TestCase):
                     "information": "Big Thunder"
                 }
             )
-        except Exception as e:
+        except Exception:
             print(ser_hazard.errors)
             self.fail()

@@ -1,3 +1,9 @@
+"""All models within the User app.
+
+Classes:
+    User
+"""
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core import validators as v
@@ -5,15 +11,31 @@ from .validators import validate_display_name, validate_first_name, validate_las
 
 
 class User(AbstractUser):
-    """The User model that is used for account creation and authentication throughout the application.
+    """The User model that is used for account creation and authentication
+    throughout the application.
 
-    Args:
-        AbstractUser (class): The django authentication AbstractUser class
+    Extends:
+        AbstractUser (class): The django authentication AbstractUser class.
+
+    Attributes:
+        email: str
+            The User's email.
+        display_name: str
+            The User's display name.
+        first_name: str
+            The User's first name.
+        last_name: str
+            The User's last name.
     """
+
     email = models.EmailField(
         unique=True, verbose_name='email address', max_length=255)
     display_name = models.CharField(
-        max_length=50, validators=[validate_display_name, v.MinLengthValidator(6), v.MaxLengthValidator(25)])
+        max_length=50, validators=[
+            validate_display_name,
+            v.MinLengthValidator(6),
+            v.MaxLengthValidator(25)
+        ])
     first_name = models.CharField(
         max_length=50, validators=[validate_first_name])
     last_name = models.CharField(
