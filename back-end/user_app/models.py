@@ -3,11 +3,13 @@ from django.contrib.auth.models import AbstractUser
 from django.core import validators as v
 from .validators import validate_display_name, validate_first_name, validate_last_name
 
-# Create your models here.
-
 
 class User(AbstractUser):
-    # username = None
+    """The User model that is used for account creation and authentication throughout the application.
+
+    Args:
+        AbstractUser (class): The django authentication AbstractUser class
+    """
     email = models.EmailField(
         unique=True, verbose_name='email address', max_length=255)
     display_name = models.CharField(
@@ -21,5 +23,6 @@ class User(AbstractUser):
     # named_locations = created by foreign key relationships from named_location model
     # flights = created by foreign key relationships from flight model
 
+    # Sets the default username field as the email field.
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [display_name, first_name, last_name]
