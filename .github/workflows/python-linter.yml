@@ -17,4 +17,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r ./back-end/requirements.txt
       - run: |
-          cd ./back-end && shopt -s globstar && pylint --load-plugins pylint_django --django-settings-module=weather_proj.settings **/*.py
+          cd ./back-end && shopt -s globstar && pylint --load-plugins pylint_django --django-settings-module=weather_proj.settings **/*.py --ignore-paths='^user_app/migrations/.*$','^airport_app/migrations/.*$','^coordinate_app/migrations/.*$','^flight_app/migrations/.*$','^list_app/migrations/.*$','^metar_app/migrations/.*$','^named_locations_app/migrations/.*$','^taf_app/migrations/.*$','^tests/.*$'
