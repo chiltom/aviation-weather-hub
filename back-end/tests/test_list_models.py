@@ -35,6 +35,7 @@ class TestList(TestCase):
         )
 
     def test_001_list_with_proper_data(self) -> None:
+        """Tests the creation of a new List with proper data."""
         new_list = List.objects.create(
             user=self.user,
             name="My List",
