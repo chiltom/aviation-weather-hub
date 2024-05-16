@@ -45,6 +45,7 @@ class TestList(TestCase):
         self.assertIsNotNone(new_list)
 
     def test_002_list_with_default_data(self) -> None:
+        """Tests the creation of a new List with default values."""
         new_list = List.objects.create(
             user=self.user,
             name="My List"
@@ -53,6 +54,7 @@ class TestList(TestCase):
         self.assertIsNotNone(new_list)
 
     def test_003_list_with_invalid_name(self) -> None:
+        """Tests the ValidationError raised when submitting invalid data for a new List."""
         try:
             new_list = List.objects.create(
                 user=self.user,
@@ -69,6 +71,18 @@ class TestList(TestCase):
 
 
 class TestTask(TestCase):
+    """Tests creation and validation of Task objects using the model.
+
+    Extends:
+        TestCase (class): The django TestCase class.
+        
+    Methods:
+        setUp() -> None
+        test_004_task_with_proper_data() -> None
+        test_005_task_with_default_values() -> None
+        test_006_task_with_invalid_data() -> None
+    """
+    
     def setUp(self):
         self.user = User.objects.create_user(
             username="tom@tom.com",
