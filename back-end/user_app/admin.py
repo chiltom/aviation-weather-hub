@@ -1,5 +1,7 @@
+"""Django Admin site registration and configuration."""
+
 from django.contrib import admin
 from user_app.models import User
 
-# Register your models here.
+# Registers the User model to the admin site.
 admin.site.register([User])

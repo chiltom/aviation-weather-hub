@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, get_list_or_404
-from rest_framework.views import APIView
+from django.http import HttpRequest
 from rest_framework.response import Response
 from rest_framework.status import (
     HTTP_200_OK,
@@ -8,19 +8,42 @@ from rest_framework.status import (
     HTTP_400_BAD_REQUEST
 )
 from decimal import Decimal
-from .models import Named_location
 from .serializers import Named_locationSerializer
 from user_app.views import TokenReq
 
 
 class All_named_locations(TokenReq):
-    def get(self, request):
+    """The view that holds the methods to get all Named Locations or create a new one.
+
+    Args:
+        TokenReq (class): The class that enables the view with proper authentication and permissions.
+    """
+    
+    def get(self, request: HttpRequest) -> Response:
+        """Gets all of a User's Named Locations.
+
+        Args:
+            request (HttpRequest): The request from the frontend with proper authentication.
+
+        Returns:
+            Response: All of the User's Named Locations' data with proper HTTP status code.
+        """
+        
         named_locations = get_list_or_404(request.user.named_locations.all())
         ser_named_locations = Named_locationSerializer(
             named_locations, many=True)
         return Response(ser_named_locations.data, status=HTTP_200_OK)
 
-    def post(self, request):
+    def post(self, request: HttpRequest) -> Response:
+        """Creates a new Named Location for a User.
+
+        Args:
+            request (HttpRequest): The request from the frontend with data and proper authentication.
+
+        Returns:
+            Response: The new Named Location's data with proper HTTP status code.
+        """
+        
         data = request.data.copy()
         data['user'] = request.user.id
         data['latitude'] = Decimal(data['latitude'])
@@ -33,13 +56,39 @@ class All_named_locations(TokenReq):
 
 
 class A_named_location(TokenReq):
-    def get(self, request, city):
+    """The view that holds the methods to get, update, or delete a Named Location.
+
+    Args:
+        TokenReq (class): The class that enables the view with proper authentication and permissions.
+    """
+    
+    def get(self, request: HttpRequest, city: str) -> Response:
+        """Gets a Named Location's information
+
+        Args:
+            request (HttpRequest): The request from the frontend with proper authentication.
+            city (str): The city name of the Named Location.
+
+        Returns:
+            Response: The Named Location's information with proper HTTP status code.
+        """
+        
         return Response(Named_locationSerializer(
             get_object_or_404(request.user.named_locations, city=city.title())).data,
             status=HTTP_200_OK
         )
 
-    def put(self, request, city):
+    def put(self, request: HttpRequest, city: str) -> Response:
+        """Updates a Named Location's information.
+
+        Args:
+            request (HttpRequest): The request from the frontend with data and proper authentication.
+            city (str): The city name of the Named Location.
+
+        Returns:
+            Response: The Named Location's updated information with proper HTTP status code.
+        """
+        
         data = request.data.copy()
         if data.get('latitude'):
             data['latitude'] = Decimal(data['latitude'])
@@ -54,7 +103,17 @@ class A_named_location(TokenReq):
             return Response(ser_named_location.data, status=HTTP_200_OK)
         return Response(ser_named_location.errors, status=HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, city):
+    def delete(self, request: HttpRequest, city: str) -> Response:
+        """Deletes a User's Named Location.
+
+        Args:
+            request (HttpRequest): The request from the frontend with data and proper authentication.
+            city (str): The city name of the Named Location.
+
+        Returns:
+            Response: The proper HTTP status code.
+        """
+        
         curr_named_location = get_object_or_404(
             request.user.named_locations, city=city.title())
         curr_named_location.delete()

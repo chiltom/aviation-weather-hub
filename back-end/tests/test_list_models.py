@@ -1,3 +1,10 @@
+"""Module that tests creation of List and Task objects.
+
+Classes:
+    TestList
+    TestTask
+    TestSerializers
+"""
 from django.test import TestCase
 from django.core.exceptions import ValidationError
 from user_app.models import User
@@ -5,9 +12,19 @@ from list_app.models import List, Task
 from list_app.serializers import ListSerializer, TaskSerializer
 
 
-# Test list creation
-class Test_list(TestCase):
-    def setUp(self):
+class TestList(TestCase):
+    """Tests creation and validation of List objects using the model.
+
+    Extends:
+        TestCase (class): The django TestCase class.
+        
+    Methods:
+        setUp() -> None
+        test_001_list_with_proper_data() -> None
+        test_002_list_with_default_data() -> None
+        test_003_list_with_invalid_name() -> None
+    """
+    def setUp(self) -> None:
         self.user = User.objects.create_user(
             username="tom@tom.com",
             password="thomas",
@@ -17,7 +34,8 @@ class Test_list(TestCase):
             last_name="Childress"
         )
 
-    def test_001_list_with_proper_data(self):
+    def test_001_list_with_proper_data(self) -> None:
+        """Tests the creation of a new List with proper data."""
         new_list = List.objects.create(
             user=self.user,
             name="My List",
@@ -26,7 +44,8 @@ class Test_list(TestCase):
         new_list.full_clean()
         self.assertIsNotNone(new_list)
 
-    def test_002_list_with_default_data(self):
+    def test_002_list_with_default_data(self) -> None:
+        """Tests the creation of a new List with default values."""
         new_list = List.objects.create(
             user=self.user,
             name="My List"
@@ -34,7 +53,8 @@ class Test_list(TestCase):
         new_list.full_clean()
         self.assertIsNotNone(new_list)
 
-    def test_003_list_with_invalid_name(self):
+    def test_003_list_with_invalid_name(self) -> None:
+        """Tests the ValidationError raised when submitting invalid data for a new List."""
         try:
             new_list = List.objects.create(
                 user=self.user,
@@ -50,7 +70,19 @@ class Test_list(TestCase):
             )
 
 
-class Test_task(TestCase):
+class TestTask(TestCase):
+    """Tests creation and validation of Task objects using the model.
+
+    Extends:
+        TestCase (class): The django TestCase class.
+        
+    Methods:
+        setUp() -> None
+        test_004_task_with_proper_data() -> None
+        test_005_task_with_default_values() -> None
+        test_006_task_with_invalid_data() -> None
+    """
+    
     def setUp(self):
         self.user = User.objects.create_user(
             username="tom@tom.com",
@@ -99,7 +131,7 @@ class Test_task(TestCase):
             )
 
 
-class Test_list_serializer(TestCase):
+class TestSerializers(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username="tom@tom.com",

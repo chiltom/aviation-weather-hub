@@ -1,3 +1,18 @@
+"""User views that allow for all CRUD functionality on User accounts.
+
+Classes:
+    TokenReq
+    Info
+    SignUp
+    LogIn
+    LogOut
+    MasterSignUp
+
+Methods:
+    create_http_only_cookie_from_response(_response, token) -> Response
+"""
+
+from datetime import datetime, timedelta
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
@@ -11,12 +26,22 @@ from rest_framework.status import (
 from rest_framework.permissions import IsAuthenticated
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
-from datetime import datetime, timedelta
+from django.http import HttpRequest
 from .models import User
 from .utilities import HttpOnlyTokenAuthentication
 
 
-def create_http_only_cookie_from_response(_response, token):
+def create_http_only_cookie_from_response(_response: Response, token: Token) -> Response:
+    """Sets an HTTP only authentication cookie with the Token argument on the Response argument.
+
+    Args:
+        _response (Response): The Response that needs a cookie to be set.
+        token (Token): The authorization Token to be used in the cookie.
+
+    Returns:
+        Response: The Response with the authentication cookie.
+    """
+
     life_time = datetime.now() + timedelta(days=7)
     format_life_time = life_time.strftime("%a, %d %b %Y %H:%M:%S UTC")
     _response.set_cookie(
@@ -31,17 +56,60 @@ def create_http_only_cookie_from_response(_response, token):
 
 
 class TokenReq(APIView):
+    """The class that sets the permission and authentication classes for all views that inherit it.
+
+    Inherits from the APIView class to ensure that all view functionality and attributes 
+    are present.
+
+    Extends:
+        APIView (class): The rest_framework APIView class.
+    
+    Attributes:
+        authentication_classes
+        permission_classes
+    """
+
     authentication_classes = [HttpOnlyTokenAuthentication]
     permission_classes = [IsAuthenticated]
 
 
 class Info(TokenReq):
-    def get(self, request):
+    """The view that holds the methods to get or update a User's information.
+
+    Extends:
+        TokenReq (class): The class that enables the view with proper authentication
+        and permissions.
+    
+    Methods:
+        get(request) -> Response
+        put(request) -> Response
+    """
+
+    def get(self, request: HttpRequest) -> Response:
+        """Gets a User's information.
+
+        Args:
+            request (HttpRequest): The request from the frontend with proper authentication.
+
+        Returns:
+            Response: The User's information and proper HTTP status code.
+        """
+
         data = {"email": request.user.email, "display_name": request.user.display_name,
                 "first_name": request.user.first_name, "last_name": request.user.last_name}
         return Response(data, status=HTTP_200_OK)
 
-    def put(self, request):
+    def put(self, request: HttpRequest) -> Response:
+        """Updates a User's information.
+
+        Args:
+            request (HttpRequest): The request from the frontend with data and 
+            proper authentication.
+
+        Returns:
+            Response: The User's updated information and proper HTTP status code.
+        """
+
         data = request.data.copy()
         user = User.objects.get(username=request.user.email)
         if data.get("display_name") and "display_name" in data:
@@ -56,8 +124,27 @@ class Info(TokenReq):
             return Response(e.message_dict, status=HTTP_400_BAD_REQUEST)
 
 
-class Sign_up(APIView):
-    def post(self, request):
+class SignUp(APIView):
+    """The view that holds the method for a User to create an account.
+
+    Extends:
+        APIView (class): The class that enables the view.
+    
+    Methods:
+        post(request) -> Response
+    """
+
+    def post(self, request: HttpRequest) -> Response:
+        """Creates a new User.
+
+        Args:
+            request (HttpRequest): The request from the frontend with proper data.
+
+        Returns:
+            Response: The new User's information with an authentication cookie and
+            proper HTTP status code.
+        """
+
         data = request.data.copy()
         data['username'] = data.get("email")
         new_user = User(**data)
@@ -79,8 +166,27 @@ class Sign_up(APIView):
             return Response(e.message_dict, status=HTTP_400_BAD_REQUEST)
 
 
-class Log_in(APIView):
-    def post(self, request):
+class LogIn(APIView):
+    """The view that holds the method for a User to login to their account.
+
+    Extends:
+        APIView (class): The class that enables the view.
+    
+    Methods:
+        post(request) -> Response
+    """
+
+    def post(self, request: HttpRequest) -> Response:
+        """Logs a User into their account.
+
+        Args:
+            request (HttpRequest): The request from the frontend with the User's credentials.
+
+        Returns:
+            Response: The User's information with an authentication cookie and proper
+            HTTP status code.
+        """
+
         data = request.data.copy()
         user = authenticate(username=data.get("email"),
                             password=data.get("password"))
@@ -99,8 +205,27 @@ class Log_in(APIView):
         return Response("No user matching these credentials", status=HTTP_404_NOT_FOUND)
 
 
-class Log_out(TokenReq):
-    def post(self, request):
+class LogOut(TokenReq):
+    """The view that holds the method for a User to log out of their session.
+
+    Extends:
+        TokenReq (class): The class that enables the view with proper authentication
+        and permissions.
+    
+    Methods:
+        post(request) -> Response
+    """
+
+    def post(self, request: HttpRequest) -> Response:
+        """Logs a User out of their session and removes their credentials and cookie.
+
+        Args:
+            request (HttpRequest): The request from the frontend with proper authentication.
+
+        Returns:
+            Response: The proper HTTP status code.
+        """
+
         request.user.auth_token.delete()
         logout(request)
         _response = Response(status=HTTP_204_NO_CONTENT)
@@ -108,8 +233,28 @@ class Log_out(TokenReq):
         return _response
 
 
-class Master_Sign_Up(APIView):
-    def post(self, request):
+class MasterSignUp(APIView):
+    """The view that holds the method to create a superuser account.
+
+    Extends:
+        APIView (class): The class that enables the view.
+    
+    Methods:
+        post(request) -> Response
+    """
+
+    def post(self, request: HttpRequest) -> Response:
+        """Creates a new superuser account.
+
+        Args:
+            request (HttpRequest): The request from the frontend with the
+            new superuser's information.
+
+        Returns:
+            Response: The new superuser's data with an authentication cookie 
+            and proper HTTP status code.
+        """
+
         data = request.data.copy()
         data['username'] = data.get('email')
         master_user = User(**data)
