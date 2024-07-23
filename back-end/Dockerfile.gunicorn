@@ -1,0 +1,14 @@
+FROM python:3.12.3-slim-bullseye
+
+ENV PYTHONUNBUFFERED 1 \
+    PYTHONDONTWRITEBYTECODE 1
+
+WORKDIR /aviation-weather-hub/backend
+
+COPY requirements.txt /aviation-weather-hub/backend/
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . /aviation-weather-hub/backend/
+
+CMD [ "gunicorn", "weather_proj.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "4" ]

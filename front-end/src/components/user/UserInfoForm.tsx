@@ -8,11 +8,11 @@ import { ContextType, User } from "../../types/userTypes";
 /**
  * @description A component that serves as a Form to submit an update to a User's
  * display name.
- * 
- * @prop {React.Dispatch<React.SetStateAction<User | null>>} setUser The setter 
+ *
+ * @prop {React.Dispatch<React.SetStateAction<User | null>>} setUser The setter
  * for the user state.
  * @prop {string} theme The theme of the User's OS.
- * 
+ *
  * @returns {ReactElement} The UserInfoForm component.
  */
 const UserInfoForm: React.FC<ContextType> = ({
@@ -23,7 +23,7 @@ const UserInfoForm: React.FC<ContextType> = ({
 
   /**
    * @description Handles the request to change a User's display name.
-   * 
+   *
    * @param {FormEvent} e The form event.
    */
   const handleUserChangeRequest: FormEventHandler<HTMLFormElement> = async (
@@ -54,6 +54,7 @@ const UserInfoForm: React.FC<ContextType> = ({
             onChange={(e) => setNewDisplayNameInput(e.target.value)}
             type="display_name"
             placeholder="Display name may only contain capital letters, lowercase letters, and the characters '.', '-', '_'"
+            required
           />
           <Button variant="primary" type="submit">
             Submit

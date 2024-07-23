@@ -5,6 +5,7 @@ charset-normalizer==3.3.2
 dill==0.3.8
 Django==5.0.3
 django-cors-headers==4.3.1
+django-redis==5.4.0
 djangorestframework==3.15.1
 gunicorn==21.2.0
 idna==3.6
@@ -19,6 +20,7 @@ pylint==3.1.0
 pylint-django==2.5.5
 pylint-plugin-utils==0.8.2
 python-dotenv==1.0.1
+redis==5.0.7
 requests==2.31.0
 requests-oauthlib==2.0.0
 sqlparse==0.4.4

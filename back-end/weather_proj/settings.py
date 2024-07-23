@@ -10,8 +10,9 @@ SECRET_KEY = env.get("DJANGO_KEY", "top-secret-key")
 DEBUG = env.get("DEBUG")
 
 ALLOWED_HOSTS = [
-    # "0.0.0.0"
-    "*"
+    'gunicorn',
+    'localhost',
+    '0.0.0.0',
 ]
 
 # CSRF_TRUSTED_ORIGIN = [
@@ -82,11 +83,26 @@ WSGI_APPLICATION = 'weather_proj.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'weather_db',
+        'NAME': env.get('POSTGRES_DB'),
+        'USER': env.get('POSTGRES_USER'),
+        'PASSWORD': env.get('POSTGRES_PASSWORD'),
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 
-# ADD CACHE LAYER
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://redis:6379/0',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
 
 AUTH_PASSWORD_VALIDATORS = [
     {

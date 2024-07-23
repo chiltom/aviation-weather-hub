@@ -1,0 +1,59 @@
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=weather_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  frontend:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile.dev
+    container_name: react-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./front-end:/aviation-weather-hub/frontend
+      - /aviation-weather-hub/frontend/node_modules
+    depends_on:
+      - gunicorn
+    environment:
+      - VITE_API_URL=http://0.0.0.0:8000/api/v1/
+
+  gunicorn:
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile.gunicorn
+    container_name: django-gunicorn
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./back-end:/aviation-weather-hub/backend
+    depends_on:
+      - db
+      - redis
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=weather_db
+      - DEBUG=True
+    command: >
+      bash -c "python manage.py migrate && gunicorn weather_proj.wsgi:application --bind 0.0.0.0:8000 --workers 4"
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:

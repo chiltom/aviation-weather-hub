@@ -8,13 +8,13 @@ import { userLogin } from "../../utilities/userUtilities";
 import { ContextType } from "../../types/userTypes";
 
 /**
- * @description A component that serves as a Form in a Modal structure to submit 
+ * @description A component that serves as a Form in a Modal structure to submit
  * a request for an existing User to log in to their account.
- * 
- * @prop {React.Dispatch<React.SetStateAction<User | null>>} setUser The setter 
+ *
+ * @prop {React.Dispatch<React.SetStateAction<User | null>>} setUser The setter
  * for the user state.
  * @prop {string} theme The User's OS theme.
- * 
+ *
  * @returns {ReactElement} LoginForm component within a Modal.
  */
 const LoginForm: React.FC<ContextType> = ({
@@ -30,10 +30,12 @@ const LoginForm: React.FC<ContextType> = ({
 
   /**
    * @description Handles the request for a User to log in to their account.
-   * 
+   *
    * @param {FormEvent} e The form event.
    */
-  const handleLogin: FormEventHandler<HTMLFormElement> = async (e: FormEvent) => {
+  const handleLogin: FormEventHandler<HTMLFormElement> = async (
+    e: FormEvent
+  ) => {
     e.preventDefault();
     const user = await userLogin(emailInput, passwordInput);
     if (user !== null) {
@@ -62,6 +64,7 @@ const LoginForm: React.FC<ContextType> = ({
                 type="email"
                 placeholder="Enter email"
                 autoFocus
+                required
               />
             </InputGroup>
             <InputGroup className="mb-3">
@@ -70,6 +73,7 @@ const LoginForm: React.FC<ContextType> = ({
                 onChange={(e) => setPasswordInput(e.target.value)}
                 type="password"
                 placeholder="Password"
+                required
               />
             </InputGroup>
             <Button variant="primary" type="submit">
