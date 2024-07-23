@@ -1,9 +1,9 @@
 name: Cypress e2e Tests
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "dev"]
   pull_request:
-    branches: ["main"]
+    branches: ["main", "dev"]
 
 permissions:
   checks: write
@@ -27,8 +27,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          cache: 'pip'
+          python-version: "3.12"
+          cache: "pip"
       - name: Install back-end dependencies
         run: pip install -r ./back-end/requirements.txt
       - name: Set up PostgreSQL

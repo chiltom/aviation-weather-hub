@@ -15,7 +15,9 @@ class Test_named_location_crud(APITestCase):
             content_type="application/json"
         )
         response_body = json.loads(sign_up_response.content)
-        self.client.cookies = sign_up_response.client.cookies
+        # self.client.cookies = sign_up_response.client.cookies
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {
+                                response_body['token']}")
 
     # Test post method on All_named_locations view
     def test_001_all_named_locations_post(self):

@@ -1,34 +1,13 @@
-"""Module that tests Flight, Brief, and Hazard views.
-
-Classes:
-    Test1FlightCrud
-    Test2BriefCrud
-    Test3HazardCrud
-"""
-
-import json
 from django.test import Client
 from django.urls import reverse
 from rest_framework.test import APITestCase
+import json
 
 
-class Test1FlightCrud(APITestCase):
-    """Tests the CRUD capabilities of the Flight views.
+# Test flight CRUD capabilities
 
-    Extends:
-        APITestCase (class): The rest_framework APITestCase class.
-
-    Methods:
-        setUp() -> None
-        test_000_all_flights_with_invalid_airport_code() -> None
-        test_001_all_flights_post() -> None
-        test_002_all_flights_get() -> None
-        test_003_a_flight_get() -> None
-        test_004_a_flight_put() -> None
-        test_005_a_flight_delete() -> None
-    """
-
-    def setUp(self) -> None:
+class Test_flight_crud(APITestCase):
+    def setUp(self):
         client = Client()
         sign_up_response = client.post(
             reverse("signup"),
@@ -36,9 +15,11 @@ class Test1FlightCrud(APITestCase):
                   "first_name": "Odie", "last_name": "Childress"},
             content_type="application/json"
         )
-        json.loads(sign_up_response.content)
-        self.client.cookies = sign_up_response.client.cookies
-        self.client.post(
+        response_body = json.loads(sign_up_response.content)
+        # self.client.cookies = sign_up_response.client.cookies
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {
+                                response_body['token']}")
+        airport_one_post_response = self.client.post(
             reverse("all_airports"),
             data=json.dumps({
                 "name": "Savannah",
@@ -46,7 +27,7 @@ class Test1FlightCrud(APITestCase):
             }),
             content_type="application/json"
         )
-        self.client.post(
+        airport_two_post_response = self.client.post(
             reverse("all_airports"),
             data=json.dumps({
                 "name": "Charleston",
@@ -55,8 +36,8 @@ class Test1FlightCrud(APITestCase):
             content_type="application/json"
         )
 
-    def test_000_all_flights_post_with_invalid_airport_code(self) -> None:
-        """Tests the error returned when the ICAO code is not present in the User's Airports."""
+    # Test post method with invalid destination
+    def test_000_all_flights_post_with_invalid_airport_code(self):
         answer = json.dumps({
             "Error": "Destination code not found in your stored airport codes."
         })
@@ -79,8 +60,9 @@ class Test1FlightCrud(APITestCase):
             self.assertEqual(response.status_code, 400)
         self.assertEqual(json.loads(response.content), answer)
 
-    def test_001_all_flights_post(self) -> None:
-        """Tests the post request method for the AllFlights view."""
+    # Test post method on all_flights view
+
+    def test_001_all_flights_post(self):
         answer = {
             "id": 1,
             "user": 2,
@@ -114,8 +96,9 @@ class Test1FlightCrud(APITestCase):
             self.assertEqual(response.status_code, 201)
         self.assertEqual(json.loads(response.content), answer)
 
-    def test_002_all_flights_get(self) -> None:
-        """Tests the get request method for the AllFlights view."""
+    # Test get method on all_flights view
+
+    def test_002_all_flights_get(self):
         answer = [{
             "id": 2,
             "user": 3,
@@ -130,7 +113,7 @@ class Test1FlightCrud(APITestCase):
             "arrival_time": "2024-04-08T13:00:00Z",
             "briefs": []
         }]
-        self.client.post(
+        flight_post_response = self.client.post(
             reverse("all_flights"),
             data=json.dumps({
                 "tail_number": 459,
@@ -150,8 +133,7 @@ class Test1FlightCrud(APITestCase):
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
 
-    def test_003_a_flight_get(self) -> None:
-        """Tests the get request for the AFlight view."""
+    def test_003_a_flight_get(self):
         answer = {
             "id": 3,
             "user": 4,
@@ -166,7 +148,7 @@ class Test1FlightCrud(APITestCase):
             "arrival_time": "2024-04-08T13:00:00Z",
             "briefs": []
         }
-        self.client.post(
+        flight_post_response = self.client.post(
             reverse("all_flights"),
             data=json.dumps({
                 "tail_number": 459,
@@ -186,8 +168,7 @@ class Test1FlightCrud(APITestCase):
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
 
-    def test_004_a_flight_put(self) -> None:
-        """Tests the put request method for the AFlight view."""
+    def test_004_a_flight_put(self):
         answer = {
             "id": 4,
             "user": 5,
@@ -202,7 +183,7 @@ class Test1FlightCrud(APITestCase):
             "arrival_time": "2024-04-08T13:00:00Z",
             "briefs": []
         }
-        self.client.post(
+        flight_post_response = self.client.post(
             reverse("all_flights"),
             data=json.dumps({
                 "tail_number": 459,
@@ -229,9 +210,10 @@ class Test1FlightCrud(APITestCase):
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
 
-    def test_005_a_flight_delete(self) -> None:
-        """Tests the delete request method for the AFlight view."""
-        self.client.post(
+    # Test delete method on a_flight view
+
+    def test_005_a_flight_delete(self):
+        flight_post_response = self.client.post(
             reverse("all_flights"),
             data=json.dumps({
                 "tail_number": 459,
@@ -250,22 +232,10 @@ class Test1FlightCrud(APITestCase):
         self.assertEqual(response.status_code, 204)
 
 
-class Test2BriefCrud(APITestCase):
-    """Tests the CRUD capabilities of the Brief views.
-
-    Extends:
-        APITestCase (class): The rest_framework APITestCase class.
-
-    Methods:
-        setUp() -> None
-        test_006_all_briefs_post() -> None
-        test_007_all_briefs_get() -> None
-        test_008_a_brief_get() -> None
-        test_009_a_brief_put() -> None
-        test_010_a_brief_delete() -> None
-    """
-
-    def setUp(self) -> None:
+# Test brief CRUD functionality
+# g included in name to trick django to test in order, fix later
+class Test_g_brief_crud(APITestCase):
+    def setUp(self):
         client = Client()
         sign_up_response = client.post(
             reverse("signup"),
@@ -273,9 +243,11 @@ class Test2BriefCrud(APITestCase):
                   "first_name": "Odie", "last_name": "Childress"},
             content_type="application/json"
         )
-        json.loads(sign_up_response.content)
-        self.client.cookies = sign_up_response.client.cookies
-        self.client.post(
+        response_body = json.loads(sign_up_response.content)
+        # self.client.cookies = sign_up_response.client.cookies
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {
+                                response_body['token']}")
+        airport_one_post_response = self.client.post(
             reverse("all_airports"),
             data=json.dumps({
                 "name": "Savannah",
@@ -283,7 +255,7 @@ class Test2BriefCrud(APITestCase):
             }),
             content_type="application/json"
         )
-        self.client.post(
+        airport_two_post_response = self.client.post(
             reverse("all_airports"),
             data=json.dumps({
                 "name": "Charleston",
@@ -291,7 +263,7 @@ class Test2BriefCrud(APITestCase):
             }),
             content_type="application/json"
         )
-        self.client.post(
+        flight_post_response = self.client.post(
             reverse("all_flights"),
             data=json.dumps({
                 "tail_number": 459,
@@ -307,8 +279,8 @@ class Test2BriefCrud(APITestCase):
             content_type="application/json"
         )
 
-    def test_006_all_briefs_post(self) -> None:
-        """Tests the post request method for the AllBriefs view."""
+    # Test post method on all briefs view
+    def test_006_all_briefs_post(self):
         answer = {
             "id": 1,
             "flight": 6,
@@ -342,8 +314,8 @@ class Test2BriefCrud(APITestCase):
             self.assertEqual(response.status_code, 201)
         self.assertEqual(json.loads(response.content), answer)
 
-    def test_007_all_briefs_get(self) -> None:
-        """Tests the get request method for the AllBriefs view."""
+    # Test get method on all briefs view
+    def test_007_all_briefs_get(self):
         answer = [{
             "id": 2,
             "flight": 7,
@@ -357,7 +329,7 @@ class Test2BriefCrud(APITestCase):
             "void_time": "2024-04-08T01:00:00Z",
             "hazards": []
         }]
-        self.client.post(
+        brief_post_response = self.client.post(
             reverse("all_briefs", args=[7]),
             data=json.dumps(
                 {
@@ -378,8 +350,8 @@ class Test2BriefCrud(APITestCase):
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
 
-    def test_008_a_brief_get(self) -> None:
-        """Tests the get request method for the ABrief view."""
+    # Test get method on a brief view
+    def test_008_a_brief_get(self):
         answer = {
             "id": 3,
             "flight": 8,
@@ -393,7 +365,7 @@ class Test2BriefCrud(APITestCase):
             "void_time": "2024-04-08T01:00:00Z",
             "hazards": []
         }
-        self.client.post(
+        brief_post_response = self.client.post(
             reverse("all_briefs", args=[8]),
             data=json.dumps(
                 {
@@ -414,8 +386,8 @@ class Test2BriefCrud(APITestCase):
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
 
-    def test_009_a_brief_put(self) -> None:
-        """Tests the put request method on the ABrief view."""
+    # Test put method on a brief view
+    def test_009_a_brief_put(self):
         answer = {
             "id": 4,
             "flight": 9,
@@ -429,7 +401,7 @@ class Test2BriefCrud(APITestCase):
             "void_time": "2024-04-08T01:00:00Z",
             "hazards": []
         }
-        self.client.post(
+        brief_post_response = self.client.post(
             reverse("all_briefs", args=[9]),
             data=json.dumps(
                 {
@@ -457,9 +429,9 @@ class Test2BriefCrud(APITestCase):
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
 
-    def test_010_a_brief_delete(self) -> None:
-        """Tests the delete request method on the ABrief view."""
-        self.client.post(
+    # Test delete method on a_brief view
+    def test_010_a_brief_delete(self):
+        brief_post_response = self.client.post(
             reverse("all_briefs", args=[10]),
             data=json.dumps(
                 {
@@ -479,22 +451,9 @@ class Test2BriefCrud(APITestCase):
         self.assertEqual(response.status_code, 204)
 
 
-class Test3HazardCrud(APITestCase):
-    """Tests the CRUD capabilities of the Hazard views.
-
-    Extends:
-        APITestCase (class): The rest_framework APITestCase class.
-
-    Methods:
-        setUp() -> None
-        test_011_all_hazards_post() -> None
-        test_012_all_hazards_get() -> None
-        test_013_a_hazard_get() -> None
-        test_014_a_hazard_put() -> None
-        test_015_a_hazard_delete() -> None
-    """
-
-    def setUp(self) -> None:
+# Test hazard CRUD functionality, h included to ensure order of tests
+class Test_h_hazard_crud(APITestCase):
+    def setUp(self):
         client = Client()
         sign_up_response = client.post(
             reverse("signup"),
@@ -502,9 +461,11 @@ class Test3HazardCrud(APITestCase):
                   "first_name": "Odie", "last_name": "Childress"},
             content_type="application/json"
         )
-        json.loads(sign_up_response.content)
-        self.client.cookies = sign_up_response.client.cookies
-        self.client.post(
+        response_body = json.loads(sign_up_response.content)
+        # self.client.cookies = sign_up_response.client.cookies
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {
+                                response_body['token']}")
+        airport_one_post_response = self.client.post(
             reverse("all_airports"),
             data=json.dumps({
                 "name": "Savannah",
@@ -512,7 +473,7 @@ class Test3HazardCrud(APITestCase):
             }),
             content_type="application/json"
         )
-        self.client.post(
+        airport_two_post_response = self.client.post(
             reverse("all_airports"),
             data=json.dumps({
                 "name": "Charleston",
@@ -535,7 +496,7 @@ class Test3HazardCrud(APITestCase):
             }),
             content_type="application/json"
         )
-        self.client.post(
+        brief_post_response = self.client.post(
             reverse("all_briefs", args=[json.loads(
                 flight_post_response.content)['id']]),
             data=json.dumps(
@@ -553,8 +514,8 @@ class Test3HazardCrud(APITestCase):
             content_type="application/json"
         )
 
-    def test_011_all_hazards_post(self) -> None:
-        """Tests the post request method on the AllHazards view."""
+    # Test post method on all hazards view
+    def test_011_all_hazards_post(self):
         answer = {
             "id": 1,
             "brief": 6,
@@ -573,15 +534,15 @@ class Test3HazardCrud(APITestCase):
             self.assertEqual(response.status_code, 201)
         self.assertEqual(json.loads(response.content), answer)
 
-    def test_012_all_hazards_get(self) -> None:
-        """Tests the get request method for the AllHazards view."""
+    # Test get method on all_hazards view
+    def test_012_all_hazards_get(self):
         answer = [{
             "id": 2,
             "brief": 7,
             "type": "Thunderstorms",
             "information": "Big Thunder stuff"
         }]
-        self.client.post(
+        hazard_post_response = self.client.post(
             reverse("all_hazards", args=[12, 7]),
             data=json.dumps({
                 "type": "Thunderstorms",
@@ -594,15 +555,15 @@ class Test3HazardCrud(APITestCase):
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
 
-    def test_013_a_hazard_get(self) -> None:
-        """Tests the get request method on the AHazard view."""
+    # Test get method on a_hazard view
+    def test_013_a_hazard_get(self):
         answer = {
             "id": 3,
             "brief": 8,
             "type": "Thunderstorms",
             "information": "Big Thunder stuff"
         }
-        self.client.post(
+        hazard_post_response = self.client.post(
             reverse("all_hazards", args=[13, 8]),
             data=json.dumps({
                 "type": "Thunderstorms",
@@ -615,15 +576,15 @@ class Test3HazardCrud(APITestCase):
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
 
-    def test_014_a_hazard_put(self) -> None:
-        """Tests the put request method on the AHazard view."""
+    # Test put method on a_hazard view
+    def test_014_a_hazard_put(self):
         answer = {
             "id": 4,
             "brief": 9,
             "type": "Freezing Rain",
             "information": "The rain is freezing?!?!"
         }
-        self.client.post(
+        hazard_post_response = self.client.post(
             reverse("all_hazards", args=[14, 9]),
             data=json.dumps({
                 "type": "Thunderstorms",
@@ -643,9 +604,9 @@ class Test3HazardCrud(APITestCase):
             self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content), answer)
 
-    def test_015_a_hazard_delete(self) -> None:
-        """Tests the delete request method on the AHazard view."""
-        self.client.post(
+    # Test delete method on a_hazard view
+    def test_015_a_hazard_delete(self):
+        hazard_post_response = self.client.post(
             reverse("all_hazards", args=[15, 10]),
             data=json.dumps({
                 "type": "Thunderstorms",

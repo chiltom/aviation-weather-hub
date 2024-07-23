@@ -16,7 +16,9 @@ class Test_list_crud(APITestCase):
             content_type="application/json"
         )
         response_body = json.loads(sign_up_response.content)
-        self.client.cookies = sign_up_response.client.cookies
+        # self.client.cookies = sign_up_response.client.cookies
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {
+                                response_body['token']}")
 
     # Test post method on All_lists view
 
@@ -123,7 +125,9 @@ class Test_task_crud(APITestCase):
             content_type="application/json"
         )
         response_body = json.loads(sign_up_response.content)
-        self.client.cookies = sign_up_response.client.cookies
+        # self.client.cookies = sign_up_response.client.cookies
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {
+                                response_body['token']}")
         list_post_response = self.client.post(
             reverse("all_lists"),
             data=json.dumps({"name": "My List", "completed": False}),

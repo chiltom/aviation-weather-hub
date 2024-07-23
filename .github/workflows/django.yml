@@ -2,9 +2,9 @@ name: Django CI
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "dev"]
   pull_request:
-    branches: ["main"]
+    branches: ["main", "dev"]
 
 permissions:
   checks: write
@@ -35,8 +35,8 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          cache: 'pip'
+          python-version: "3.12"
+          cache: "pip"
       - name: Install Dependencies
         run: pip install -r ./back-end/requirements.txt
       - name: Migrations
@@ -49,17 +49,17 @@ jobs:
         run: python ./back-end/manage.py test tests.test_list_models
       - name: Run Airport Model Tests
         run: python ./back-end/manage.py test tests.test_airport_models
-      - name: Run Named_location Model Tests    
+      - name: Run Named_location Model Tests
         run: python ./back-end/manage.py test tests.test_named_locations_models
-      - name: Run Flight App Model Tests  
+      - name: Run Flight App Model Tests
         run: python ./back-end/manage.py test tests.test_flight_models
-      - name: Run User View Tests  
+      - name: Run User View Tests
         run: python ./back-end/manage.py test tests.test_user_views
-      - name: Run List App View Tests  
+      - name: Run List App View Tests
         run: python ./back-end/manage.py test tests.test_list_views
-      - name: Run Airport View Tests  
+      - name: Run Airport View Tests
         run: python ./back-end/manage.py test tests.test_airport_views
-      - name: Run Named_location View Tests  
+      - name: Run Named_location View Tests
         run: python ./back-end/manage.py test tests.test_named_locations_views
-      - name: Run Flight View Tests  
+      - name: Run Flight View Tests
         run: python ./back-end/manage.py test tests.test_flight_views

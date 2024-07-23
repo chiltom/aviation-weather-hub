@@ -5,25 +5,28 @@ env = dotenv_values(".env")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = env.get("SECRET_KEY", "top-secret-key")
+SECRET_KEY = env.get("DJANGO_KEY", "top-secret-key")
 
 DEBUG = env.get("DEBUG")
 
 ALLOWED_HOSTS = [
-    "0.0.0.0"
+    # "0.0.0.0"
+    "*"
 ]
 
-CSRF_TRUSTED_ORIGIN = [
-    "https://avnwxhub.duckdns.org"
-]
+# CSRF_TRUSTED_ORIGIN = [
+#     "https://avnwxhub.duckdns.org"
+# ]
 
-CORS_ALLOWED_ORIGINS = [
-    "https://avnwxhub.duckdns.org"
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "https://avnwxhub.duckdns.org"
+# ]
 
-CORS_ALLOW_CREDENTIALS = True
-SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_HTTPONLY = True
+CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ALLOW_CREDENTIALS = True
+# SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_HTTPONLY = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',

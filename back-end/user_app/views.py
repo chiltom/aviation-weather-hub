@@ -16,6 +16,7 @@ from datetime import datetime, timedelta
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -28,31 +29,31 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpRequest
 from .models import User
-from .utilities import HttpOnlyTokenAuthentication
+# from .utilities import HttpOnlyTokenAuthentication
 
 
-def create_http_only_cookie_from_response(_response: Response, token: Token) -> Response:
-    """Sets an HTTP only authentication cookie with the Token argument on the Response argument.
+# def create_http_only_cookie_from_response(_response: Response, token: Token) -> Response:
+#     """Sets an HTTP only authentication cookie with the Token argument on the Response argument.
 
-    Args:
-        _response (Response): The Response that needs a cookie to be set.
-        token (Token): The authorization Token to be used in the cookie.
+#     Args:
+#         _response (Response): The Response that needs a cookie to be set.
+#         token (Token): The authorization Token to be used in the cookie.
 
-    Returns:
-        Response: The Response with the authentication cookie.
-    """
+#     Returns:
+#         Response: The Response with the authentication cookie.
+#     """
 
-    life_time = datetime.now() + timedelta(days=7)
-    format_life_time = life_time.strftime("%a, %d %b %Y %H:%M:%S UTC")
-    _response.set_cookie(
-        key="token",
-        value=token.key,
-        httponly=True,
-        secure=True,
-        samesite="Lax",
-        expires=format_life_time
-    )
-    return _response
+#     life_time = datetime.now() + timedelta(days=7)
+#     format_life_time = life_time.strftime("%a, %d %b %Y %H:%M:%S UTC")
+#     _response.set_cookie(
+#         key="token",
+#         value=token.key,
+#         httponly=True,
+#         secure=True,
+#         samesite="Lax",
+#         expires=format_life_time
+#     )
+#     return _response
 
 
 class TokenReq(APIView):
@@ -63,13 +64,14 @@ class TokenReq(APIView):
 
     Extends:
         APIView (class): The rest_framework APIView class.
-    
+
     Attributes:
         authentication_classes
         permission_classes
     """
 
-    authentication_classes = [HttpOnlyTokenAuthentication]
+    # authentication_classes = [HttpOnlyTokenAuthentication]
+    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
 
@@ -79,7 +81,7 @@ class Info(TokenReq):
     Extends:
         TokenReq (class): The class that enables the view with proper authentication
         and permissions.
-    
+
     Methods:
         get(request) -> Response
         put(request) -> Response
@@ -129,7 +131,7 @@ class SignUp(APIView):
 
     Extends:
         APIView (class): The class that enables the view.
-    
+
     Methods:
         post(request) -> Response
     """
@@ -159,9 +161,11 @@ class SignUp(APIView):
                     "email": new_user.email,
                     "first_name": new_user.first_name,
                     "last_name": new_user.last_name,
+                    "token": token.key
                 },
                 status=HTTP_201_CREATED)
-            return create_http_only_cookie_from_response(_response, token)
+            # return create_http_only_cookie_from_response(_response, token)
+            return _response
         except ValidationError as e:
             return Response(e.message_dict, status=HTTP_400_BAD_REQUEST)
 
@@ -171,7 +175,7 @@ class LogIn(APIView):
 
     Extends:
         APIView (class): The class that enables the view.
-    
+
     Methods:
         post(request) -> Response
     """
@@ -190,6 +194,7 @@ class LogIn(APIView):
         data = request.data.copy()
         user = authenticate(username=data.get("email"),
                             password=data.get("password"))
+        print(user)
         if user:
             token, created = Token.objects.get_or_create(user=user)
             login(request, user)
@@ -199,9 +204,11 @@ class LogIn(APIView):
                     "email": user.email,
                     "first_name": user.first_name,
                     "last_name": user.last_name,
+                    "token": token.key
                 },
                 status=HTTP_200_OK)
-            return create_http_only_cookie_from_response(_response, token)
+            # return create_http_only_cookie_from_response(_response, token)
+            return _response
         return Response("No user matching these credentials", status=HTTP_404_NOT_FOUND)
 
 
@@ -211,7 +218,7 @@ class LogOut(TokenReq):
     Extends:
         TokenReq (class): The class that enables the view with proper authentication
         and permissions.
-    
+
     Methods:
         post(request) -> Response
     """
@@ -229,7 +236,7 @@ class LogOut(TokenReq):
         request.user.auth_token.delete()
         logout(request)
         _response = Response(status=HTTP_204_NO_CONTENT)
-        _response.delete_cookie("token")
+        # _response.delete_cookie("token")
         return _response
 
 
@@ -238,7 +245,7 @@ class MasterSignUp(APIView):
 
     Extends:
         APIView (class): The class that enables the view.
-    
+
     Methods:
         post(request) -> Response
     """
@@ -267,7 +274,8 @@ class MasterSignUp(APIView):
             token = Token.objects.create(user=master_user)
             login(request, master_user)
             _response = Response({"master_user": master_user.display_name,
-                                 "email": master_user.email}, status=HTTP_201_CREATED)
-            return create_http_only_cookie_from_response(_response, token)
+                                 "email": master_user.email, "token": token.key}, status=HTTP_201_CREATED)
+            # return create_http_only_cookie_from_response(_response, token)
+            return _response
         except ValidationError as e:
             return Response(e.message_dict, status=HTTP_400_BAD_REQUEST)

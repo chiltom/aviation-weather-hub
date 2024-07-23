@@ -37,6 +37,10 @@ export const signupUser = async (
         firstName: response.data["first_name"],
         lastName: response.data["last_name"],
       };
+      localStorage.setItem("token", response.data["token"]);
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Token ${response.data["token"]}`;
       return user;
     } else {
       console.log(response.data);
@@ -72,6 +76,10 @@ export const userLogin = async (
         firstName: response.data["first_name"],
         lastName: response.data["last_name"],
       };
+      localStorage.setItem("token", response.data["token"]);
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Token ${response.data["token"]}`;
       return user;
     } else {
       console.log(response.data);
@@ -92,6 +100,8 @@ export const userLogout = async (): Promise<boolean> => {
   try {
     const response: AxiosResponse = await api.post("users/logout/");
     if (response.status === 204) {
+      localStorage.removeItem("token");
+      delete api.defaults.headers.common["Authorization"];
       return true;
     } else {
       console.log(response.data);
@@ -110,20 +120,24 @@ export const userLogout = async (): Promise<boolean> => {
  */
 export const userConfirmation = async (): Promise<User | null> => {
   try {
-    const response: AxiosResponse = await api.get("users/");
-    if (response.status === 200) {
-      const user: User = {
-        email: response.data["email"],
-        displayName: response.data["display_name"],
-        firstName: response.data["first_name"],
-        lastName: response.data["last_name"],
-      };
-      return user;
+    const token: string | null = localStorage.getItem("token");
+    if (token) {
+      api.defaults.headers.common["Authorization"] = `Token ${token}`;
+      const response: AxiosResponse = await api.get("users/");
+      if (response.status === 200) {
+        const user: User = {
+          email: response.data["email"],
+          displayName: response.data["display_name"],
+          firstName: response.data["first_name"],
+          lastName: response.data["last_name"],
+        };
+        return user;
+      }
     }
-    return null;
   } catch (error) {
     return null;
   }
+  return null;
 };
 
 /**
